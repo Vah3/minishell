@@ -1,0 +1,5 @@
+Mmini	mini.c	/^int	main()$/
+cmder	mini.c	/^void	cmder(char *promt, char ***pars, int n, char /
+cmdmaker	mini.c	/^void	cmdmaker(char *promt, t_pars *pars)$/
+lexer	mini.c	/^void	lexer(char *promt, t_pars *pars)$/
+t_pars	minishell.h	/^}	t_pars;$/
