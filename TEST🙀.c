@@ -1,2 +1,0 @@
-ARam
-Vahe
