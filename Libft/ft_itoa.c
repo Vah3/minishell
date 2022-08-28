@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 14:45:25 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/04/20 23:27:02 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/08/28 15:12:14 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static int	countn(int n)
 	count = 1;
 	if (n < 0)
 		count++;
-	//n = n / 10;
 	while (n / 10 != 0)
 	{
 		n = n / 10;
@@ -39,7 +38,7 @@ char	*ft_itoa(int n)
 	tiv = n;
 	if (convert == 0)
 		return (0);
-	if ( n < 0)
+	if (n < 0)
 		tiv = -tiv;
 	convert[nish] = '\0';
 	while (nish > 1)
@@ -53,9 +52,4 @@ char	*ft_itoa(int n)
 	else
 		convert[0] = tiv % 10 + '0';
 	return (convert);
-}
-
-int main()
-{
-	printf("%s",ft_itoa(-255));
 }

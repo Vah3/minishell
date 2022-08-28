@@ -6,20 +6,20 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/08/27 20:26:12 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/08/28 15:08:23 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	MINISHELL_H
-# define	MINISHELL_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "./Libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "./Libft/libft.h"
 
 typedef struct line
 {

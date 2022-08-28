@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/08/27 18:09:13 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/08/28 15:05:42 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ char	*ft_trim_substr(char **source, int start, int end)
 	char	*new_string;
 	int		i;
 
-
-	ret_string = ft_substr(*source, start, end - start );
-	new_string = malloc(sizeof(char) * (ft_strlen(*source) - (end - start) + 1));
+	ret_string = ft_substr(*source, start, end - start);
+	new_string = malloc(sizeof(char) * (
+				ft_strlen(*source) - (end - start) + 1));
 	i = -1;
 	while ((*source)[++i] && i < start)
 		new_string[i] = (*source)[i];
@@ -31,7 +31,6 @@ char	*ft_trim_substr(char **source, int start, int end)
 	*source = new_string;
 	return (ret_string);
 }
-
 
 int	not_found_second_quote(char *line)
 {
@@ -61,29 +60,28 @@ int	not_found_second_quote(char *line)
 	return (flag);
 }
 
-
 int	lexer(char **promt, char ***files, char c)
 {
-	int	i;
-	int	j;
-	char *line;
-	
+	int		i;
+	int		j;
+	char	*line;
+
 	i = -1;
 	line = NULL;
-	while((*promt)[++i])
+	while ((*promt)[++i])
 	{
 		skipquotes(promt, &i);
-		if((*promt)[i] && (*promt)[i] == c)
-			{
-				i++;
-				if(trimspaces(promt, &i, &j))
-					return (0);
-				iffiles(promt, &i, &j);
-				duporjoin(&line, promt, i, j);
+		if ((*promt)[i] && (*promt)[i] == c)
+		{
+			i++;
+			if (trimspaces(promt, &i, &j))
+				return (0);
+			iffiles(promt, &i, &j);
+			duporjoin(&line, promt, i, j);
 			i = -1;
-			}
+		}
 	}
-	if(line)
+	if (line)
 	{
 		*files = ft_split(line, 32);
 		free(line);
@@ -91,44 +89,42 @@ int	lexer(char **promt, char ***files, char c)
 	return (1);
 }
 
-
 int	main(void)
 {
-	char *promt;
-	t_pars pars;
-	int i = 0;
+	char	*promt;
+	t_pars	pars;
+	int		i;
 
+	i = 0;
 	promt = readline("Minishell ");
 	if (!promt)
-		return(0);
-	if(not_found_second_quote(promt))
- 	{
- 		printf("Quote error\n");
- 		return (0);
- 	}
-	if(!lexer(&promt, &pars.infiles, '<'))
 		return (0);
-	if(!lexer(&promt, &pars.outfiles, '>'))
-		return (0);
-	while(pars.infiles && pars.infiles[i])
+	if (not_found_second_quote(promt))
 	{
-		printf("%s\n",pars.infiles[i]);
+		printf("Quote error\n");
+		return (0);
+	}
+	if (!lexer(&promt, &pars.infiles, '<'))
+		return (0);
+	if (!lexer(&promt, &pars.outfiles, '>'))
+		return (0);
+	while (pars.infiles && pars.infiles[i])
+	{
+		printf("%s\n", pars.infiles[i]);
 		free(pars.infiles[i]);
 		i++;
 	}
 	i = 0;
-	while(pars.outfiles && pars.outfiles[i])
+	while (pars.outfiles && pars.outfiles[i])
 	{
-		printf("%s\n",pars.outfiles[i]);
+		printf("%s\n", pars.outfiles[i]);
 		free(pars.outfiles[i]);
 		i++;
 	}
+	return (0);
+}
 //	printf("%s\n", promt);*/
 /*	char *a = "barev dzez vonceq";
 	printf("%s\n",ft_trim_substr(&a, 6, 10));
 	printf("%s\n",a);*/
 //	while(1);
-	return (0);
-}
-
-
