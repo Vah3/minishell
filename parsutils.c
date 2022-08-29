@@ -6,7 +6,7 @@
 /*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 13:28:35 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/08/27 17:31:09 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/08/29 16:07:39 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,28 @@ void	skipquotes(char **promt, int *j)
 int	trimspaces(char **promt, int *k, int *j)
 {
 	int		i;
+	int		range;
 	char	*trimed;
 
 	i = *k;
 	*j = i;
-	while ((*promt)[i] && (*promt)[i] == 32)
-			i++;
-	if (!(*promt)[i])
+	range = 1;
+	if((*promt))
 	{
-		printf("syntax error\n");
-		return (1);
+		if(*j > 1 && (*promt)[*j - 1] == '<' && (*promt)[(*j) - 2] == '<')
+			range = 2;
+		while ((*promt)[i] && (*promt)[i] == 32)
+				i++;
+		if (!(*promt)[i])
+		{
+			printf("syntax error\n");
+			return (1);
+		}
+		trimed = ft_trim_substr(promt, (*j) - range, i);
+		free(trimed);
+		i = *j - range;
+		*k = i;
 	}
-	trimed = ft_trim_substr(promt, *j - 1, i);
-	free(trimed);
-	i = *j - 1;
-	*k = i;
 	return (0);
 }
 
