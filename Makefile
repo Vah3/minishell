@@ -6,7 +6,7 @@
 #    By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/21 16:05:05 by vagevorg          #+#    #+#              #
-#    Updated: 2022/08/27 13:53:52 by vagevorg         ###   ########.fr        #
+#    Updated: 2022/08/31 18:39:54 by vagevorg         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME			= minishell
@@ -27,7 +27,7 @@ CLE				= make clean
 
 FCLE			= make fclean
 
-INCLUDES		= -ILibft -I/usr/local/include
+INCLUDES		= -ILibft -I~/Desktop/42/42cursus/next_line -I/usr/local/include
 
 LINKERS			= -lft -lreadline -L./Libft
 
