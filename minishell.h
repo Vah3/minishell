@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/08/31 17:05:13 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/01 17:05:26 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ typedef struct line
 	int		outfilefd;
 	int		isheredoc;
 	int		apendfile;
+	int		fileordoc;
+	char	*errfile;
 	char	**cmd;
 	char	**infiles;
 	char	**outfiles;
@@ -43,10 +45,12 @@ int		trimspaces(char	**promt, int *k, int *j);
 char	*ft_trim_substr(char **source, int start, int end);
 void	iffiles(char **promt, int *k, int *n);
 void	duporjoin(char **line, char **promt, int i, int j);
-int		open_in_files(char *filename);
+int		open_in_files(char *filename, t_pars *pars);
 int		open_out_file(char *filename);
-int		opener(char **promt, int j, int i, char c);
+int		opener(char **promt, int j, int i, char c, t_pars **pars);
 int		check_pipes_count(char **promt, int *count);
 int		not_found_second_quote(char *line);
+int		openheredoc(char *promt, t_pars **pars);
+void	write_docs(char *promt, int count, t_pars **pars);
 
 #endif

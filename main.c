@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/08/31 19:56:24 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/01 17:21:45 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,20 @@ int	not_found_second_quote(char *line)
 }
 
 
-int	ifheredoc(char **promt,char **delim, int *i, int *j)
+int	ifheredoc(char **promt,int *fileordoc, int *i, int *j)
 {
+	char *delim;
+
 	if ((*promt)[*i] && (*promt)[*i] == '<'  && (*promt)[(*i) + 1] && (*promt)[(*i) + 1] == '<')
 	{
 		*i += 2;
 		if(trimspaces(promt, i, j))
 			return (2);
 		iffiles(promt, i, j);
-	//	delim = ft_trim_substr(promt, *j, *i);
-		duporjoin(delim, promt, *i, *j);
+		delim = ft_trim_substr(promt, *j, *i);
+		free(delim);
+		*fileordoc = 1;
+		//duporjoin(delim, promt, *i, *j);
 		*i = -1;
 	}
 //	if (!(*promt))
@@ -88,43 +92,55 @@ void	passwords(char **promt,  int *i)
 }
 
 
-int	lexer(char **promt, char ***files, char c)
+
+
+int	lexer(char **promt, t_pars ***pars, char c)
 {
 	int		i;
 	int		j;
 	char	*line;
+	int		k;
+//	char	**file;
 
 	i = -1;
+	k = 0;
 	line = NULL;
 	while ((*promt)[++i])
 	{
 		skipquotes(promt, &i);
 		passwords(promt, &i);
-		if(ifheredoc(promt, &line, &i, &j) == 0)
+		if((*promt)[i] == '|')
+			k++;
+		if(ifheredoc(promt, &((*pars)[k])->fileordoc, &i, &j) == 0)
 			return (0);
 		if ((*promt)[i] && (*promt)[i] == c)
 		{
 			i++;
+			(*pars)[k]->fileordoc = 0;
 			if (trimspaces(promt, &i, &j))
 				return (2);
 			iffiles(promt, &i, &j);
-		//	if(opener(promt, j, i, c))
-		//		return(0);
-			duporjoin(&line, promt, i, j);
-			i = -1;
+			if(opener(promt, j, i, c, &((*pars)[k])))
+				return(0);
+//			duporjoin(&line, promt, i, j);
+			i = j - 1;
 		}
 	}
-//	printf("%s\n", line);
-(void) files;
+	printf("-------%d\n", k);
+//(void) files;
 /*	if (line)
 	{
-		*files = ft_split(line, 32);
+		files = ft_split(line, 32);
 		free(line);
 	}*/
+	
 	return (1);
 }
 
-void	write_docs(char *promt, int count, t_pars ***pars)
+
+
+/*
+void	write_docs(char *promt, int count, t_pars **pars)
 {
 	int	**fd;
 	int i;
@@ -185,7 +201,7 @@ void	write_docs(char *promt, int count, t_pars ***pars)
 
 				}
 				close(fd[k][0]);
-				(*pars)[z]->isheredoc = dup(fd[k][1]);
+				(*pars)[z].isheredoc = dup(fd[k][1]);
 				k++;
 			}
 		}
@@ -197,7 +213,7 @@ void	write_docs(char *promt, int count, t_pars ***pars)
 }
 
 
-int	openheredoc(char *promt, t_pars ***pars)
+int	openheredoc(char *promt, t_pars **pars)
 {
 	int i;
 	int	doc_count;
@@ -214,6 +230,7 @@ int	openheredoc(char *promt, t_pars ***pars)
 			if(promt[i] && promt[i] == '<')
 			{
 				doc_count++;
+				i++;
 				while(promt[i] && promt[i] == 32)
 					i++;
 				if(promt[i] == '\0' || promt[i] == '|' || promt[i] == '<' || promt[i] == '>')
@@ -228,7 +245,7 @@ int	openheredoc(char *promt, t_pars ***pars)
 	write_docs(promt, doc_count, pars);
 	return(0);
 }
-
+*/
 
 
 
@@ -255,40 +272,46 @@ int	main(void)
 		printf("Pipe error---%d\n", count);
 		return(0);
 	}
-	pars =(t_pars **)malloc(sizeof(t_pars) * (count + 1));
+	pars =(t_pars **)malloc(sizeof(t_pars *) * (count));
 	pars[count] = NULL;
 	while(i < count)
 	{
 		pars[i] = (t_pars *)malloc(sizeof(t_pars));
+		pars[i]->errfile = NULL;
 		i++;
 	}
-	if(openheredoc(promt, &pars))
+	if(openheredoc(promt, pars)) // heredocery stexic a bacum
 		return(0);
 
 	i = 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	if (!lexer(&promt, &pars, '<'))
+		return (0);
 while(i < count)
 {
-	printf("%d\n", pars[i]->isheredoc);
+	printf("isheredoc -- %d\n", pars[i]->isheredoc);
+	printf("fileordoc == %d\n", pars[i]->fileordoc);
+	printf("infile fd --%d\n", pars[i]->infilefd);
+	if(pars[i]->errfile)
+		printf("errfile --%s\n",pars[i]->errfile);
 	i++;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//	if (!lexer(&promt, &pars.heredocs, '<'))
-//		return (0);
 //	if (!lexer(&promt, &pars.outfiles, '>'))
 //		return (0);
 /*	while (pars.infiles && pars.infiles[i])
@@ -304,7 +327,7 @@ while(i < count)
 		free(pars.heredocs[i]);
 		i++;
 	}*/
-	printf("%s\n%d\n", promt, count);
+//	printf("%s\n%d\n", promt, count);
 	return (0);
 }
 //	printf("%s\n", promt);*/
