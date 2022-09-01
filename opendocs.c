@@ -6,13 +6,13 @@
 /*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/01 18:00:47 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/01 19:38:29 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	**make_pipe_for_doc(int count)
+//chi ogtagorcvum , bayc heto karoxa petq ga, pipe() bacelu hamar
+/*int	**make_pipe_for_doc(int count)
 {
 	int i;
 	int	**fd;
@@ -38,7 +38,7 @@ int	**make_pipe_for_doc(int count)
 		i++;
 	}
 	return (fd);
-}
+}*/
 
 
 
@@ -68,7 +68,8 @@ int	openheredoc(char *promt, t_pars **pars)
 			}
 		}
 	}
-	write_docs(promt, doc_count, pars);
+	if(write_docs(promt, doc_count, pars))
+		return (1);
 	return (0);
 }
 
@@ -77,28 +78,29 @@ int	write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z)
 	int	fd[2];
 	char		*line;
 
-	pipe(fd);
-	line = readline(">");
-	write(fd[0], &line, ft_strlen(line));
-	while(count > 0)
+	if(pipe(fd) == -1)
+		return (1);
+	while(1)
 	{
-		if(!ft_strncmp(delim, line, ft_strlen(line)))
+		line = readline(">");
+		if(write(fd[1], &line, ft_strlen(line)) == -1)
+			return(1);
+		if(ft_strncmp(delim, line, ft_strlen(line)) == 0)
 		{
 			count--;
 			break;
 		}
-		line= readline(">");
-		write(fd[0], &line, ft_strlen(line));
 	}
-	close(fd[0]);
-	(*pars)[z].isheredoc = dup(fd[1]);
+	if (close(fd[1]) == -1)
+		return (1);
+	(*pars)[z].isheredoc = dup(fd[0]);
 	free(delim);
 	return (0);
 }
 
 
 
-void	write_docs(char *promt, int count, t_pars **pars)
+int	write_docs(char *promt, int count, t_pars **pars)
 {
 	int i;
 	int j;
@@ -121,13 +123,15 @@ void	write_docs(char *promt, int count, t_pars **pars)
 			if(!promt[i])
 			{
 				printf("syntax error\n"); // functiony sarqel int typei
-				return ;
+				return (1);
 			}
 			j = i;
 			while(promt[i] && promt[i] != 32)
 				i++;
 			delim = ft_substr(promt, j, i - 1);
-			write_in_pipe_and_dup(pars, count, delim, z);
+			if(write_in_pipe_and_dup(pars, count, delim, z))
+				return (1);
 			}
 	}
+	return (0);
 }

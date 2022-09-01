@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/01 17:05:26 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/01 19:36:03 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ int		opener(char **promt, int j, int i, char c, t_pars **pars);
 int		check_pipes_count(char **promt, int *count);
 int		not_found_second_quote(char *line);
 int		openheredoc(char *promt, t_pars **pars);
-void	write_docs(char *promt, int count, t_pars **pars);
+int		write_docs(char *promt, int count, t_pars **pars);
 
 #endif

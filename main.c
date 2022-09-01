@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/01 17:21:45 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/01 19:40:27 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	ifheredoc(char **promt,int *fileordoc, int *i, int *j)
 		delim = ft_trim_substr(promt, *j, *i);
 		free(delim);
 		*fileordoc = 1;
-		//duporjoin(delim, promt, *i, *j);
 		*i = -1;
 	}
 //	if (!(*promt))
@@ -100,7 +99,6 @@ int	lexer(char **promt, t_pars ***pars, char c)
 	int		j;
 	char	*line;
 	int		k;
-//	char	**file;
 
 	i = -1;
 	k = 0;
@@ -122,130 +120,15 @@ int	lexer(char **promt, t_pars ***pars, char c)
 			iffiles(promt, &i, &j);
 			if(opener(promt, j, i, c, &((*pars)[k])))
 				return(0);
-//			duporjoin(&line, promt, i, j);
 			i = j - 1;
 		}
 	}
-	printf("-------%d\n", k);
-//(void) files;
-/*	if (line)
-	{
-		files = ft_split(line, 32);
-		free(line);
-	}*/
-	
 	return (1);
 }
 
 
 
-/*
-void	write_docs(char *promt, int count, t_pars **pars)
-{
-	int	**fd;
-	int i;
-	int j;
-	int k = 0;
-	int z = 0;
-	char	*delim;
-	char	*line;
-//	char 	**delimetrs;
 
-	i = 0;
-	fd = (int **)malloc(sizeof(int *) * (count + 1));
-	fd[count] = 0;
-	while(i < count)
-	{
-		fd[i] = (int *)malloc(sizeof(int) * 2); // 2 te 3 stugel
-		i++;
-	}
-	i = 0;
-//	line == ft_strdup(promt);
-//	ifheredoc()
-	while(promt[i])
-	{
-		skipquotes(&promt, &i);
-		passwords(&promt, &i);
-		if(promt[i] == '|')
-			z++;
-		if(promt[i] && promt[i] == '<')
-		{
-			i++;
-			if(promt[i] && promt[i] == '<')
-			{
-				i++;
-				while(promt[i] && promt[i] == 32)
-					i++;
-				if(!promt[i])
-				{
-					printf("syntax error\n"); // functiony sarqel int typei
-					return ;
-				}
-				j = i;
-				while(promt[i] && promt[i] != 32)
-					i++;
-				delim = ft_substr(promt, j, i - 1);
-				pipe(fd[k]);
-				line = readline(">");
-			//	printf("-----%s\n",delim);
-				write(fd[k][0], &line, ft_strlen(line));
-				while(count > 0)
-				{
-					if(!ft_strncmp(delim, line, ft_strlen(line)))
-					{
-						count--;
-						break;
-					}
-					line= readline(">");
-					write(fd[k][0], &line, ft_strlen(line));
-
-				}
-				close(fd[k][0]);
-				(*pars)[z].isheredoc = dup(fd[k][1]);
-				k++;
-			}
-		}
-	//	i++;
-	//	if(promt[i] == '|')
-	//		z++;
-		i++;
-	}
-}
-
-
-int	openheredoc(char *promt, t_pars **pars)
-{
-	int i;
-	int	doc_count;
-
-	i = 0;
-	doc_count = 0;
-	while(promt[i])
-	{
-		skipquotes(&promt, &i);
-		passwords(&promt, &i);
-		if(promt[i] && promt[i] == '<')
-		{
-			i++;
-			if(promt[i] && promt[i] == '<')
-			{
-				doc_count++;
-				i++;
-				while(promt[i] && promt[i] == 32)
-					i++;
-				if(promt[i] == '\0' || promt[i] == '|' || promt[i] == '<' || promt[i] == '>')
-				{
-					printf("sytax error\n");
-					return(1);
-				}
-			}
-		}
-		i++;
-	}
-	write_docs(promt, doc_count, pars);
-	return(0);
-}
-*/
 
 
 
