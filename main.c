@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/02 17:18:32 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/02 20:18:50 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ int	only_pipe(char *prompt)
 int	main(int argc, char **argv, char **env)
 {
 	char	*promt;
+	char	**env_char;
 	t_pars	**pars;
 	t_env	*environ;
 	int		i;
@@ -156,15 +157,19 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	
 	i = 0;
+	promt = readline("Minishell $ ");
 	environ = env_initialization(env);
-	promt = readline("Minishell ");
-	print_environment(environ);
-	remove_from_list(environ, promt);
-	printf("\n///////////////////////////////////\n\n");
-	print_environment(environ);
-	free_env(&environ);
+	// print_environment(environ);
+	// print_environment(environ);
+	// remove_from_list(environ, promt);
+	// printf("\n///////////////////////////////////\n\n");
+	// env_char = list_to_env(environ);
+	// while (*env_char)
+	// 	printf("%s\n", *(env_char)++);
 	
-	exit(0);
+	// free_env(&environ);
+	
+	// exit(0);
 	////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////
