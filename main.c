@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/02 20:18:50 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/02 17:51:04 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	ifheredoc(char **promt,int *fileordoc, int *i, int *j)
 		delim = ft_trim_substr(promt, *j, *i);
 		free(delim);
 		*fileordoc = 1;
-		*i = -1;
+		*i = *j;
 	}
 //	if (!(*promt))
 //		return (0);
@@ -147,57 +147,29 @@ int	only_pipe(char *prompt)
 int	main(int argc, char **argv, char **env)
 {
 	char	*promt;
-	char	**env_char;
 	t_pars	**pars;
-	t_env	*environ;
+//	t_env	*environ;
 	int		i;
 	int		count;
-	
+	char	**cmd;
 	(void)argc;
 	(void)argv;
-	
+	(void)env;
 	i = 0;
-	promt = readline("Minishell $ ");
-	environ = env_initialization(env);
-	// print_environment(environ);
-	// print_environment(environ);
-	// remove_from_list(environ, promt);
-	// printf("\n///////////////////////////////////\n\n");
-	// env_char = list_to_env(environ);
-	// while (*env_char)
-	// 	printf("%s\n", *(env_char)++);
-	
-	// free_env(&environ);
-	
-	// exit(0);
+/*	environ = env_initialization(env);
+	print_environment(environ);
+	free_env(&environ);
+	while (1)
+	{
+		 code 
+	}
+	exit(0);
 	////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/
 
 
 	
+	promt = readline("Minishell ");
 	if (!promt || ft_strlen(promt) == 0)
 		return (0);
 	if (not_found_second_quote(promt))
@@ -219,28 +191,30 @@ int	main(int argc, char **argv, char **env)
 	}
 	if(openheredoc(promt, pars)) // heredocery stexic a bacum
 		return(0);
-
 	i = 0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	if (!lexer(&promt, &pars, '<'))
 		return (0);
-while(i < count)
+	cmd = ft_split(promt, '|');
+	if(count < 2)
+		pars[i]->cmd = ft_strdup(promt);
+	else
+	{
+		while(i < count)
+		{
+			pars[i]->cmd = ft_strdup(cmd[i]);
+			i++;
+		}
+	}
+	free_after_split(cmd);
+	open_processes(count, pars);
+	i = 0;
+	while(i < count)
+	{
+		wait(NULL);
+		i++;
+	}
+//	printf("%s\n", pars[0]->cmd);
+/*while(i < count)
 {
 	printf("isheredoc -- %d\n", pars[i]->isheredoc);
 	printf("fileordoc == %d\n", pars[i]->fileordoc);
@@ -248,7 +222,9 @@ while(i < count)
 	if(pars[i]->errfile)
 		printf("errfile --%s\n",pars[i]->errfile);
 	i++;
-}
+}*/
+//	open_processes();
+	
 //	if (!lexer(&promt, &pars.outfiles, '>'))
 //		return (0);
 /*	while (pars.infiles && pars.infiles[i])

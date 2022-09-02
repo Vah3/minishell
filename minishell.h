@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/02 18:42:37 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/02 16:59:44 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct line
 	int		apendfile;
 	int		fileordoc;
 	char	*errfile;
-	char	**cmd;
+	char	*cmd;
 	char	**infiles;
 	char	**outfiles;
 	char	**heredocs;
@@ -61,8 +61,9 @@ int		not_found_second_quote(char *line);
 int		openheredoc(char *promt, t_pars **pars);
 int		write_docs(char *promt, int count, t_pars **pars);
 int		ft_error(char *err_message, int err_code);
+int		open_processes(int	count, t_pars **pars);
 
-
+int		only_pipe(char	*promt);
 void	free_env(t_env **env);
 t_env	*last_env_element(t_env *start);
 int		size_of_list(t_env *list);
@@ -70,8 +71,6 @@ void	free_after_split(char **store);
 int		size_of_env(char **env);
 t_env	*env_initialization(char **env);
 void 	print_environment(t_env *env);
-void	remove_from_list(t_env *env, char *key);
-char	**list_to_env(t_env	*head);
 
 
 #endif
