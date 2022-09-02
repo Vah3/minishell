@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/01 19:36:03 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/02 11:06:34 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@
 # include <readline/history.h>
 # include "./Libft/libft.h"
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 typedef struct line
 {
 	int		pipecount;
@@ -36,8 +43,9 @@ typedef struct line
 	char	**outfiles;
 	char	**heredocs;
 	char	**apendfiles;
-	char	**envvars;
+	t_env	**env_var;
 }	t_pars;
+
 
 void	skipquotes(char **promt, int *j);
 void	passwords(char **promt, int *i);
@@ -52,5 +60,16 @@ int		check_pipes_count(char **promt, int *count);
 int		not_found_second_quote(char *line);
 int		openheredoc(char *promt, t_pars **pars);
 int		write_docs(char *promt, int count, t_pars **pars);
+int		ft_error(char *err_message, int err_code);
+
+
+void	free_env(t_env **env);
+t_env	*last_env_element(t_env *start);
+int		size_of_list(t_env *list);
+void	free_after_split(char **store);
+int		size_of_env(char **env);
+t_env	*env_initialization(char **env);
+void 	print_environment(t_env *env);
+
 
 #endif

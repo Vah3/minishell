@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsutils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 13:28:35 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/08/31 18:07:52 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/01 20:38:17 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,14 @@ int	trimspaces(char **promt, int *k, int *j)
 	i = *k;
 	*j = i;
 	range = 1;
-	if((*promt))
+	if ((*promt))
 	{
-		if(*j > 1 && (*promt)[*j - 1] == '<' && (*promt)[(*j) - 2] == '<')
+		if (*j > 1 && (*promt)[*j - 1] == '<' && (*promt)[(*j) - 2] == '<')
 			range = 2;
 		while ((*promt)[i] && (*promt)[i] == 32)
 				i++;
 		if (!(*promt)[i])
-		{
-			printf("syntax error\n");
-			return (1);
-		}
+			return (ft_error("Syntax error\n", 1));
 		trimed = ft_trim_substr(promt, (*j) - range, i);
 		free(trimed);
 		i = *j - range;

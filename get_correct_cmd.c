@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 22:10:42 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/08/29 15:16:01 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/01 20:55:34 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,6 @@ char	*clear_cmd(char *trash, int count_of_symbols)
 char	*get_correct_cmd(char *trash)
 {
 	int		count_of_symbols;
-//	int		i;
-//	int		j;
 	char	*cmd;
 
 	count_of_symbols = correct_len(trash);
@@ -110,19 +108,3 @@ char	*get_correct_cmd(char *trash)
 	free(trash);
 	return (cmd);
 }
-
-/*int	main(int argc, char **argv)
-{
-	while (1)
-	{
-		char *line = readline("hey $ ");
-		add_history(line);
-		if (not_found_second_quote(line))
-		{
-			free(line);
-			printf("qfur\n");
-			continue ;
-		}
-		get_correct_cmd(line);
-	}
-}*/

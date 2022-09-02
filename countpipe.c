@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   countpipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 15:07:22 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/08/31 16:36:23 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/01 20:40:47 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int	check_pipes_count(char **promt, int *count)
 {
-	int	i;
+	int		i;
 	char	*newline;
 
 	newline = NULL;
 	*count = 1;
 	i = 0;
-	while((*promt)[i])
+	while ((*promt)[i])
 	{
 		while ((*promt)[i] && (*promt)[i] != '|')
 		{
@@ -41,14 +41,10 @@ int	check_pipes_count(char **promt, int *count)
 			}
 			if ((*promt)[i] == '\0')
 			{
-				while (newline == NULL || ft_strlen(newline) == 0)// (newline && newline[0] == 10))
+				while (newline == NULL || ft_strlen(newline) == 0)
 					newline = readline(">");
-				//printf("%s",newline);
 				if (not_found_second_quote(newline))
-				{
-					printf("Quote error\n");
-					return(1);
-				}
+					return (ft_error("Quote error\n", 1));
 				*promt = ft_strjoin(*promt, " ");
 				*promt = ft_strjoin(*promt, newline);
 				free(newline);
@@ -57,5 +53,5 @@ int	check_pipes_count(char **promt, int *count)
 		}
 		i++;
 	}
-	return(0);
+	return (0);
 }

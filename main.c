@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/01 19:40:27 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/02 11:07:42 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,35 +129,81 @@ int	lexer(char **promt, t_pars ***pars, char c)
 
 
 
+int	only_pipe(char *prompt)
+{
+	int	i;
+
+	i = -1;
+	while (prompt[++i] && (prompt[i] == ' ' || prompt[i] == '\t'))
+		;
+	if (prompt[i] == '|')
+		return (1);
+	return (0);
+}
 
 
 
 
-
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
 	char	*promt;
 	t_pars	**pars;
+	t_env	*environ;
 	int		i;
 	int		count;
+	
+	(void)argc;
+	(void)argv;
 
 	i = 0;
+	environ = env_initialization(env);
+	print_environment(environ);
+	free_env(&environ);
+	while (1)
+	{
+		/* code */
+	}
+	exit(0);
+	////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 	promt = readline("Minishell ");
-	if (!promt)
+	if (!promt || ft_strlen(promt) == 0)
 		return (0);
 	if (not_found_second_quote(promt))
+		return(ft_error("Quote error\n", 1));
+	if (only_pipe(promt))
+		return(ft_error("THERE IS ONLY PIPE\n", 1));
+	if (check_pipes_count(&promt, &count))
 	{
-		printf("Quote error\n");
-		return (0);
-	}
-	if(check_pipes_count(&promt, &count))
-	{
-		printf("Pipe error---%d\n", count);
-		return(0);
+		printf("Pipe count--->%d\n", count);
+		return(ft_error("Pipe error\n", 1));
 	}
 	pars =(t_pars **)malloc(sizeof(t_pars *) * (count));
 	pars[count] = NULL;
-	while(i < count)
+	while (i < count)
 	{
 		pars[i] = (t_pars *)malloc(sizeof(t_pars));
 		pars[i]->errfile = NULL;
@@ -211,6 +257,7 @@ while(i < count)
 		i++;
 	}*/
 //	printf("%s\n%d\n", promt, count);
+
 	return (0);
 }
 //	printf("%s\n", promt);*/
