@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 14:53:10 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/03/26 16:48:10 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/02 15:46:52 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	size_t	index;
 
 	index = 0;
+	if(ft_strlen(s1) != ft_strlen(s2))
+		return (1);
 	while (s1 && s2 && index < n)
 	{
 		if (s1[index] > s2[index])

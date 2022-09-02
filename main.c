@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/02 11:07:42 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/02 17:18:32 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,16 +154,20 @@ int	main(int argc, char **argv, char **env)
 	
 	(void)argc;
 	(void)argv;
-
+	
 	i = 0;
 	environ = env_initialization(env);
+	promt = readline("Minishell ");
+	print_environment(environ);
+	remove_from_list(environ, promt);
+	printf("\n///////////////////////////////////\n\n");
 	print_environment(environ);
 	free_env(&environ);
-	while (1)
-	{
-		/* code */
-	}
+	
 	exit(0);
+	////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////
 
 
@@ -189,7 +193,6 @@ int	main(int argc, char **argv, char **env)
 
 
 	
-	promt = readline("Minishell ");
 	if (!promt || ft_strlen(promt) == 0)
 		return (0);
 	if (not_found_second_quote(promt))

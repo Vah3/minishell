@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/02 11:06:34 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/02 17:19:54 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	free_after_split(char **store);
 int		size_of_env(char **env);
 t_env	*env_initialization(char **env);
 void 	print_environment(t_env *env);
+void	remove_from_list(t_env *env, char *key);
+
 
 
 #endif

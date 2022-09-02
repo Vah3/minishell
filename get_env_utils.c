@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_env_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/02 17:20:27 by edgghaza          #+#    #+#             */
+/*   Updated: 2022/09/02 17:20:28 by edgghaza         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	free_env(t_env **env)
@@ -25,8 +37,6 @@ t_env	*last_env_element(t_env *start)
 		return (last_env_element(start->next));
 }
 
-
-
 int	size_of_list(t_env *list)
 {
 	if (list == NULL)
@@ -48,7 +58,6 @@ void	free_after_split(char **store)
 	}
 	free(store);
 }
-
 
 int	size_of_env(char **env)
 {
