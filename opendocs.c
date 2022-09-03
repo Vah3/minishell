@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/02 19:51:35 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/03 15:40:46 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,10 @@ int	write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z)
 	while (1)
 	{
 		line = readline(">");
+/*		if (write(fd[1], line, ft_strlen(line)) == -1)
+			return (1);
+		if (write(fd[1], "\n", 1) == -1)
+			return (1);*/
 		if (ft_strncmp(delim, line, ft_strlen(line)) == 0)
 		{
 			count--;
@@ -95,7 +99,6 @@ int	write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z)
 			return (1);
 		if (write(fd[1], "\n", 1) == -1)
 			return (1);
-
 	}
 	if (close(fd[1]) == -1)
 		return (1);
@@ -136,7 +139,7 @@ int	write_docs(char *promt, int count, t_pars **pars)
 		{
 			if (process_redirections(promt, &i, &j) == 1)
 				return (1);
-			delim = ft_substr(promt, j, i - 1);
+			delim = ft_substr(promt, j, i - j);
 			if (write_in_pipe_and_dup(pars, count, delim, z))
 				return (1);
 		}
