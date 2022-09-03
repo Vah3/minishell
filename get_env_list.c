@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_env_list.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/02 17:20:01 by edgghaza          #+#    #+#             */
+/*   Updated: 2022/09/02 17:20:02 by edgghaza         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_env	*new_env_element(char *key, char *value)
@@ -29,7 +41,7 @@ static void	env_add_back(t_env **list, t_env *new_item)
 t_env	*env_initialization(char **env)
 {
 	t_env		*environ;
-	char 		**lines;
+	char		**lines;
 	int			length;
 	int			i;
 
@@ -46,15 +58,36 @@ t_env	*env_initialization(char **env)
 	return (environ);
 }
 
-void print_environment(t_env *env)
+void	print_environment(t_env *env)
 {
-	t_env *temp;
-	
-	temp = env;
+	t_env	*temp;
 
+	temp = env;
 	while (temp)
 	{
 		printf("%s=%s\n", temp->key, temp->value);
 		temp = temp->next;
 	}
+}
+
+void	remove_from_list(t_env *env, char *key)
+{
+	t_env	*temp;
+	t_env	*prev;
+	t_env	*tofree;
+
+	temp = env;
+	while (temp && ft_strncmp(temp->key, key, ft_strlen(temp->key)))
+	{
+		prev = temp;
+		temp = temp->next;
+	}
+	if (temp == NULL)
+		return ;
+	tofree = temp;
+	prev->next = tofree->next;
+	printf("%s=%s\n", tofree->key, tofree->value);
+	free(tofree->key);
+	free(tofree->value);
+	free(tofree);
 }
