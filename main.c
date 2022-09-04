@@ -6,11 +6,29 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/02 17:51:04 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/04 20:04:38 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void free_pars(t_pars **pars, int count)
+{
+	int	i;
+	i = 0;
+	/*						FREE PARS					*/
+	while (i < count)
+	{
+		printf("STEX EM ->%d\n", i);
+		free(pars[i]->cmd);
+		if (pars[i]->errfile)
+			free(pars[i]->errfile);
+		free(pars[i]);
+		i++;
+	}
+	free(pars[i]);
+	free(pars);
+}
 
 char	*ft_trim_substr(char **source, int start, int end)
 {
@@ -61,26 +79,6 @@ int	not_found_second_quote(char *line)
 }
 
 
-int	ifheredoc(char **promt,int *fileordoc, int *i, int *j)
-{
-	char *delim;
-
-	if ((*promt)[*i] && (*promt)[*i] == '<'  && (*promt)[(*i) + 1] && (*promt)[(*i) + 1] == '<')
-	{
-		*i += 2;
-		if(trimspaces(promt, i, j))
-			return (2);
-		iffiles(promt, i, j);
-		delim = ft_trim_substr(promt, *j, *i);
-		free(delim);
-		*fileordoc = 1;
-		*i = *j;
-	}
-//	if (!(*promt))
-//		return (0);
-	return(1);
-}
-
 void	passwords(char **promt,  int *i)
 {
 	if((*promt)[*i] && ((*promt)[*i] != '<' && (*promt)[*i] != '>' && (*promt)[*i] != '|'))
@@ -89,44 +87,6 @@ void	passwords(char **promt,  int *i)
 			(*i)++;
 	}
 }
-
-
-
-
-int	lexer(char **promt, t_pars ***pars, char c)
-{
-	int		i;
-	int		j;
-	char	*line;
-	int		k;
-
-	i = -1;
-	k = 0;
-	line = NULL;
-	while ((*promt)[++i])
-	{
-		skipquotes(promt, &i);
-		passwords(promt, &i);
-		if((*promt)[i] == '|')
-			k++;
-		if(ifheredoc(promt, &((*pars)[k])->fileordoc, &i, &j) == 0)
-			return (0);
-		if ((*promt)[i] && (*promt)[i] == c)
-		{
-			i++;
-			(*pars)[k]->fileordoc = 0;
-			if (trimspaces(promt, &i, &j))
-				return (2);
-			iffiles(promt, &i, &j);
-			if(opener(promt, j, i, c, &((*pars)[k])))
-				return(0);
-			i = j - 1;
-		}
-	}
-	return (1);
-}
-
-
 
 
 int	only_pipe(char *prompt)
@@ -168,9 +128,11 @@ int	main(int argc, char **argv, char **env)
 */
 
 
-	
+//while(1)
+//{
+i = 0;	
 	promt = readline("Minishell ");
-	if (!promt || ft_strlen(promt) == 0)
+	if (!promt )
 		return (0);
 	if (not_found_second_quote(promt))
 		return(ft_error("Quote error\n", 1));
@@ -194,8 +156,10 @@ int	main(int argc, char **argv, char **env)
 	i = 0;
 	if (!lexer(&promt, &pars, '<'))
 		return (0);
-	cmd = ft_split(promt, '|');
-	if(count < 2)
+	if (!lexer(&promt, &pars, '>'))
+		return (0);
+		cmd = ft_split(promt, '|');
+	if (count < 2)
 		pars[i]->cmd = ft_strdup(promt);
 	else
 	{
@@ -206,46 +170,30 @@ int	main(int argc, char **argv, char **env)
 		}
 	}
 	free_after_split(cmd);
-	open_processes(count, pars);
+	cmd = NULL;
+	if (open_processes(count, pars, env) == 0)
+		free_pars(pars, count);
 	i = 0;
 	while(i < count)
 	{
 		wait(NULL);
 		i++;
 	}
-//	printf("%s\n", pars[0]->cmd);
-/*while(i < count)
-{
-	printf("isheredoc -- %d\n", pars[i]->isheredoc);
-	printf("fileordoc == %d\n", pars[i]->fileordoc);
-	printf("infile fd --%d\n", pars[i]->infilefd);
-	if(pars[i]->errfile)
-		printf("errfile --%s\n",pars[i]->errfile);
-	i++;
-}*/
-//	open_processes();
+	// i = 0;
+	// /*						FREE PARS					*/
+	// while(i < count)
+	// {
+	// 	free(pars[i]->cmd);
+	// 	if (pars[i]->errfile)
+	// 		free(pars[i]->errfile);
+	// 	free(pars[i]);
+	// 	i++;
+	// }
+	// // free(pars[i]);
+	// free(pars);
 	
-//	if (!lexer(&promt, &pars.outfiles, '>'))
-//		return (0);
-/*	while (pars.infiles && pars.infiles[i])
-	{
-		printf("%s\n", pars.infiles[i]);
-		free(pars.infiles[i]);
-		i++;
-	}
-	i = 0;
-	while (pars.heredocs && pars.heredocs[i])
-	{
-		printf("%s\n", pars.heredocs[i]);
-		free(pars.heredocs[i]);
-		i++;
-	}*/
-//	printf("%s\n%d\n", promt, count);
-
+//}
+	while (1);
 	return (0);
 }
-//	printf("%s\n", promt);*/
-/*	char *a = "barev dzez vonceq";
-	printf("%s\n",ft_trim_substr(&a, 6, 10));
-	printf("%s\n",a);*/
-//	while(1);
+

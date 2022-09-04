@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 16:47:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/01 21:21:35 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/04 19:41:10 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,17 @@ int	open_in_file(char *filename, t_pars **pars)
 	return (0);
 }
 
-int	open_out_file(char *filename)
+int	open_out_file(char *filename, t_pars **pars, char c)
 {
 	int	fd;
-
-	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	if (fd < 0)
-		return (1);
-	if (dup2(fd, STDOUT_FILENO) == -1)
-		return (ft_error("CAN'T DO DUP2()\n", 1));
+	
+	fd = -1;
+	if (c == '>')
+		fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	else if (c == 'a')
+		fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
+	if((*pars)->outfilefd > -1)
+		(*pars)->outfilefd = fd;
 	return (0);
 }
 
@@ -50,7 +52,7 @@ int	opener(char **promt, int j, int i, char c, t_pars **pars)
 	if (c == '<')
 		boolean = (open_in_file(filename, pars) == 1);
 	else if (c == '>')
-		boolean = (open_out_file(filename) == 1);
+		boolean = (open_out_file(filename, pars, c) == 1);
 	free(filename);
 	return (boolean);
 }

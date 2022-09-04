@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 22:10:42 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/01 20:55:34 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/04 20:11:33 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*clear_cmd(char *trash, int count_of_symbols)
 
 	i = 0;
 	j = 0;
-	cmd = (char *)malloc(sizeof(char) * count_of_symbols + 1);
+	cmd = (char *)(sizeof(char) * count_of_symbols + 1);
 	if (!cmd)
 		return (NULL);
 	while (trash[i])

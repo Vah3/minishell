@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/03 15:40:46 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/03 20:12:20 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@
 	int	**fd;
 
 	i = 0;
-	fd = (int **)malloc(sizeof(int *) * (count + 1));
-	if(!fd)
-		return (0);
-	fd[count] = 0;
+//	fd = malloc(sizeof(*fd) * (count));
+//	if(!fd)
+//		return (0);
 	while (i < count)
 	{
 		fd[i] = (int *)malloc(sizeof(int) * 2); // 2 te 3 stugel

@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/03 15:32:39 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/04 15:37:07 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct line
 	int		infilefd;
 	int		outfilefd;
 	int		isheredoc;
-	int		apendfile;
 	int		fileordoc;
 	char	*errfile;
 	char	*cmd;
@@ -49,19 +48,26 @@ typedef struct line
 
 void	skipquotes(char **promt, int *j);
 void	passwords(char **promt, int *i);
-int		trimspaces(char	**promt, int *k, int *j);
+int		trimspaces(char	**promt, int *k, int *j, char c);
 char	*ft_trim_substr(char **source, int start, int end);
 void	iffiles(char **promt, int *k, int *n);
 void	duporjoin(char **line, char **promt, int i, int j);
 int		open_in_files(char *filename, t_pars *pars);
-int		open_out_file(char *filename);
+int		open_out_file(char *filename, t_pars **pars, char c);
 int		opener(char **promt, int j, int i, char c, t_pars **pars);
 int		check_pipes_count(char **promt, int *count);
 int		not_found_second_quote(char *line);
 int		openheredoc(char *promt, t_pars **pars);
 int		write_docs(char *promt, int count, t_pars **pars);
 int		ft_error(char *err_message, int err_code);
-int		open_processes(int	count, t_pars **pars);
+int		open_processes(int	count, t_pars **pars, char **env);
+int		lexer(char **promt, t_pars ***pars, char c);
+int		if_here_doc(char **promt, int *fileordoc, int *i ,int *j);
+int		if_append_file(char **promt, t_pars **pars, int *i, int *j);
+int		**make_pipe_for_doc(int count);
+int		single_pipe(int i, int (*fd)[2]);
+int		multi_pipe(int i, int count, int (*fd)[2]);
+void	check_make(char **cmd, char **env);
 
 int		only_pipe(char	*promt);
 void	free_env(t_env **env);

@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 13:28:35 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/01 20:38:17 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/03 16:46:01 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	skipquotes(char **promt, int *j)
 	*j = i;
 }
 
-int	trimspaces(char **promt, int *k, int *j)
+int	trimspaces(char **promt, int *k, int *j, char c)
 {
 	int		i;
 	int		range;
@@ -47,7 +47,7 @@ int	trimspaces(char **promt, int *k, int *j)
 	range = 1;
 	if ((*promt))
 	{
-		if (*j > 1 && (*promt)[*j - 1] == '<' && (*promt)[(*j) - 2] == '<')
+		if (*j > 1 && (*promt)[*j - 1] == c && (*promt)[(*j) - 2] == c)
 			range = 2;
 		while ((*promt)[i] && (*promt)[i] == 32)
 				i++;
