@@ -3,41 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 17:47:43 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/04 16:31:11 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/05 10:14:18 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	check_cmd(char	**command, char **env)
+static void	check_cmd(char	**command, char **path)
 {
 	char	*finaly;
 	int		i;
 
 	i = 0;
 	finaly = *command;
-	while (env[i] && access(*command, X_OK) != 0)
+	while (path[i] )//&& access(*command, X_OK) != 0)
 	{
-		*command = ft_strjoin(env[i++], finaly);
+		*command = ft_strjoin(path[i++], finaly);
+		if (access(*command, X_OK) == 0)
+			break;
 		if (access(*command, X_OK) != 0)
 			free(*command);
 	}
 	free(finaly);
-	if (env[i] == NULL)
+	if (path[i] == NULL)
 	{
 		perror("Comomand not found");
-		free(env);
+		free(path);
 		exit(0);
 	}
-	while(env[i])
+	while(path[i])
 	{
-		free(env[i]);
+		free(path[i]);
 		i++;
 	}
-	free(env);
+	free(path);
 }
 
 void	check_make(char **cmd, char **env)

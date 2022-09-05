@@ -16,7 +16,7 @@ NAME			= minishell
 
 CC				= cc
 
-CFLAGS			= -Wall -Wextra #-Werror -g -ggdb3
+CFLAGS			= -Wall -Wextra -g -ggdb3 #-Werror 
 
 RM				= rm -f
 

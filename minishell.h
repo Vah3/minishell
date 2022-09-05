@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/04 15:37:07 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/05 10:02:01 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ int		single_pipe(int i, int (*fd)[2]);
 int		multi_pipe(int i, int count, int (*fd)[2]);
 void	check_make(char **cmd, char **env);
 void	free_pars(t_pars **pars, int count);
+t_pars	**init_struct(int count);
+
 
 int		only_pipe(char	*promt);
 void	free_env(t_env **env);

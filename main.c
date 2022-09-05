@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/04 20:04:38 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/05 10:43:16 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	not_found_second_quote(char *line)
 			break ;
 		i++;
 	}
+	if (flag)
+		printf("QCI QEZ\n");
 	return (flag);
 }
 
@@ -128,29 +130,30 @@ int	main(int argc, char **argv, char **env)
 */
 
 
-//while(1)
-//{
+while(1)
+{
 i = 0;	
 	promt = readline("Minishell ");
-	if (!promt)
+	if (!promt )
 		return (0);
-	if (not_found_second_quote(promt))
-		return(ft_error("Quote error\n", 1));
-	if (only_pipe(promt))
-		return(ft_error("THERE IS ONLY PIPE\n", 1));
+	// if (ft_strlen(promt) == 0 || not_found_second_quote(promt) || only_pipe(promt))
+	// 	continue ;
 	if (check_pipes_count(&promt, &count))
 	{
 		printf("Pipe count--->%d\n", count);
 		return(ft_error("Pipe error\n", 1));
 	}
-	pars =(t_pars **)malloc(sizeof(t_pars *) * (count + 1));
+	/*pars =(t_pars **)malloc(sizeof(t_pars *) * (count + 1));
 	pars[count] = NULL;
 	while (i < count)
 	{
 		pars[i] = (t_pars *)malloc(sizeof(t_pars));
 		pars[i]->errfile = NULL;
 		i++;
-	}
+	}*/
+	pars = init_struct(count);
+	if(!pars)
+		return (0);
 	if(openheredoc(promt, pars)) // heredocery stexic a bacum
 		return(0);
 	i = 0;
@@ -178,22 +181,9 @@ i = 0;
 		wait(NULL);
 		i++;
 	}
-	//i = 0;
 	free(promt);
-	// i = 0;
-	// /*						FREE PARS					*/
-	// while(i < count)
-	// {
-	// 	free(pars[i]->cmd);
-	// 	if (pars[i]->errfile)
-	// 		free(pars[i]->errfile);
-	// 	free(pars[i]);
-	// 	i++;
-	// }
-	// // free(pars[i]);
-	// free(pars);
 	
-//}
+}
 	return (0);
 }
 

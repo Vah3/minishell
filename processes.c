@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/04 20:03:17 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/05 10:43:11 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static void free_fd_id(int (*fd)[2], pid_t	*id,  int count)
 		close(fd[j][1]);
 		j++;
 	}
-	free(fd);
+	if(count > 1)
+		free(fd);
 	free(id);
 }
 
@@ -62,7 +63,6 @@ int	open_processes(int	count, t_pars **pars, char **env)
 				return (0);
 			if (pars[i]->errfile || pars[i]->outfilefd == -1)
 			{
-				printf("%s error\n",pars[i]->errfile);
 				free_fd_id(fd, id, count);
 				free_pars(pars, count);
 				exit(0);
@@ -100,7 +100,6 @@ int	open_processes(int	count, t_pars **pars, char **env)
 		i++;
 	}
 
-	free_fd_id(fd, id, count);
  	// j = 0;
 	// while (j < count - 1)
 	// {
@@ -108,6 +107,15 @@ int	open_processes(int	count, t_pars **pars, char **env)
 	// 	close(fd[j][1]);
 	// 	j++;
 	// }
+	
+	// j = 0;
+	// int status;
+	// while (j < count)
+	// {
+	// 	waitpid(id[j], &status, 0);
+	// 	j++;
+	// }
+	free_fd_id(fd, id, count);
 	// j = 0;
 	// while (j < count - 1)
 	// {

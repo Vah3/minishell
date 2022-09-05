@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 15:42:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/04 16:29:07 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/05 10:25:02 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ int	lexer(char **promt, t_pars ***pars, char c)
 	int		j;
 	int		k;
 
-	i = -1;
+	i = 0;
 	k = 0;
 	j = 0;
-	while ((*promt)[++i])
+	// printf("------------------%x\n",&(*pars)[k]->fileordoc);
+	while ((*promt)[i])
 	{
 		skipquotes(promt, &i);
 		passwords(promt, &i);
@@ -41,10 +42,10 @@ int	lexer(char **promt, t_pars ***pars, char c)
 			iffiles(promt, &i, &j);
 			if(opener(promt, j, i, c, &((*pars)[k])))
 				return(0);
-			i = j - 1;
+			i = j;
 		}
-		if(!(*promt[i]))
-			break;
+		if((*promt)[i])
+			i++;
 	}
 	return (1);
 }
@@ -62,7 +63,7 @@ int	if_here_doc(char **promt,int *fileordoc, int *i, int *j)
 		delim = ft_trim_substr(promt, *j, *i);
 		free(delim);
 		*fileordoc = 1;
-		*i = *j - 1;
+		*i = *j;
 	}
 //	if (!(*promt))
 //		return (0);
@@ -82,7 +83,7 @@ int	if_append_file(char **promt, t_pars **pars, int *i, int *j)
 		filename = ft_trim_substr(promt, *j, *i);
 		open_out_file(filename, pars, 'a');
 		free(filename);
-		*i = *j - 1;
+		*i = *j;
 	}
 //	if (!(*promt))
 //		return (0);

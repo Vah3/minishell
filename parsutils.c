@@ -72,14 +72,16 @@ void	iffiles(char **promt, int *k, int *j)
 		while ((*promt)[i] && ((*promt)[i] != 34) | ((*promt)[i + 1]
 				&& (*promt)[i + 1] != 32))
 			i++;
-		i++;
+		if((*promt)[i])
+			i++;
 	}
 	else if ((*promt)[i] && (*promt)[i] == 39 && (*promt)[i++])
 	{
 		while ((*promt)[i] && ((*promt)[i] != 39) | ((*promt)[i + 1]
 					&& (*promt)[i + 1] != 32))
 			i++;
-		i++;
+		if((*promt[i]))
+			i++;
 	}
 	else
 		while ((*promt)[i] && (*promt)[i] != 32)
