@@ -9,11 +9,14 @@
 #    Updated: 2022/08/31 18:39:54 by vagevorg         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+# gcc *.c -lft -LLibft -lreadline -o minishell 
+
 NAME			= minishell
 
 CC				= cc
 
-CFLAGS			= -Wall -Wextra -Werror -g -ggdb3
+CFLAGS			= -Wall -Wextra #-Werror -g -ggdb3
 
 RM				= rm -f
 
@@ -27,7 +30,7 @@ CLE				= make clean
 
 FCLE			= make fclean
 
-INCLUDES		= -ILibft -I~/Desktop/42/42cursus/next_line -I/usr/local/include
+INCLUDES		= -ILibft -I/usr/local/include
 
 LINKERS			= -lft -lreadline -L./Libft
 
@@ -38,7 +41,7 @@ all:			$(NAME)
 
 $(NAME):		$(OBJS)
 				@$(MAKE) $(LIBFT)
-				@$(CC) $(CFLAGS) $(LINKERS) $(INCLUDES) $(OBJS) -o $(NAME)
+				@$(CC) $(CFLAGS) $(OBJS) $(LINKERS) $(INCLUDES) -o $(NAME)
 				@echo "\033[1;31m Minishel created \033[0m"
 
 clean:

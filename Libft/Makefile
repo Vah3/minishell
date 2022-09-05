@@ -20,11 +20,11 @@ RM			= rm -f
 
 SRCS		= $(wildcard *.c) 
 
-BSRCS		= $(wildcard ft_lst*.c)
+#BSRCS		= $(wildcard ft_lst*.c)
 
 OBJS 		= $(SRCS:.c=.o)
 
-BOBJS		= $(BSRCS:.c=.o)
+#BOBJS		= $(BSRCS:.c=.o)
 
 
 %.o:%.c
@@ -35,12 +35,12 @@ all:		$(NAME)
 $(NAME):	$(OBJS)
 			@ar rcs $(NAME) $(OBJS)
 
-bonus:		$(BOBJS)
-			@ar rcs $(NAME) $(BOBJS)
+#bonus:		$(BOBJS)
+#			@ar rcs $(NAME) $(BOBJS)
 
 clean:
 			@$(RM) $(OBJS) 
-			@$(RM) $(BOBJS)
+#			@$(RM) $(BOBJS)
 
 fclean:		clean
 			@$(RM) $(NAME)

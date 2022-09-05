@@ -18,6 +18,8 @@
 # include <string.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <sys/wait.h>
+# include <sys/types.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "./Libft/libft.h"
@@ -68,6 +70,7 @@ int		**make_pipe_for_doc(int count);
 int		single_pipe(int i, int (*fd)[2]);
 int		multi_pipe(int i, int count, int (*fd)[2]);
 void	check_make(char **cmd, char **env);
+void	free_pars(t_pars **pars, int count);
 
 int		only_pipe(char	*promt);
 void	free_env(t_env **env);

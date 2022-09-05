@@ -19,7 +19,7 @@ char	*ft_print(const char *k, int t, int z)
 
 	g = 0;
 	ban = malloc(t - z + 2);
-	if (ban == '\0')
+	if (!ban)
 		return (0);
 	while (z <= t)
 	{

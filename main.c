@@ -26,7 +26,6 @@ void free_pars(t_pars **pars, int count)
 		free(pars[i]);
 		i++;
 	}
-	free(pars[i]);
 	free(pars);
 }
 
@@ -132,7 +131,7 @@ int	main(int argc, char **argv, char **env)
 //{
 i = 0;	
 	promt = readline("Minishell ");
-	if (!promt )
+	if (!promt)
 		return (0);
 	if (not_found_second_quote(promt))
 		return(ft_error("Quote error\n", 1));
@@ -158,7 +157,7 @@ i = 0;
 		return (0);
 	if (!lexer(&promt, &pars, '>'))
 		return (0);
-		cmd = ft_split(promt, '|');
+	cmd = ft_split(promt, '|');
 	if (count < 2)
 		pars[i]->cmd = ft_strdup(promt);
 	else
@@ -173,12 +172,13 @@ i = 0;
 	cmd = NULL;
 	if (open_processes(count, pars, env) == 0)
 		free_pars(pars, count);
-	i = 0;
 	while(i < count)
 	{
 		wait(NULL);
 		i++;
 	}
+	//i = 0;
+	free(promt);
 	// i = 0;
 	// /*						FREE PARS					*/
 	// while(i < count)
@@ -193,7 +193,6 @@ i = 0;
 	// free(pars);
 	
 //}
-	while (1);
 	return (0);
 }
 

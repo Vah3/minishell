@@ -24,9 +24,7 @@ static void free_fd_id(int (*fd)[2], pid_t	*id,  int count)
 		close(fd[j][1]);
 		j++;
 	}
-	j = 0;
-	while (j < count - 1)
-		free(fd[j++]);
+	free(fd);
 	free(id);
 }
 
@@ -62,17 +60,18 @@ int	open_processes(int	count, t_pars **pars, char **env)
 				return (0);
 			if (count > 2 && multi_pipe(i, count ,fd))
 				return (0);
+			if (pars[i]->errfile || pars[i]->outfilefd == -1)
+			{
+				printf("%s error\n",pars[i]->errfile);
+				free_fd_id(fd, id, count);
+				free_pars(pars, count);
+				exit(0);
+			}
 			while ( j < count - 1)
 			{
 				close(fd[j][0]);
 				close(fd[j][1]);
 				j++;
-			}
-			if (pars[i]->errfile || pars[i]->outfilefd == -1)
-			{
-				printf("%s error\n",pars[i]->errfile);
-				free_fd_id(fd, id, count);
-				return(0);
 			}
 			if (pars[i]->fileordoc == 0)
 			{
