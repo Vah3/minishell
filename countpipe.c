@@ -26,20 +26,21 @@ int	check_pipes_count(char **promt, int *count)
 		{
 			skipquotes(promt, &i);
 			passwords(promt, &i);
-			i++;
+			if((*promt)[i])
+				i++;
 		}
-		if ((*promt)[i] == '|')
+		if ((*promt)[i] && (*promt)[i] == '|')
 		{
 			(*count)++;
 			i++;
 			while ((*promt)[i] && (*promt)[i] == 32)
 				i++;
-			if ((*promt)[i] == '|')
+			if ((*promt)[i] && (*promt)[i] == '|')
 			{
 				(*count)--;
 				return (1);
 			}
-			if ((*promt)[i] == '\0')
+			if (!(*promt)[i])
 			{
 				while (newline == NULL || ft_strlen(newline) == 0)
 					newline = readline(">");
@@ -53,6 +54,7 @@ int	check_pipes_count(char **promt, int *count)
 				newline = NULL;
 			}
 		}
+		if((*promt)[i])
 		i++;
 	}
 	return (0);

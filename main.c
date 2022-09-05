@@ -115,6 +115,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	(void)env;
 	i = 0;
+	printf("%x\n", &count);
 /*	environ = env_initialization(env);
 	print_environment(environ);
 	free_env(&environ);
@@ -142,7 +143,7 @@ i = 0;
 		printf("Pipe count--->%d\n", count);
 		return(ft_error("Pipe error\n", 1));
 	}
-	pars =(t_pars **)malloc(sizeof(t_pars *) * (count));
+	pars =(t_pars **)malloc(sizeof(t_pars *) * (count + 1));
 	pars[count] = NULL;
 	while (i < count)
 	{

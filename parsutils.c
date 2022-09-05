@@ -17,7 +17,7 @@ void	skipquotes(char **promt, int *j)
 	int	i;
 
 	i = *j;
-	if ((*promt)[i] == 34)
+	if ((*promt)[i] && (*promt)[i] == 34)
 	{
 		i++;
 		while ((*promt)[i] && (*promt)[i] != 34)
@@ -25,7 +25,7 @@ void	skipquotes(char **promt, int *j)
 		if ((*promt)[i])
 			i++;
 	}
-	if ((*promt)[i] == 39)
+	if ((*promt)[i] && (*promt)[i] == 39)
 	{
 		i++;
 		while ((*promt[i]) && (*promt)[i] != 39)
@@ -47,7 +47,7 @@ int	trimspaces(char **promt, int *k, int *j, char c)
 	range = 1;
 	if ((*promt))
 	{
-		if (*j > 1 && (*promt)[*j - 1] == c && (*promt)[(*j) - 2] == c)
+		if (*j > 1 && (*promt)[(*j) - 1] && (*promt)[(*j) - 1] == c && (*promt)[(*j) - 2] && (*promt)[(*j) - 2] == c)
 			range = 2;
 		while ((*promt)[i] && (*promt)[i] == 32)
 				i++;

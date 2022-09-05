@@ -66,6 +66,8 @@ int	openheredoc(char *promt, t_pars **pars)
 				|| promt[i] == '<' || promt[i] == '>')
 				return (ft_error("Syntax error\n", 1));
 		}
+		if(!promt[i])
+		break;
 	}
 	if (write_docs(promt, doc_count, pars))
 		return (1);
@@ -142,6 +144,8 @@ int	write_docs(char *promt, int count, t_pars **pars)
 			if (write_in_pipe_and_dup(pars, count, delim, z))
 				return (1);
 		}
+		if(!promt[i])
+			break;
 	}
 	return (0);
 }

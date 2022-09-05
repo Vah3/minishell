@@ -16,17 +16,16 @@ int	lexer(char **promt, t_pars ***pars, char c)
 {
 	int		i;
 	int		j;
-	char	*line;
 	int		k;
 
 	i = -1;
 	k = 0;
-	line = NULL;
+	j = 0;
 	while ((*promt)[++i])
 	{
 		skipquotes(promt, &i);
 		passwords(promt, &i);
-		if((*promt)[i] == '|')
+		if((*promt)[i] && (*promt)[i] == '|')
 			k++;
 		if(c == '<' && if_here_doc(promt, &((*pars)[k])->fileordoc, &i, &j) == 2)
 			return (1);
@@ -44,6 +43,8 @@ int	lexer(char **promt, t_pars ***pars, char c)
 				return(0);
 			i = j - 1;
 		}
+		if(!(*promt[i]))
+			break;
 	}
 	return (1);
 }
