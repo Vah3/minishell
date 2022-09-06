@@ -47,7 +47,8 @@ int	trimspaces(char **promt, int *k, int *j, char c)
 	range = 1;
 	if ((*promt))
 	{
-		if (*j > 1 && (*promt)[(*j) - 1] && (*promt)[(*j) - 1] == c && (*promt)[(*j) - 2] && (*promt)[(*j) - 2] == c)
+		if (*j > 1 && (*promt)[(*j) - 1] && (*promt)[(*j) - 1] == c
+			&& (*promt)[(*j) - 2] && (*promt)[(*j) - 2] == c)
 			range = 2;
 		while ((*promt)[i] && (*promt)[i] == 32)
 				i++;
@@ -72,7 +73,7 @@ void	iffiles(char **promt, int *k, int *j)
 		while ((*promt)[i] && ((*promt)[i] != 34) | ((*promt)[i + 1]
 				&& (*promt)[i + 1] != 32))
 			i++;
-		if((*promt)[i])
+		if ((*promt)[i])
 			i++;
 	}
 	else if ((*promt)[i] && (*promt)[i] == 39 && (*promt)[i++])
@@ -80,7 +81,7 @@ void	iffiles(char **promt, int *k, int *j)
 		while ((*promt)[i] && ((*promt)[i] != 39) | ((*promt)[i + 1]
 					&& (*promt)[i + 1] != 32))
 			i++;
-		if((*promt[i]))
+		if ((*promt[i]))
 			i++;
 	}
 	else

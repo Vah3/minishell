@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/05 10:02:01 by root             ###   ########.fr       */
+/*   Updated: 2022/09/06 16:39:42 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 # include <readline/history.h>
 # include "./Libft/libft.h"
 
+#define SUCCESS 0
+#define FAILURE 1
+
 typedef struct s_env
 {
 	char			*key;
@@ -38,6 +41,7 @@ typedef struct line
 	int		outfilefd;
 	int		isheredoc;
 	int		fileordoc;
+	int		app_or_trunc;
 	char	*errfile;
 	char	*cmd;
 	char	**infiles;
@@ -47,24 +51,22 @@ typedef struct line
 	t_env	**env_var;
 }	t_pars;
 
-
 void	skipquotes(char **promt, int *j);
 void	passwords(char **promt, int *i);
 int		trimspaces(char	**promt, int *k, int *j, char c);
 char	*ft_trim_substr(char **source, int start, int end);
 void	iffiles(char **promt, int *k, int *n);
 void	duporjoin(char **line, char **promt, int i, int j);
-int		open_in_files(char *filename, t_pars *pars);
-int		open_out_file(char *filename, t_pars **pars, char c);
-int		opener(char **promt, int j, int i, char c, t_pars **pars);
+void	open_in_file(t_pars **pars, char **promt, int j, int i);
+void	open_out_file(t_pars **pars, char **promt, int j, int i);
 int		check_pipes_count(char **promt, int *count);
 int		not_found_second_quote(char *line);
 int		openheredoc(char *promt, t_pars **pars);
 int		write_docs(char *promt, int count, t_pars **pars);
 int		ft_error(char *err_message, int err_code);
-int		open_processes(int	count, t_pars **pars, char **env);
+int		open_processes(int count, t_pars **pars, char **env);
 int		lexer(char **promt, t_pars ***pars, char c);
-int		if_here_doc(char **promt, int *fileordoc, int *i ,int *j);
+int		if_here_doc(char **promt, int *fileordoc, int *i, int *j);
 int		if_append_file(char **promt, t_pars **pars, int *i, int *j);
 int		**make_pipe_for_doc(int count);
 int		single_pipe(int i, int (*fd)[2]);
@@ -72,7 +74,7 @@ int		multi_pipe(int i, int count, int (*fd)[2]);
 void	check_make(char **cmd, char **env);
 void	free_pars(t_pars **pars, int count);
 t_pars	**init_struct(int count);
-
+int		write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z);
 
 int		only_pipe(char	*promt);
 void	free_env(t_env **env);
@@ -81,9 +83,12 @@ int		size_of_list(t_env *list);
 void	free_after_split(char **store);
 int		size_of_env(char **env);
 t_env	*env_initialization(char **env);
-void 	print_environment(t_env *env);
+void	print_environment(t_env *env);
 void	remove_from_list(t_env *env, char *key);
 char	**list_to_env(t_env	*head);
-
+void	init_pipe(int ***fd_, int count);
+int		check_out_or_input(t_pars *pars);
+int		close_pipes(int (*fd)[2], int count);
+void free_fd_id(int (*fd)[2], pid_t	*id,  int count);
 
 #endif

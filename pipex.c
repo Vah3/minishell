@@ -19,11 +19,11 @@ static void	check_cmd(char	**command, char **path)
 
 	i = 0;
 	finaly = *command;
-	while (path[i] )//&& access(*command, X_OK) != 0)
+	while (path[i])
 	{
 		*command = ft_strjoin(path[i++], finaly);
 		if (access(*command, X_OK) == 0)
-			break;
+			break ;
 		if (access(*command, X_OK) != 0)
 			free(*command);
 	}
@@ -34,11 +34,8 @@ static void	check_cmd(char	**command, char **path)
 		free(path);
 		exit(0);
 	}
-	while(path[i])
-	{
-		free(path[i]);
-		i++;
-	}
+	while (path[i])
+		free(path[i++]);
 	free(path);
 }
 

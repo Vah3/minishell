@@ -6,38 +6,11 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/03 20:12:20 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/06 16:38:53 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-//chi ogtagorcvum , bayc heto karoxa petq ga, pipe() bacelu hamar
-/*int	**make_pipe_for_doc(int count)
-{
-	int i;
-	int	**fd;
-
-	i = 0;
-//	fd = malloc(sizeof(*fd) * (count));
-//	if(!fd)
-//		return (0);
-	while (i < count)
-	{
-		fd[i] = (int *)malloc(sizeof(int) * 2); // 2 te 3 stugel
-		if (!fd[i])
-		{
-			while (i > 0)
-			{
-				i--;
-				free(fd[i]);
-			}
-			free(fd);
-		}
-			return (0);
-		i++;
-	}
-	return (fd);
-}*/
 
 int	ft_error(char *err_message, int err_code)
 {
@@ -66,8 +39,8 @@ int	openheredoc(char *promt, t_pars **pars)
 				|| promt[i] == '<' || promt[i] == '>')
 				return (ft_error("Syntax error\n", 1));
 		}
-		if(!promt[i])
-		break;
+		if (!promt[i])
+			break ;
 	}
 	if (write_docs(promt, doc_count, pars))
 		return (1);
@@ -75,38 +48,8 @@ int	openheredoc(char *promt, t_pars **pars)
 }
 
 /*
-	Writes in pipes and dups
+	Writes in pipes and dups -- see utils.c
 */
-int	write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z)
-{
-	int		fd[2];
-	char	*line;
-
-	if (pipe(fd) == -1)
-		return (1);
-	while (1)
-	{
-		line = readline(">");
-/*		if (write(fd[1], line, ft_strlen(line)) == -1)
-			return (1);
-		if (write(fd[1], "\n", 1) == -1)
-			return (1);*/
-		if (ft_strncmp(delim, line, ft_strlen(line)) == 0)
-		{
-			count--;
-			break ;
-		}
-		if (write(fd[1], line, ft_strlen(line)) == -1)
-			return (1);
-		if (write(fd[1], "\n", 1) == -1)
-			return (1);
-	}
-	if (close(fd[1]) == -1)
-		return (1);
-	(*pars)[z].isheredoc = dup(fd[0]);
-	free(delim);
-	return (0);
-}
 
 int	process_redirections(char *prompt, int *i, int *j)
 {
@@ -120,6 +63,14 @@ int	process_redirections(char *prompt, int *i, int *j)
 	return (0);
 }
 
+void	skips_and_detect_pipe(char **promt, int *i, int *z)
+{
+	skipquotes(promt, i);
+	passwords(promt, i);
+	if ((*promt)[*i] == '|')
+		(*z)++;
+}
+
 int	write_docs(char *promt, int count, t_pars **pars)
 {
 	int		i;
@@ -131,10 +82,7 @@ int	write_docs(char *promt, int count, t_pars **pars)
 	i = -1;
 	while (promt[++i])
 	{
-		skipquotes(&promt, &i);
-		passwords(&promt, &i);
-		if (promt[i] == '|')
-			z++;
+		skips_and_detect_pipe(&promt, &i, &z);
 		if (promt[i] && promt[i] == '<' && promt[++i]
 			&& promt[i] && promt[i] == '<' && promt[++i])
 		{
@@ -144,8 +92,8 @@ int	write_docs(char *promt, int count, t_pars **pars)
 			if (write_in_pipe_and_dup(pars, count, delim, z))
 				return (1);
 		}
-		if(!promt[i])
-			break;
+		if (!promt[i])
+			break ;
 	}
 	return (0);
 }

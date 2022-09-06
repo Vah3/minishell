@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:53:27 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/02 19:38:52 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/06 15:11:06 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ char	**list_to_env(t_env	*head)
 	char	**env;
 	char	*line;
 	int		i;
-	
-	
+
 	env = malloc(sizeof(char *) * (size_of_list(head) + 1));
 	if (!env)
 		return (NULL);
@@ -40,7 +39,7 @@ char	**list_to_env(t_env	*head)
 	return (env);
 }
 
-void env_replace(t_env *env, char *key, char *value)
+void	env_replace(t_env *env, char *key, char *value)
 {
 	t_env	*temp;
 
@@ -50,7 +49,7 @@ void env_replace(t_env *env, char *key, char *value)
 	if (!temp)
 		return ;
 	free(temp->value);
-	temp->value = ft_strdup(value);	
+	temp->value = ft_strdup(value);
 }
 
 char	*_getenv(t_env *list, char *key )
@@ -60,8 +59,6 @@ char	*_getenv(t_env *list, char *key )
 	temp = list;
 	while (temp && ft_strncmp(temp->key, key, ft_strlen(temp->key)))
 		temp = temp->next;
-
-
 	if (!temp)
 		return (NULL);
 	return (ft_strdup(temp->value));

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/06 06:09:28 by root             ###   ########.fr       */
+/*   Updated: 2022/09/06 14:45:13 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void free_pars(t_pars **pars, int count)
 	/*						FREE PARS					*/
 	while (i < count)
 	{
-		printf("STEX EM ->%d\n", i);
 		free(pars[i]->cmd);
 		if (pars[i]->errfile)
 			free(pars[i]->errfile);

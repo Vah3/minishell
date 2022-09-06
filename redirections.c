@@ -21,7 +21,6 @@ int	lexer(char **promt, t_pars ***pars, char c)
 	i = 0;
 	k = 0;
 	j = 0;
-	// printf("------------------%x\n",&(*pars)[k]->fileordoc);
 	while ((*promt)[i])
 	{
 		skipquotes(promt, &i);
@@ -35,13 +34,19 @@ int	lexer(char **promt, t_pars ***pars, char c)
 		if ((*promt)[i] && (*promt)[i] == c)
 		{
 			i++;
-			if (c == '<')
-				(*pars)[k]->fileordoc = 0;
 			if (trimspaces(promt, &i, &j, c))
 				return (2);
 			iffiles(promt, &i, &j);
-			if(opener(promt, j, i, c, &((*pars)[k])))
-				return(0);
+			if (c == '<')
+			{
+				(*pars)[k]->fileordoc = 0;
+				open_in_file(&((*pars)[k]),promt, j , i);
+			}
+			else if (c == '>')
+			{
+				(*pars)[k]->app_or_trunc = 1;
+				open_out_file(&((*pars)[k]), promt, j, i);
+			}
 			i = j;
 		}
 		if((*promt)[i])
@@ -65,28 +70,21 @@ int	if_here_doc(char **promt,int *fileordoc, int *i, int *j)
 		*fileordoc = 1;
 		*i = *j;
 	}
-//	if (!(*promt))
-//		return (0);
 	return(1);
 }
 
 int	if_append_file(char **promt, t_pars **pars, int *i, int *j)
 {
-	char *filename;
-
 	if ((*promt)[*i] && (*promt)[*i] == '>'  && (*promt)[(*i) + 1] && (*promt)[(*i) + 1] == '>')
 	{
 		*i += 2;
 		if(trimspaces(promt, i, j, '>'))
 			return (2);
 		iffiles(promt, i, j);
-		filename = ft_trim_substr(promt, *j, *i);
-		open_out_file(filename, pars, 'a');
-		free(filename);
+		(*pars)->app_or_trunc = 0;
+		open_out_file(pars, promt, *j , *i);
 		*i = *j;
 	}
-//	if (!(*promt))
-//		return (0);
 	return(1);
 }
 
