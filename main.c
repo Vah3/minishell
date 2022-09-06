@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/05 10:43:16 by root             ###   ########.fr       */
+/*   Updated: 2022/09/06 06:09:28 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,8 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	(void)env;
-	i = 0;
-	printf("%x\n", &count);
+	//i = 0;
+	//printf("%x\n", &count);
 /*	environ = env_initialization(env);
 	print_environment(environ);
 	free_env(&environ);
@@ -176,11 +176,12 @@ i = 0;
 	cmd = NULL;
 	if (open_processes(count, pars, env) == 0)
 		free_pars(pars, count);
-	while(i < count)
-	{
-		wait(NULL);
-		i++;
-	}
+	// while(i < count)
+	// {
+	// 	wait(NULL);
+	// 	i++;
+	// }
+	free_pars(pars, count);
 	free(promt);
 	
 }

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/05 10:43:11 by root             ###   ########.fr       */
+/*   Updated: 2022/09/06 06:10:08 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,6 @@
 
 static void free_fd_id(int (*fd)[2], pid_t	*id,  int count)
 {
-	int	j;
-
-	j = 0;
-	while (j < count - 1)
-	{
-		close(fd[j][0]);
-		close(fd[j][1]);
-		j++;
-	}
 	if(count > 1)
 		free(fd);
 	free(id);
@@ -100,21 +91,21 @@ int	open_processes(int	count, t_pars **pars, char **env)
 		i++;
 	}
 
- 	// j = 0;
-	// while (j < count - 1)
-	// {
-	// 	close(fd[j][0]);
-	// 	close(fd[j][1]);
-	// 	j++;
-	// }
+ 	j = 0;
+	while (j < count - 1)
+	{
+		close(fd[j][0]);
+		close(fd[j][1]);
+		j++;
+	}
 	
-	// j = 0;
-	// int status;
-	// while (j < count)
-	// {
-	// 	waitpid(id[j], &status, 0);
-	// 	j++;
-	// }
+	j = 0;
+	int status;
+	while (j < count)
+	{
+		waitpid(id[j], &status, 0);
+		j++;
+	}
 	free_fd_id(fd, id, count);
 	// j = 0;
 	// while (j < count - 1)
