@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 13:28:35 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/03 16:46:01 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/07 17:50:55 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,38 +36,38 @@ void	skipquotes(char **promt, int *j)
 	*j = i;
 }
 
-int	trimspaces(char **promt, int *k, int *j, char c)
+int	trimspaces(char **promt, int *index, char c)
 {
 	int		i;
 	int		range;
 	char	*trimed;
-
-	i = *k;
-	*j = i;
+	int		j;
+	
+	i = *index;
+	j = i;
 	range = 1;
 	if ((*promt))
 	{
-		if (*j > 1 && (*promt)[(*j) - 1] && (*promt)[(*j) - 1] == c
-			&& (*promt)[(*j) - 2] && (*promt)[(*j) - 2] == c)
+		if (j > 1 && (*promt)[(j) - 1] && (*promt)[(j) - 1] == c
+			&& (*promt)[(j) - 2] && (*promt)[(j) - 2] == c)
 			range = 2;
 		while ((*promt)[i] && (*promt)[i] == 32)
 				i++;
-		if (!(*promt)[i])
-			return (ft_error("Syntax error\n", 1));
-		trimed = ft_trim_substr(promt, (*j) - range, i);
+		if (!(*promt)[i] || (*promt)[i] == '<' || (*promt)[i] == '>' || (*promt)[i] == '|')
+			return (ft_error("Syntax error from parsutils.c\n", 1));
+		trimed = ft_trim_substr(promt, (j) - range, i);
 		free(trimed);
-		i = *j - range;
-		*k = i;
+		i = j - range;
+		*index = i;
 	}
 	return (0);
 }
 
-void	iffiles(char **promt, int *k, int *j)
+void	iffiles(char **promt, int *k)
 {
 	int	i;
 
 	i = *k;
-	*j = i;
 	if ((*promt)[i] && (*promt)[i] == 34 && (*promt)[i++])
 	{
 		while ((*promt)[i] && ((*promt)[i] != 34) | ((*promt)[i + 1]

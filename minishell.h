@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/06 16:39:42 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/07 17:31:28 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ typedef struct line
 
 void	skipquotes(char **promt, int *j);
 void	passwords(char **promt, int *i);
-int		trimspaces(char	**promt, int *k, int *j, char c);
+int		trimspaces(char	**promt, int *k, char c);
 char	*ft_trim_substr(char **source, int start, int end);
-void	iffiles(char **promt, int *k, int *n);
+void	iffiles(char **promt, int *k);
 void	duporjoin(char **line, char **promt, int i, int j);
 void	open_in_file(t_pars **pars, char **promt, int j, int i);
 void	open_out_file(t_pars **pars, char **promt, int j, int i);
@@ -65,9 +65,7 @@ int		openheredoc(char *promt, t_pars **pars);
 int		write_docs(char *promt, int count, t_pars **pars);
 int		ft_error(char *err_message, int err_code);
 int		open_processes(int count, t_pars **pars, char **env);
-int		lexer(char **promt, t_pars ***pars, char c);
-int		if_here_doc(char **promt, int *fileordoc, int *i, int *j);
-int		if_append_file(char **promt, t_pars **pars, int *i, int *j);
+int		lexer(char **promt, t_pars ***pars);
 int		**make_pipe_for_doc(int count);
 int		single_pipe(int i, int (*fd)[2]);
 int		multi_pipe(int i, int count, int (*fd)[2]);
@@ -75,6 +73,7 @@ void	check_make(char **cmd, char **env);
 void	free_pars(t_pars **pars, int count);
 t_pars	**init_struct(int count);
 int		write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z);
+void	skips_and_detect_pipe(char **promt, int *i, int *z);
 
 int		only_pipe(char	*promt);
 void	free_env(t_env **env);

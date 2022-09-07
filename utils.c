@@ -6,7 +6,7 @@
 /*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:37:48 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/06 16:38:31 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/07 14:55:54 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,7 @@ void init_pipe(int ***fd_, int count)
 int	check_out_or_input(t_pars *pars)
 {
 	if (pars->errfile)
-	{
-		printf("Wrong file\n");
 		return (FAILURE);
-	}
 	if (pars->outfilefd == -1)
 		return (FAILURE);
 	if (pars->fileordoc == 0)

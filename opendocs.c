@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/06 16:38:53 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/07 17:49:54 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	openheredoc(char *promt, t_pars **pars)
 				i++;
 			if (promt[i] == '\0' || promt[i] == '|'
 				|| promt[i] == '<' || promt[i] == '>')
-				return (ft_error("Syntax error\n", 1));
+				return (ft_error("Syntax error from opendocs\n", 1));
 		}
 		if (!promt[i])
 			break ;

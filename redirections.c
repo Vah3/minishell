@@ -6,85 +6,113 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 15:42:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/05 10:25:02 by root             ###   ########.fr       */
+/*   Updated: 2022/09/07 17:54:55 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	lexer(char **promt, t_pars ***pars, char c)
+static int	if_in_file(char **promt, t_pars **pars, int *i)
 {
-	int		i;
-	int		j;
-	int		k;
+	int j;
 
-	i = 0;
-	k = 0;
 	j = 0;
-	while ((*promt)[i])
+	if ((*promt)[*i] && (*promt)[*i] == '<'
+		&& (*promt)[(*i) + 1] && (*promt)[(*i) + 1] != '<')
 	{
-		skipquotes(promt, &i);
-		passwords(promt, &i);
-		if((*promt)[i] && (*promt)[i] == '|')
-			k++;
-		if(c == '<' && if_here_doc(promt, &((*pars)[k])->fileordoc, &i, &j) == 2)
-			return (1);
-		if(c == '>' && if_append_file(promt, &((*pars)[k]), &i, &j) == 2)
-			return (1);
-		if ((*promt)[i] && (*promt)[i] == c)
-		{
-			i++;
-			if (trimspaces(promt, &i, &j, c))
-				return (2);
-			iffiles(promt, &i, &j);
-			if (c == '<')
-			{
-				(*pars)[k]->fileordoc = 0;
-				open_in_file(&((*pars)[k]),promt, j , i);
-			}
-			else if (c == '>')
-			{
-				(*pars)[k]->app_or_trunc = 1;
-				open_out_file(&((*pars)[k]), promt, j, i);
-			}
-			i = j;
-		}
-		if((*promt)[i])
-			i++;
+		(*i)++;
+		if (trimspaces(promt, i, '<'))
+			return (FAILURE);
+		j = *i;
+		iffiles(promt, i);
+		open_in_file(pars, promt, j, *i);
+		*i = j;
 	}
-	return (1);
+	return (SUCCESS);
 }
 
-int	if_here_doc(char **promt,int *fileordoc, int *i, int *j)
+static int	if_out_file(char **promt, t_pars **pars, int *i)
 {
-	char *delim;
+	int j;
 
-	if ((*promt)[*i] && (*promt)[*i] == '<'  && (*promt)[(*i) + 1] && (*promt)[(*i) + 1] == '<')
+	j = 0;
+	if ((*promt)[*i] && (*promt)[*i] == '>'
+		&& (*promt)[(*i) + 1] && (*promt)[(*i) + 1] != '>')
+	{
+		(*i)++;
+		if (trimspaces(promt, i, '>'))
+			return (FAILURE);
+		j = *i;
+		iffiles(promt, i);
+		(*pars)->app_or_trunc = 1;
+		open_out_file(pars, promt, j, *i);
+		*i = j;
+	}
+	return (SUCCESS);
+}
+
+static int	if_here_doc(char **promt, int *fileordoc, int *i)
+{
+	char	*delim;
+	int		j;
+
+	j = 0;
+	if ((*promt)[*i] && (*promt)[*i] == '<'
+		&& (*promt)[(*i) + 1] && (*promt)[(*i) + 1] == '<')
 	{
 		*i += 2;
-		if(trimspaces(promt, i, j, '<'))
-			return (2);
-		iffiles(promt, i, j);
-		delim = ft_trim_substr(promt, *j, *i);
+		if (trimspaces(promt, i, '<'))
+			return (FAILURE);
+		j = *i;
+		iffiles(promt, i);
+		delim = ft_trim_substr(promt, j, *i);
 		free(delim);
 		*fileordoc = 1;
-		*i = *j;
+		*i = j;
 	}
-	return(1);
+	return (SUCCESS);
 }
 
-int	if_append_file(char **promt, t_pars **pars, int *i, int *j)
+static int	if_append_file(char **promt, t_pars **pars, int *i)
 {
-	if ((*promt)[*i] && (*promt)[*i] == '>'  && (*promt)[(*i) + 1] && (*promt)[(*i) + 1] == '>')
+	int j;
+
+	j = 0;
+	if ((*promt)[*i] && (*promt)[*i] == '>'
+		&& (*promt)[(*i) + 1] && (*promt)[(*i) + 1] == '>')
 	{
 		*i += 2;
-		if(trimspaces(promt, i, j, '>'))
-			return (2);
-		iffiles(promt, i, j);
+		if (trimspaces(promt, i, '>'))
+			return (FAILURE);
+		j = *i;
+		iffiles(promt, i);
 		(*pars)->app_or_trunc = 0;
-		open_out_file(pars, promt, *j , *i);
-		*i = *j;
+		open_out_file(pars, promt, j, *i);
+		*i = j;
 	}
-	return(1);
+	return (SUCCESS);
 }
 
+int	lexer(char **promt, t_pars ***pars)
+{
+	int	i;
+	int	pipe_i;
+
+	i = 0;
+	pipe_i = 0;
+	while((*promt)[i])
+	{
+		skips_and_detect_pipe(promt, &i, &pipe_i);
+		if(if_here_doc(promt, &((*pars)[pipe_i])->fileordoc, &i))
+			return (FAILURE);
+		if(if_append_file(promt, &((*pars)[pipe_i]), &i))
+			return (FAILURE);
+		if(if_in_file(promt, &((*pars)[pipe_i]), &i))
+			return (FAILURE);
+		if(if_out_file(promt, &((*pars)[pipe_i]), &i))
+			return (FAILURE);
+		i++;
+	}
+
+	return (SUCCESS);
+}

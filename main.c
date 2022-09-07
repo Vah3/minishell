@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/06 14:45:13 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/07 18:04:04 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,58 +108,39 @@ int	main(int argc, char **argv, char **env)
 {
 	char	*promt;
 	t_pars	**pars;
-//	t_env	*environ;
 	int		i;
 	int		count;
 	char	**cmd;
 	(void)argc;
 	(void)argv;
-	(void)env;
-	//i = 0;
-	//printf("%x\n", &count);
-/*	environ = env_initialization(env);
-	print_environment(environ);
-	free_env(&environ);
-	while (1)
-	{
-		 code 
-	}
-	exit(0);
-	////////////////////////////////////////////////////////
-*/
-
-
 while(1)
 {
 i = 0;	
 	promt = readline("Minishell ");
 	if (!promt )
 		return (0);
-	// if (ft_strlen(promt) == 0 || not_found_second_quote(promt) || only_pipe(promt))
-	// 	continue ;
+	 if (ft_strlen(promt) == 0 || not_found_second_quote(promt) || only_pipe(promt))
+	 	continue ;
 	if (check_pipes_count(&promt, &count))
 	{
 		printf("Pipe count--->%d\n", count);
 		return(ft_error("Pipe error\n", 1));
 	}
-	/*pars =(t_pars **)malloc(sizeof(t_pars *) * (count + 1));
-	pars[count] = NULL;
-	while (i < count)
-	{
-		pars[i] = (t_pars *)malloc(sizeof(t_pars));
-		pars[i]->errfile = NULL;
-		i++;
-	}*/
 	pars = init_struct(count);
 	if(!pars)
 		return (0);
 	if(openheredoc(promt, pars)) // heredocery stexic a bacum
-		return(0);
-	i = 0;
-	if (!lexer(&promt, &pars, '<'))
-		return (0);
-	if (!lexer(&promt, &pars, '>'))
-		return (0);
+	{
+		free_pars(pars, count);
+		free(promt);
+		continue ;
+	}
+	if (lexer(&promt, &pars))
+	{
+		free_pars(pars, count);
+		free(promt);
+		continue ;
+	}
 	cmd = ft_split(promt, '|');
 	if (count < 2)
 		pars[i]->cmd = ft_strdup(promt);
@@ -175,11 +156,6 @@ i = 0;
 	cmd = NULL;
 	if (open_processes(count, pars, env) == 0)
 		free_pars(pars, count);
-	// while(i < count)
-	// {
-	// 	wait(NULL);
-	// 	i++;
-	// }
 	free_pars(pars, count);
 	free(promt);
 	

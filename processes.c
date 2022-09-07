@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/06 16:33:51 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/07 14:52:42 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int	open_processes(int	count, t_pars **pars, char **env)
 	int		(*fd)[2];
 	int 	j = 0;
 	char 	**cmd = NULL;
-
-
 
 	i = 0;
 	init_pipe((int ***)&(fd),  count);
@@ -62,7 +60,7 @@ int	open_processes(int	count, t_pars **pars, char **env)
 			close_pipes(fd, count);
 			if (check_out_or_input(pars[i]) == FAILURE)
 			{
-				perror ("fail");
+			//	perror ("fail");
 				free_fd_id(fd, id, count);
 				free_pars(pars, count);
 				exit(EXIT_FAILURE);
