@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 17:47:43 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/05 10:14:18 by root             ###   ########.fr       */
+/*   Updated: 2022/09/08 20:26:09 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,21 @@ static void	check_cmd(char	**command, char **path)
 		if (access(*command, X_OK) != 0)
 			free(*command);
 	}
-	free(finaly);
-	if (path[i] == NULL)
+	if (path[i] == NULL && access((finaly + 1), F_OK) == -1)
 	{
-		perror("Comomand not found");
+		printf("%s: Comomand not found\n", (finaly + 1));;
 		free(path);
-		exit(0);
+		free(finaly);
+		exit(127);
 	}
+	if (path[i] == NULL && access((finaly + 1), F_OK) == 0)
+	{
+		printf("%s: Permission denied\n", (finaly + 1));
+		free(path);
+		free(finaly);
+		exit(126);
+	}
+	free(finaly);
 	while (path[i])
 		free(path[i++]);
 	free(path);

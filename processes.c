@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/07 14:52:42 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:46:18 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void free_fd_id(int (*fd)[2], pid_t	*id,  int count)
 	free(id);
 }
 
-int	open_processes(int	count, t_pars **pars, char **env)
+int	open_processes(int	count, t_pars **pars, char **env, int *status)
 {
 	int		i;
 	pid_t	*id;
@@ -47,9 +47,11 @@ int	open_processes(int	count, t_pars **pars, char **env)
 		if (id[i] == -1)
 		{
 			perror("forks failed");
-			free_fd_id(fd, id, count);
-			free_pars(pars, count);
-			exit(EXIT_FAILURE);
+			//free_fd_id(fd, id, count);
+			//free_pars(pars, count);
+		//	return (-1);
+		//	exit(EXIT_FAILURE);
+			break ;
 		}
 		if (id[i] == 0)
 		{
@@ -69,16 +71,21 @@ int	open_processes(int	count, t_pars **pars, char **env)
 				cmd = ft_split(pars[i]->cmd, 32);
 			check_make(&cmd[0], env);
 			execve(cmd[0], cmd, env);
-			perror("Execve error");
-			return(0);
+			printf("%s\n", strerror(errno));
+			exit(126);
 		}
 		i++;
 	}
 	close_pipes(fd, count);
 	j = 0;
-	int status;
 	while (j < count)
-		waitpid(id[j++], &status, 0);
+	{
+		waitpid(id[j++], status, 0);
+		if (WIFEXITED(*status))	
+			*status = WEXITSTATUS(*status);	
+	/*	else if (WIFSIGNALED(*status))
+			*status = WTERMSIG(*status);*/
+	}
 	free_fd_id(fd, id, count);
 	return(1);
 }

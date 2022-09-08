@@ -6,7 +6,7 @@
 /*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:14:27 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/06 15:15:35 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/08 18:33:30 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	struct_zeroed(t_pars **pars)
 	var->outfiles = 0;
 	var->pipecount = 0;
 	var->app_or_trunc = -1;
+	var->errnum = 0;
 }
 
 t_pars	**init_struct(int count)

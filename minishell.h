@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/07 17:31:28 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/08 19:33:43 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "./Libft/libft.h"
+# include <errno.h>
 
 #define SUCCESS 0
 #define FAILURE 1
@@ -42,6 +43,7 @@ typedef struct line
 	int		isheredoc;
 	int		fileordoc;
 	int		app_or_trunc;
+	int		errnum;
 	char	*errfile;
 	char	*cmd;
 	char	**infiles;
@@ -64,7 +66,7 @@ int		not_found_second_quote(char *line);
 int		openheredoc(char *promt, t_pars **pars);
 int		write_docs(char *promt, int count, t_pars **pars);
 int		ft_error(char *err_message, int err_code);
-int		open_processes(int count, t_pars **pars, char **env);
+int		open_processes(int count, t_pars **pars, char **env, int *status);
 int		lexer(char **promt, t_pars ***pars);
 int		**make_pipe_for_doc(int count);
 int		single_pipe(int i, int (*fd)[2]);
@@ -74,6 +76,8 @@ void	free_pars(t_pars **pars, int count);
 t_pars	**init_struct(int count);
 int		write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z);
 void	skips_and_detect_pipe(char **promt, int *i, int *z);
+int		check_redirections(char *promt);
+
 
 int		only_pipe(char	*promt);
 void	free_env(t_env **env);
@@ -88,6 +92,6 @@ char	**list_to_env(t_env	*head);
 void	init_pipe(int ***fd_, int count);
 int		check_out_or_input(t_pars *pars);
 int		close_pipes(int (*fd)[2], int count);
-void free_fd_id(int (*fd)[2], pid_t	*id,  int count);
+void	free_fd_id(int (*fd)[2], pid_t	*id,  int count);
 
 #endif
