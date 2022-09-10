@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:14:27 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/08 18:33:30 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/09 18:46:00 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	struct_zeroed(t_pars **pars)
+void	struct_zeroed(t_pars **pars, char **env)
 {
 	t_pars	*var;
 
@@ -31,9 +31,10 @@ void	struct_zeroed(t_pars **pars)
 	var->pipecount = 0;
 	var->app_or_trunc = -1;
 	var->errnum = 0;
+	var->env_var = env_initialization(env);
 }
 
-t_pars	**init_struct(int count)
+t_pars	**init_struct(int count, char **env)
 {
 	t_pars	**pars;
 	int		i;
@@ -56,7 +57,7 @@ t_pars	**init_struct(int count)
 			free(pars);
 			return (0);
 		}
-		struct_zeroed(&pars[i]);
+		struct_zeroed(&pars[i], env);
 		i++;
 	}
 	return (pars);

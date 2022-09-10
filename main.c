@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/08 19:56:58 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/10 17:50:01 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	if_dollar_question_mark(char **promt, int status)
 	}
 }
 
-int	main(int argc, char **argv, char **env)
+int	main (int argc, char **argv, char **env)
 {
 	char	*promt;
 	t_pars	**pars;
@@ -90,67 +90,67 @@ int	main(int argc, char **argv, char **env)
 	char	**cmd;
 	(void)argc;
 	(void)argv;
-while(1)
-{
-i = 0;	
-	promt = readline("Minishell ");
-	if (!promt )
-		return (0);
-/*	if(check_redirections(promt))
-	{
-		free (promt);
-		continue ;
-	}*/
-	 if (ft_strlen(promt) == 0 || not_found_second_quote(promt) || only_pipe(promt))
-	 	continue ;
-	if (check_pipes_count(&promt, &count))
-	{
-		printf("Pipe count--->%d\n", count);
-		return(ft_error("Pipe error\n", 1));
-	}
-	pars = init_struct(count);
-	if(!pars)
-		return (0);
-	if(openheredoc(promt, pars)) // heredocery stexic a bacum
-	{
-		free_pars(pars, count);
-		free(promt);
-		continue ;
-	}
-	if(check_redirections(promt))
-	{
-		status = 258;
-		free_pars(pars, count);
-		free (promt);
-		continue ;
-	}
-	if_dollar_question_mark(&promt, status);
-	printf("-------%s-------\n", promt);
-	if (lexer(&promt, &pars))
-	{
-		free_pars(pars, count);
-		free(promt);
-		continue ;
-	}
-	cmd = ft_split(promt, '|');
-	if (count < 2)
-		pars[i]->cmd = ft_strdup(promt);
-	else
-	{
-		while(i < count)
-		{
-			pars[i]->cmd = ft_strdup(cmd[i]);
-			i++;
-		}
-	}
-	free_after_split(cmd);
-	cmd = NULL;
-	if (open_processes(count, pars, env, &status) == 0)
-		free_pars(pars, count);
-	free_pars(pars, count);
-	free(promt);
 	
-}
-	return (0);
-}
+	while(1)
+	{
+	i = 0;	
+		promt = readline("Minishell ");
+		if (!promt )
+			return (0);
+		// int i = 0;
+		// printf("%d\n", correct_len(promt, env_initialization(env)));
+		// continue;
+		if (ft_strlen(promt) == 0 || not_found_second_quote(promt) || only_pipe(promt))
+		 	continue ;
+		if (check_pipes_count(&promt, &count))
+		{
+			printf("Pipe count--->%d\n", count);
+			return(ft_error("Pipe error\n", 1));
+		}
+		add_history(promt);
+		pars = init_struct(count, env);
+		if(!pars)
+			return (0);
+		if(openheredoc(promt, pars)) // heredocery stexic a bacum
+		{
+			free_pars(pars, count);
+			free(promt);
+			continue ;
+		}
+		if(check_redirections(promt))
+		{
+			status = 258;
+			free_pars(pars, count);
+			free (promt);
+			continue ;
+		}
+		if_dollar_question_mark(&promt, status);
+		printf("-------%s-------\n", promt);
+		if (lexer(&promt, &pars))
+		{
+			free_pars(pars, count);
+			free(promt);
+			continue ;
+		}
+		cmd = ft_split(promt, '|');
+		if (count < 2)
+			pars[i]->cmd = ft_strdup(promt);
+		else
+		{
+			while(i < count)
+			{
+				pars[i]->cmd = ft_strdup(cmd[i]);
+				i++;
+			}
+		}
+		free_after_split(cmd);
+		cmd = NULL;
+		if (open_processes(count, pars, env, &status) == 0)
+			free_pars(pars, count);
+		free_pars(pars, count);
+		free(promt);
+		
+	}
+		return (0);
+	}
 
