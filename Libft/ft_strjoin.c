@@ -6,7 +6,7 @@
 /*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 22:04:29 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/08/27 18:00:23 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/15 15:17:17 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!newstr) 
 		return (0);
 	len = 0;
-	while (s1[len])
+	while (s1 && s1[len])
 	{
 		newstr[len] = s1[len];
 		len++;
 	}
 	ind = len;
-	while (s2[len - ind])
+	while (s2 && s2[len - ind])
 	{
 		newstr[len] = s2[len - ind];
 		len++;

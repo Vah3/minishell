@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:14:27 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/09 18:46:00 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/10 14:14:36 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	struct_zeroed(t_pars **pars, char **env)
+void	struct_zeroed(t_pars **pars, t_env **env)
 {
 	t_pars	*var;
 
 	var = *pars;
 	var->apendfiles = NULL;
 	var->cmd = NULL;
-	var->env_var = NULL;
+	var->env_var = env;
 	var->errfile = NULL;
 	var->fileordoc = 0;
 	var->heredocs = 0;
@@ -31,10 +31,9 @@ void	struct_zeroed(t_pars **pars, char **env)
 	var->pipecount = 0;
 	var->app_or_trunc = -1;
 	var->errnum = 0;
-	var->env_var = env_initialization(env);
 }
 
-t_pars	**init_struct(int count, char **env)
+t_pars	**init_struct(int count, t_env **env)
 {
 	t_pars	**pars;
 	int		i;

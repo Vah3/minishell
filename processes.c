@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/08 20:46:18 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/15 19:56:43 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ int	open_processes(int	count, t_pars **pars, char **env, int *status)
 	init_pipe((int ***)&(fd),  count);
 	if (count > 1 && !fd)
 	{
+		perror("fd");
 		free_pars(pars, count);
 		exit (EXIT_FAILURE);
 	}
 	id = (pid_t *)malloc(sizeof(pid_t) * count);
 	if (!id)
 	{
+		perror("malloc failed");
 		free_pars(pars, count);
 		free(fd);
 		exit (EXIT_FAILURE);
@@ -47,30 +49,34 @@ int	open_processes(int	count, t_pars **pars, char **env, int *status)
 		if (id[i] == -1)
 		{
 			perror("forks failed");
-			//free_fd_id(fd, id, count);
-			//free_pars(pars, count);
-		//	return (-1);
-		//	exit(EXIT_FAILURE);
 			break ;
 		}
 		if (id[i] == 0)
 		{
-			if (count == 2 && single_pipe(i, fd))
-				return (0);
-			if (count > 2 && multi_pipe(i, count ,fd))
-				return (0);
+			if (pars[i]->cmd != NULL && check_out_or_input(pars[i]) != FAILURE )
+			{
+				cmd = ft_split(pars[i]->cmd, 32);
+				check_make(&cmd[0], env);
+			}
+			if (count == 2 && check_out_or_input(pars[i]) != FAILURE && single_pipe(i, fd))
+				return (FAILURE);
+			if (count > 2 && check_out_or_input(pars[i]) != FAILURE && multi_pipe(i, count ,fd))
+				return (FAILURE);
 			close_pipes(fd, count);
 			if (check_out_or_input(pars[i]) == FAILURE)
 			{
-			//	perror ("fail");
+				if(pars[i]->errfile && printf("minishell: %s : %s\n", pars[i]->errfile, strerror(pars[i]->errnum)))
+				;
 				free_fd_id(fd, id, count);
 				free_pars(pars, count);
 				exit(EXIT_FAILURE);
 			}
-			if (pars[i]->cmd != NULL)
+/*			if (pars[i]->cmd != NULL)
 				cmd = ft_split(pars[i]->cmd, 32);
-			check_make(&cmd[0], env);
+			check_make(&cmd[0], env);*/
 			execve(cmd[0], cmd, env);
+			if ( ft_strlen(pars[i]->cmd) == 0)
+				exit(0);
 			printf("%s\n", strerror(errno));
 			exit(126);
 		}
@@ -87,7 +93,7 @@ int	open_processes(int	count, t_pars **pars, char **env, int *status)
 			*status = WTERMSIG(*status);*/
 	}
 	free_fd_id(fd, id, count);
-	return(1);
+	return(SUCCESS);
 }
 
 	

@@ -6,7 +6,7 @@
 /*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 19:46:49 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/08/27 17:53:10 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/10 17:00:06 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,15 @@ static size_t	ft_count(char const *str, char j)
 			i++;
 		if (str[i])
 			count++;
-		while (str[i] != j && str[i])
+		while (str[i] && str[i] != j)
 		{		
 			if (str[i] == 34 || str[i] == 39)
 				skipquotes((char **)&str, (int *)&i);
 			else
+			{
+				if(str[i])
 				i++;
+			}
 		}
 	}
 	return (count);

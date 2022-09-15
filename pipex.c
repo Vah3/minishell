@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 17:47:43 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/08 20:26:09 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/15 19:38:19 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	check_cmd(char	**command, char **path)
 
 	i = 0;
 	finaly = *command;
-	while (path[i])
+	while (path && path[i])
 	{
 		*command = ft_strjoin(path[i++], finaly);
 		if (access(*command, X_OK) == 0)
@@ -27,14 +27,29 @@ static void	check_cmd(char	**command, char **path)
 		if (access(*command, X_OK) != 0)
 			free(*command);
 	}
-	if (path[i] == NULL && access((finaly + 1), F_OK) == -1)
+	//printf("%d\n", access((finaly + 1), F_OK) == 0);
+	if (opendir(finaly + 1))
+	{
+		printf("%s: is a directory\n", (finaly + 1));;
+		free(path);
+		free(finaly);
+		exit(126);
+	}
+	else if (ft_strchr(finaly +1 , '/') && access((finaly + 1), F_OK) == -1)
+	{
+		printf("%s: No such file or directory\n", (finaly + 1));;
+		free(path);
+		free(finaly);
+		exit(127);
+	}
+	if (((!path || path[i] == NULL) && (access((finaly + 1), F_OK) == -1))) //|| finaly[1] == '\0')
 	{
 		printf("%s: Comomand not found\n", (finaly + 1));;
 		free(path);
 		free(finaly);
 		exit(127);
 	}
-	if (path[i] == NULL && access((finaly + 1), F_OK) == 0)
+	if ((!path || path[i] == NULL) && access((finaly + 1), F_OK) == 0)
 	{
 		printf("%s: Permission denied\n", (finaly + 1));
 		free(path);
@@ -51,19 +66,20 @@ void	check_make(char **cmd, char **env)
 {
 	char	*command;
 	char	*slash;
-	char	**newenv;
+	char	**newenv = NULL;
 	int		i;
 
 	i = 0;
 	command = *cmd;
-	if (access(command, X_OK) == 0)
+	if (!opendir(command) && access(command, X_OK) == 0)
 		return ;
 	slash = ft_strdup("/");
 	command = ft_strjoin(slash, *cmd);
 	free(*cmd);
 	while (env[i] && ft_strnstr(env[i], "PATH=", 5) == 0)
 		i++;
-	newenv = ft_split(env[i] + 5, ':');
+	if (env[i])
+		newenv = ft_split(env[i] + 5, ':');
 	i = 0;
 	check_cmd(&command, newenv);
 	*cmd = command;

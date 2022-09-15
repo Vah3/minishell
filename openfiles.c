@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 16:47:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/07 14:58:52 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/09 14:26:07 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ void	open_in_file(t_pars **pars, char **promt, int j, int i)
 	if (fd < 0 && (*pars)->errfile == NULL)
 	{
 		file = ft_strdup(filename);
+		(*pars)->errnum = errno;
 		if (!file)
-			exit(0);
+		{	perror ("malloc failed");
+			exit(FAILURE);
+		}
 		(*pars)->errfile = file;
-		perror(file);
 	}
 	(*pars)->infilefd = fd;
 	free(filename);

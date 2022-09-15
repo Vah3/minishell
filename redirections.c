@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 15:42:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/07 17:54:55 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/15 19:58:22 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	lexer(char **promt, t_pars ***pars)
 
 	i = 0;
 	pipe_i = 0;
-	while((*promt)[i])
+	while(*promt && (*promt)[i])
 	{
 		skips_and_detect_pipe(promt, &i, &pipe_i);
 		if(if_here_doc(promt, &((*pars)[pipe_i])->fileordoc, &i))

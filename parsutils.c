@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 13:28:35 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/07 17:50:55 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/14 15:11:12 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	skipquotes(char **promt, int *j)
 	if ((*promt)[i] && (*promt)[i] == 39)
 	{
 		i++;
-		while ((*promt[i]) && (*promt)[i] != 39)
+		while ((*promt)[i] && (*promt)[i] != 39)
 			i++;
 		if ((*promt)[i])
 			i++;

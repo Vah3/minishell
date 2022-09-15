@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/09 21:09:57 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/15 19:13:43 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,10 @@
 # include <readline/history.h>
 # include "./Libft/libft.h"
 # include <errno.h>
+# include <dirent.h>
 
-
-#  define SUCCESS 0
-#  define FAILURE 1
-
+# define SUCCESS 0
+# define FAILURE 1
 
 typedef struct s_env
 {
@@ -52,8 +51,10 @@ typedef struct line
 	char	**outfiles;
 	char	**heredocs;
 	char	**apendfiles;
-	t_env	*env_var;
+	t_env	**env_var;
 }	t_pars;
+
+void	do_expand(char	**promt, t_env *env_);
 
 void	skipquotes(char **promt, int *j);
 void	passwords(char **promt, int *i);
@@ -75,10 +76,11 @@ int		single_pipe(int i, int (*fd)[2]);
 int		multi_pipe(int i, int count, int (*fd)[2]);
 void	check_make(char **cmd, char **env);
 void	free_pars(t_pars **pars, int count);
-t_pars	**init_struct(int count, char **env);
+t_pars	**init_struct(int count, t_env **env);
 int		write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z);
 void	skips_and_detect_pipe(char **promt, int *i, int *z);
 int		check_redirections(char *promt);
+
 
 int		only_pipe(char	*promt);
 void	free_env(t_env **env);
@@ -93,11 +95,7 @@ char	**list_to_env(t_env	*head);
 void	init_pipe(int ***fd_, int count);
 int		check_out_or_input(t_pars *pars);
 int		close_pipes(int (*fd)[2], int count);
-void	free_fd_id(int (*fd)[2], pid_t *id, int count);
-
-char	*get_env_key(char *trash, int *i);
+void	free_fd_id(int (*fd)[2], pid_t	*id,  int count);
 char	*_getenv(t_env *list, char *key );
-int		correct_len(char *trash, t_env *env_list);
-
 
 #endif

@@ -14,9 +14,9 @@
 
 static int	check_error(char *promt, int *i)
 {
-	while(promt[*i] && promt[*i] == 32)
+	while (promt[*i] && promt[*i] == 32)
 		(*i)++;
-	if(!promt[*i])
+	if (!promt[*i])
 	{
 		printf ("%s", "syntax error near unexpected token `newline'\n");
 		return (FAILURE);
@@ -36,11 +36,13 @@ int	check_redirections(char *promt)
 	i = 0;
 	while (promt[i])
 	{
-		if ((promt[i] && promt[i] == '<' && promt[i + 1] && promt[i + 1] == '<') ||
-				(promt[i] && promt[i] == '>' && promt[i + 1] && promt[i + 1] == '>'))
+		if ((promt[i] && promt[i] == '<'
+				&& promt[i + 1] && promt[i + 1] == '<')
+			|| (promt[i] && promt[i] == '>'
+				&& promt[i + 1] && promt[i + 1] == '>'))
 		{
 			i += 2;
-			if(check_error(promt, &i))
+			if (check_error(promt, &i))
 				return (FAILURE);
 		}
 		else if (promt[i] && (promt[i] == '>' || promt[i] == '<'))
@@ -75,9 +77,8 @@ int	not_found_second_quote(char *line)
 				;
 			flag = (line[i] == '\0');
 		}
-		if (!line[i])
-			break ;
-		i++;
+		if (line[i])
+			i++;
 	}
 	if (flag)
 		printf("NOT FOUND SECOND QUOTE\n");

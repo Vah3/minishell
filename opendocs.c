@@ -28,15 +28,14 @@ int	openheredoc(char *promt, t_pars **pars)
 	while (promt[i])
 	{
 		skipquotes(&promt, &i);
-		passwords(&promt, &i);
-		if (promt[i] && promt[i] == '<' && promt[++i]
-			&& promt[i] && promt[i] == '<' && promt[++i])
+	//	passwords(&promt, &i);
+		if (promt[i] && promt[i + 1] && promt[i] == '<' && promt[i + 1] == '<' && promt[i++] && promt[i++])
 		{
 			while (promt[i] && promt[i] == 32)
 				i++;
 			if (promt[i] == '\0')
 				return (0);
-			 if (promt[i] == '|' || promt[i] == '<' || promt[i] == '>')
+			if (promt[i] == '|' || promt[i] == '<' || promt[i] == '>')
 				continue ;
 			doc_count++;
 		}
@@ -66,7 +65,7 @@ void	process_redirections(char *promt, int *i, int *j)
 void	skips_and_detect_pipe(char **promt, int *i, int *z)
 {
 	skipquotes(promt, i);
-	passwords(promt, i);
+//	passwords(promt, i);
 	if ((*promt)[*i] == '|')
 		(*z)++;
 }

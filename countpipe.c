@@ -17,7 +17,7 @@ static void	skip_index_until_pipe(char **promt, int *i)
 	while ((*promt)[*i] && (*promt)[*i] != '|')
 	{
 		skipquotes(promt, i);
-		passwords(promt, i);
+	//	passwords(promt, i);
 		if ((*promt)[*i])
 			(*i)++;
 	}
