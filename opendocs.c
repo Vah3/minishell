@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/08 17:55:38 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/16 18:44:56 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	openheredoc(char *promt, t_pars **pars)
 			while (promt[i] && promt[i] == 32)
 				i++;
 			if (promt[i] == '\0')
-				return (0);
+				return (FAILURE);
 			if (promt[i] == '|' || promt[i] == '<' || promt[i] == '>')
 				continue ;
 			doc_count++;

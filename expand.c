@@ -6,7 +6,7 @@
 /*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 14:06:18 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/15 20:09:52 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/16 16:09:26 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,13 +105,11 @@ void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 }
 	
 
-void	do_expand(char	**promt, t_env *env_)
+void	do_expand(char	**promt, t_env *env_ , int i)
 {
 	int		len;
-	int		i;
 //	char	*line;
 
-	i = 0;
 	len = 0;
 	while (*promt && (*promt)[i])
 	{

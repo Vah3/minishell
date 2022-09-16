@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 13:28:35 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/14 15:11:12 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/16 18:05:39 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	iffiles(char **promt, int *k)
 	int	i;
 
 	i = *k;
-	if ((*promt)[i] && (*promt)[i] == 34 && (*promt)[i++])
+	if (*promt && (*promt)[i] && (*promt)[i] == 34 && (*promt)[i++])
 	{
 		while ((*promt)[i] && ((*promt)[i] != 34) | ((*promt)[i + 1]
 				&& (*promt)[i + 1] != 32))
@@ -76,16 +76,16 @@ void	iffiles(char **promt, int *k)
 		if ((*promt)[i])
 			i++;
 	}
-	else if ((*promt)[i] && (*promt)[i] == 39 && (*promt)[i++])
+	else if (*promt && (*promt)[i] && (*promt)[i] == 39 && (*promt)[i++])
 	{
 		while ((*promt)[i] && ((*promt)[i] != 39) | ((*promt)[i + 1]
 					&& (*promt)[i + 1] != 32))
 			i++;
-		if ((*promt[i]))
+		if ((*promt)[i])
 			i++;
 	}
 	else
-		while ((*promt)[i] && (*promt)[i] != 32)
+		while (*promt && (*promt)[i] && (*promt)[i] != 32)
 			i++;
 	*k = i;
 }

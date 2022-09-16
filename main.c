@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/15 20:07:16 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/16 16:10:19 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,8 @@ int	main(int argc, char **argv, char **env)
 		continue ;
 	}
 	if_dollar_question_mark(&promt, status);
-	do_expand(&promt, env_); ///////expand
+	do_expand(&promt, env_, 0); ///////expand
+	promt = get_correct_cmd(promt);
 	if (lexer(&promt, &pars))
 	{
 		free_pars(pars, count);

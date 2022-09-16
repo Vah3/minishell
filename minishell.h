@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/15 19:13:43 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/16 17:58:41 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct line
 	t_env	**env_var;
 }	t_pars;
 
-void	do_expand(char	**promt, t_env *env_);
+void	do_expand(char	**promt, t_env *env_ , int i);
 
 void	skipquotes(char **promt, int *j);
 void	passwords(char **promt, int *i);
@@ -72,8 +72,8 @@ int		ft_error(char *err_message, int err_code);
 int		open_processes(int count, t_pars **pars, char **env, int *status);
 int		lexer(char **promt, t_pars ***pars);
 int		**make_pipe_for_doc(int count);
-int		single_pipe(int i, int (*fd)[2]);
-int		multi_pipe(int i, int count, int (*fd)[2]);
+int		single_pipe(int i, int (*fd)[2], t_pars *pars);
+int		multi_pipe(int i, int count, int (*fd)[2], t_pars *pars);
 void	check_make(char **cmd, char **env);
 void	free_pars(t_pars **pars, int count);
 t_pars	**init_struct(int count, t_env **env);
@@ -97,5 +97,6 @@ int		check_out_or_input(t_pars *pars);
 int		close_pipes(int (*fd)[2], int count);
 void	free_fd_id(int (*fd)[2], pid_t	*id,  int count);
 char	*_getenv(t_env *list, char *key );
+char	*get_correct_cmd(char *trash);
 
 #endif

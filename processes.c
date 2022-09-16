@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/15 19:56:43 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/16 19:00:55 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,23 +53,30 @@ int	open_processes(int	count, t_pars **pars, char **env, int *status)
 		}
 		if (id[i] == 0)
 		{
-			if (pars[i]->cmd != NULL && check_out_or_input(pars[i]) != FAILURE )
+			if (pars[i]->cmd != NULL)// && check_out_or_input(pars[i]) != FAILURE )
 			{
 				cmd = ft_split(pars[i]->cmd, 32);
 				check_make(&cmd[0], env);
 			}
-			if (count == 2 && check_out_or_input(pars[i]) != FAILURE && single_pipe(i, fd))
-				return (FAILURE);
-			if (count > 2 && check_out_or_input(pars[i]) != FAILURE && multi_pipe(i, count ,fd))
-				return (FAILURE);
-			close_pipes(fd, count);
+			if (count == 2 && single_pipe(i, fd, pars[i]))   //check anoxy utilsnerum a
+				exit (EXIT_FAILURE);
+			if (count > 2 && multi_pipe(i, count ,fd, pars[i]))
+				exit (EXIT_FAILURE);
+			else if (count == 1)
+			{
+		//	close_pipes(fd, count);
+			if (pars[i]->errfile)
+				printf("minishell: %s : %s\n", pars[i]->errfile, strerror(pars[i]->errnum));
+			if (pars[i]->outfilefd == -1)
+				;
 			if (check_out_or_input(pars[i]) == FAILURE)
 			{
-				if(pars[i]->errfile && printf("minishell: %s : %s\n", pars[i]->errfile, strerror(pars[i]->errnum)))
-				;
+//				if(pars[i]->errfile && printf("minishell: %s : %s\n", pars[i]->errfile, strerror(pars[i]->errnum)))
+//				;
 				free_fd_id(fd, id, count);
 				free_pars(pars, count);
 				exit(EXIT_FAILURE);
+			}
 			}
 /*			if (pars[i]->cmd != NULL)
 				cmd = ft_split(pars[i]->cmd, 32);

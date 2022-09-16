@@ -74,22 +74,22 @@ char	*clear_cmd(char *trash, int count_of_symbols)
 	int		j;
 
 	i = 0;
-	j = 0;
-	cmd = (char *)(sizeof(char) * count_of_symbols + 1);
+	j = -1;
+	cmd = (char *)(sizeof(char) * (count_of_symbols + 1));
 	if (!cmd)
 		return (NULL);
 	while (trash[i])
 	{
 		if (trash[i] == '"')
 			while (trash[++i] && trash[i] != '"')
-				cmd[j++] = trash[i];
+				cmd[++j] = trash[i];
 		if (trash[i] == '\'')
 			while (trash[++i] && trash[i] != '\'')
-				cmd[j++] = trash[i];
+				cmd[++j] = trash[i];
 		if (!trash[i])
 			break ;
 		if (trash[i] != '"' && trash[i] != '\'')
-			cmd[j++] = trash[i];
+			cmd[++j] = trash[i];
 		i++;
 	}
 	cmd[j] = '\0';
@@ -103,8 +103,6 @@ char	*get_correct_cmd(char *trash)
 
 	count_of_symbols = correct_len(trash);
 	cmd = clear_cmd(trash, count_of_symbols);
-	printf("%d\n", count_of_symbols);
-	printf("%s\n", cmd);
 	free(trash);
 	return (cmd);
 }

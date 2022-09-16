@@ -6,7 +6,7 @@
 /*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:14:27 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/10 14:14:36 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/16 19:38:57 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	struct_zeroed(t_pars **pars, t_env **env)
 	var->cmd = NULL;
 	var->env_var = env;
 	var->errfile = NULL;
-	var->fileordoc = 0;
+	var->fileordoc = -1;
 	var->heredocs = 0;
 	var->infilefd = 0;
 	var->infiles = 0;
