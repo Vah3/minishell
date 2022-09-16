@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 22:10:42 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/04 20:11:33 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/16 21:26:03 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,22 +74,22 @@ char	*clear_cmd(char *trash, int count_of_symbols)
 	int		j;
 
 	i = 0;
-	j = -1;
-	cmd = (char *)(sizeof(char) * (count_of_symbols + 1));
+	j = 0;
+	cmd = (char *)malloc(sizeof(char) * count_of_symbols + 1);
 	if (!cmd)
 		return (NULL);
 	while (trash[i])
 	{
 		if (trash[i] == '"')
 			while (trash[++i] && trash[i] != '"')
-				cmd[++j] = trash[i];
+				cmd[j++] = trash[i];
 		if (trash[i] == '\'')
 			while (trash[++i] && trash[i] != '\'')
-				cmd[++j] = trash[i];
+				cmd[j++] = trash[i];
 		if (!trash[i])
 			break ;
 		if (trash[i] != '"' && trash[i] != '\'')
-			cmd[++j] = trash[i];
+			cmd[j++] = trash[i];
 		i++;
 	}
 	cmd[j] = '\0';
