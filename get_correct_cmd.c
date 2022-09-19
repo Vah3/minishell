@@ -6,41 +6,13 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 22:10:42 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/16 21:26:03 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/19 20:11:32 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*int	not_found_second_quote(char *line)
-{
-	int	i;
-	int	flag;
-
-	i = 0;
-	flag = 0;
-	while (line[i] != '\0')
-	{
-		if (line[i] == '\'')
-		{
-			while (line[++i] && line[i] != '\'')
-				;
-			flag = (line[i] == '\0');
-		}
-		if (line[i] == '"')
-		{
-			while (line[++i] && line[i] != '"')
-				;
-			flag = (line[i] == '\0');
-		}
-		if (!line[i])
-			break ;
-		i++;
-	}
-	return (flag);
-}*/
-
-int	correct_len(char *trash)
+static int	correct_len(char *trash)
 {
 	int	i;
 	int	count_of_symbols;
@@ -67,7 +39,7 @@ int	correct_len(char *trash)
 	return (count_of_symbols);
 }
 
-char	*clear_cmd(char *trash, int count_of_symbols)
+static char	*clear_cmd(char *trash, int count_of_symbols)
 {
 	char	*cmd;
 	int		i;

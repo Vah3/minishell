@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:14:27 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/16 19:38:57 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/19 20:59:29 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	struct_zeroed(t_pars **pars, t_env **env)
+static void	struct_zeroed(t_pars **pars, t_env **env)
 {
 	t_pars	*var;
 

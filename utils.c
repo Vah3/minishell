@@ -6,20 +6,20 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:37:48 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/19 17:30:24 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/19 21:12:07 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand_if_does_not_have_quotes(
+static void	expand_if_does_not_have_quotes(
 	char	**line, int expand_or_not, t_pars *pars)
 {
 	if (expand_or_not == 0)
 		do_expand(line, *(pars->env_var), 1);
 }
 
-int	clearquotes(char	**delimetr)
+static int	clearquotes(char	**delimetr)
 {
 	char	*delim;
 	int		i;

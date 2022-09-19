@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 19:46:49 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/10 17:00:06 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/19 21:15:17 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static size_t	ft_count(char const *str, char j)
 				skipquotes((char **)&str, (int *)&i);
 			else
 			{
-				if(str[i])
+				if (str[i])
 				i++;
 			}
 		}

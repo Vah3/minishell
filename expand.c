@@ -6,13 +6,13 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 14:06:18 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/19 17:45:34 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/19 20:30:35 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	skip_if_single_quote(char **line, int *i, int *len)
+static void	skip_if_single_quote(char **line, int *i, int *len)
 {
 	int		j;
 	char	*line_;
@@ -34,25 +34,7 @@ void	skip_if_single_quote(char **line, int *i, int *len)
 	*i = j;
 }
 
-void	update_status(t_env *env, int status)
-{
-	t_env	*local_env;
-	char	*stat;
-
-	local_env = env;
-	stat = ft_itoa(status);
-	while (local_env)
-	{
-		if (strncmp(local_env->key, "?", 1) == 0)
-			{
-				free(local_env->value);
-				local_env->value = stat; 
-			}
-		local_env = local_env->next;
-	}
-}
-
-void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
+static void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 {
 	char	*delim;
 	char	*prom;
@@ -83,6 +65,24 @@ void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 		(*len)--;
 	}
 }	
+
+void	update_status(t_env *env, int status)
+{
+	t_env	*local_env;
+	char	*stat;
+
+	local_env = env;
+	stat = ft_itoa(status);
+	while (local_env)
+	{
+		if (strncmp(local_env->key, "?", 1) == 0)
+			{
+				free(local_env->value);
+				local_env->value = stat; 
+			}
+		local_env = local_env->next;
+	}
+}
 
 void	do_expand(char **promt, t_env *env_, int doc)
 {

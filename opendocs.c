@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/19 17:10:21 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/19 21:00:43 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	openheredoc(char *promt, t_pars **pars)
 	Writes in pipes and dups -- see utils.c
 */
 
-void	process_redirections(char *promt, int *i, int *j)
+static void	process_redirections(char *promt, int *i, int *j)
 {
 	while (promt[*i] && promt[*i] == 32)
 		(*i)++;
