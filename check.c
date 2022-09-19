@@ -36,6 +36,7 @@ int	check_redirections(char *promt)
 	i = 0;
 	while (promt[i])
 	{
+		skipquotes(&promt, &i);
 		if ((promt[i] && promt[i] == '<'
 				&& promt[i + 1] && promt[i + 1] == '<')
 			|| (promt[i] && promt[i] == '>'
