@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:37:48 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/16 19:36:01 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/18 16:11:24 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand_if_does_not_have_quotes(char	**line, int expand_or_not, t_pars *pars)
+void	expand_if_does_not_have_quotes(
+	char	**line, int expand_or_not, t_pars *pars)
 {
 	t_env	*en;
 	int		i;
@@ -25,7 +26,6 @@ void	expand_if_does_not_have_quotes(char	**line, int expand_or_not, t_pars *pars
 		do_expand(line, *(pars->env_var), i);
 }
 
-
 int	clearquotes(char	**delimetr)
 {
 	char	*delim;
@@ -33,7 +33,7 @@ int	clearquotes(char	**delimetr)
 
 	newdelim = NULL;
 	delim = *delimetr;
-	if(delim && (delim[0] == 34 || delim[0] == 39))
+	if (delim && (delim[0] == 34 || delim[0] == 39))
 	{
 		delim[ft_strlen(delim) - 1] = '\0';
 		newdelim = ft_strdup(delim + 1);
@@ -43,7 +43,6 @@ int	clearquotes(char	**delimetr)
 	}
 	return (0);
 }
-
 
 int	write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z)
 {
@@ -75,7 +74,7 @@ int	write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z)
 	return (SUCCESS);
 }
 
-void init_pipe(int ***fd_, int count)
+void	init_pipe(int ***fd_, int count)
 {
 	int		(*fd)[2];
 	int		i;
@@ -98,19 +97,12 @@ void init_pipe(int ***fd_, int count)
 
 int	check_out_or_input(t_pars *pars)
 {
-	static int i;
+	static int	i;
 
 	i++;
-/*	if (pars->errfile)
-	{
-		printf("aaaaaaaerror\n");
-		return (FAILURE);
-	}
-	if (pars->outfilefd == -1)
-		return (FAILURE);*/
 	if (pars->fileordoc == 0)
 	{
-		if(dup2(pars->infilefd, 0) == -1)
+		if (dup2(pars->infilefd, 0) == -1)
 			return (FAILURE);
 	}
 	else if (pars->fileordoc == 1)
@@ -126,17 +118,17 @@ int	check_out_or_input(t_pars *pars)
 	return (SUCCESS);
 }
 
-int close_pipes(int (*fd)[2], int count)
+int	close_pipes(int (*fd)[2], int count)
 {
 	int	j;
 
 	j = 0;
-	while ( j < count - 1)
+	while (j < count - 1)
 	{
 		if (close(fd[j][0]) == -1)
 		{
 			perror("CLOSE FAILED");
-			return (FAILURE);		
+			return (FAILURE);
 		}
 		if (close(fd[j][1]) == -1)
 		{

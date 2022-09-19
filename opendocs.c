@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/16 18:44:56 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:31:51 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	openheredoc(char *promt, t_pars **pars)
 	while (promt[i])
 	{
 		skipquotes(&promt, &i);
-	//	passwords(&promt, &i);
-		if (promt[i] && promt[i + 1] && promt[i] == '<' && promt[i + 1] == '<' && promt[i++] && promt[i++])
+		if (promt[i] && promt[i + 1] && promt[i] == '<' && promt[i + 1] == '<'
+			&& promt[i++] && promt[i++])
 		{
 			while (promt[i] && promt[i] == 32)
 				i++;
@@ -65,7 +65,6 @@ void	process_redirections(char *promt, int *i, int *j)
 void	skips_and_detect_pipe(char **promt, int *i, int *z)
 {
 	skipquotes(promt, i);
-//	passwords(promt, i);
 	if ((*promt)[*i] == '|')
 		(*z)++;
 }

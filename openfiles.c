@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 16:47:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/09 14:26:07 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:32:51 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	open_in_file(t_pars **pars, char **promt, int j, int i)
 		file = ft_strdup(filename);
 		(*pars)->errnum = errno;
 		if (!file)
-		{	perror ("malloc failed");
+		{	
+			perror ("malloc failed");
 			exit(FAILURE);
 		}
 		(*pars)->errfile = file;
@@ -44,12 +45,12 @@ void	open_out_file(t_pars **pars, char **promt, int j, int i)
 	fd = -1;
 	if ((*pars)->errfile == NULL)
 	{
-	if ((*pars)->app_or_trunc == 1)
-		fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	else if ((*pars)->app_or_trunc == 0)
-		fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	if ((*pars)->outfilefd > -1)
-		(*pars)->outfilefd = fd;
+		if ((*pars)->app_or_trunc == 1)
+			fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		else if ((*pars)->app_or_trunc == 0)
+			fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		if ((*pars)->outfilefd > -1)
+			(*pars)->outfilefd = fd;
 	}
 	free(filename);
 }

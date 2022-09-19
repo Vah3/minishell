@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:53:27 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/15 18:31:17 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:30:21 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,4 @@ char	*_getenv(t_env *list, char *key )
 		return (NULL);
 	return (ft_strdup(temp->value));
 }
-
-
 //nayel ardzyoq imast ka dup anel value, arden maloccac a

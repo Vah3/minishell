@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 15:42:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/15 19:58:22 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/18 16:04:59 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	if_in_file(char **promt, t_pars **pars, int *i)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	if ((*promt)[*i] && (*promt)[*i] == '<'
@@ -33,7 +33,7 @@ static int	if_in_file(char **promt, t_pars **pars, int *i)
 
 static int	if_out_file(char **promt, t_pars **pars, int *i)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	if ((*promt)[*i] && (*promt)[*i] == '>'
@@ -75,7 +75,7 @@ static int	if_here_doc(char **promt, int *fileordoc, int *i)
 
 static int	if_append_file(char **promt, t_pars **pars, int *i)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	if ((*promt)[*i] && (*promt)[*i] == '>'
@@ -100,19 +100,18 @@ int	lexer(char **promt, t_pars ***pars)
 
 	i = 0;
 	pipe_i = 0;
-	while(*promt && (*promt)[i])
+	while (*promt && (*promt)[i])
 	{
 		skips_and_detect_pipe(promt, &i, &pipe_i);
-		if(if_here_doc(promt, &((*pars)[pipe_i])->fileordoc, &i))
+		if (if_here_doc(promt, &((*pars)[pipe_i])->fileordoc, &i))
 			return (FAILURE);
-		if(if_append_file(promt, &((*pars)[pipe_i]), &i))
+		if (if_append_file(promt, &((*pars)[pipe_i]), &i))
 			return (FAILURE);
-		if(if_in_file(promt, &((*pars)[pipe_i]), &i))
+		if (if_in_file(promt, &((*pars)[pipe_i]), &i))
 			return (FAILURE);
-		if(if_out_file(promt, &((*pars)[pipe_i]), &i))
+		if (if_out_file(promt, &((*pars)[pipe_i]), &i))
 			return (FAILURE);
 		i++;
 	}
-
 	return (SUCCESS);
 }

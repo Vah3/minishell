@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 17:47:43 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/15 19:38:19 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:44:26 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,24 @@ static void	check_cmd(char	**command, char **path)
 		if (access(*command, X_OK) != 0)
 			free(*command);
 	}
-	//printf("%d\n", access((finaly + 1), F_OK) == 0);
 	if (opendir(finaly + 1))
 	{
-		printf("%s: is a directory\n", (finaly + 1));;
+		printf("%s: is a directory\n", (finaly + 1));
 		free(path);
 		free(finaly);
 		exit(126);
 	}
-	else if (ft_strchr(finaly +1 , '/') && access((finaly + 1), F_OK) == -1)
+	else if (ft_strchr(finaly +1, '/') && access((finaly + 1), F_OK) == -1)
 	{
-		printf("%s: No such file or directory\n", (finaly + 1));;
+		printf("%s: No such file or directory\n", (finaly + 1));
 		free(path);
 		free(finaly);
 		exit(127);
 	}
-	if (((!path || path[i] == NULL) && (access((finaly + 1), F_OK) == -1))) //|| finaly[1] == '\0')
+	if (((!path || path[i] == NULL)
+			&& (access((finaly + 1), F_OK) == -1)))
 	{
-		printf("%s: Comomand not found\n", (finaly + 1));;
+		printf("%s: Comomand not found\n", (finaly + 1));
 		free(path);
 		free(finaly);
 		exit(127);
@@ -66,9 +66,10 @@ void	check_make(char **cmd, char **env)
 {
 	char	*command;
 	char	*slash;
-	char	**newenv = NULL;
+	char	**newenv;
 	int		i;
 
+	newenv = NULL;
 	i = 0;
 	command = *cmd;
 	if (!opendir(command) && access(command, X_OK) == 0)

@@ -6,18 +6,18 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 15:07:22 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/06 15:08:05 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:24:36 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+		/* passwords(promt, i); | AFTERskipquotes in 20*/
 static void	skip_index_until_pipe(char **promt, int *i)
 {
 	while ((*promt)[*i] && (*promt)[*i] != '|')
 	{
 		skipquotes(promt, i);
-	//	passwords(promt, i);
 		if ((*promt)[*i])
 			(*i)++;
 	}

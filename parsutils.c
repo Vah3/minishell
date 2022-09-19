@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 13:28:35 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/16 18:05:39 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:33:27 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	trimspaces(char **promt, int *index, char c)
 	int		range;
 	char	*trimed;
 	int		j;
-	
+
 	i = *index;
 	j = i;
 	range = 1;
@@ -53,7 +53,8 @@ int	trimspaces(char **promt, int *index, char c)
 			range = 2;
 		while ((*promt)[i] && (*promt)[i] == 32)
 				i++;
-		if (!(*promt)[i] || (*promt)[i] == '<' || (*promt)[i] == '>' || (*promt)[i] == '|')
+		if (!(*promt)[i] || (*promt)[i] == '<' ||
+			(*promt)[i] == '>' || (*promt)[i] == '|')
 			return (ft_error("Syntax error from parsutils.c\n", 1));
 		trimed = ft_trim_substr(promt, (j) - range, i);
 		free(trimed);
