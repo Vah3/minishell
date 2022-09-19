@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	**list_to_env(t_env	*head)
+char	**list_to_env(t_env	*head, int status)
 {
 	t_env	*temp;
 	char	**env;
@@ -35,6 +35,7 @@ char	**list_to_env(t_env	*head)
 		line = NULL;
 		temp = temp->next;
 	}
+	update_status(head, status);
 	env[i] = NULL;
 	return (env);
 }

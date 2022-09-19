@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/16 16:10:19 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/19 16:38:48 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void free_pars(t_pars **pars, int count)
 {
 	int	i;
 	i = 0;
-	/*						FREE PARS					*/
+
 	while (i < count)
 	{
 		free(pars[i]->cmd);
@@ -48,37 +48,6 @@ char	*ft_trim_substr(char **source, int start, int end)
 	return (ret_string);
 }
 
-void	passwords(char **promt,  int *i)
-{
-	if((*promt)[*i] && ((*promt)[*i] != '<' && (*promt)[*i] != '>' && (*promt)[*i] != '|'))
-	{
-		while((*promt)[*i] && (*promt)[*i] != 32)
-			(*i)++;
-	}
-}
-
-void	if_dollar_question_mark(char **promt, int status)
-{
-	char	*line;
-	char	*before;
-	char	*after;
-	char	*char_stat;
-
-	line = ft_strnstr (*promt, "$?", ft_strlen(*promt));
-	while (line)
-	{
-		after = ft_strdup(line + 2);
-		*line = '\0';
-		before = ft_strdup(*promt);
-		free(*promt);
-		char_stat = ft_itoa(status);
-		*promt = ft_strjoin(before, char_stat);
-		free(char_stat);
-		*promt = ft_strjoin (*promt, after);
-		free (after);
-		line = ft_strnstr (*promt, "$?", ft_strlen(*promt));
-	}
-}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -97,7 +66,7 @@ int	main(int argc, char **argv, char **env)
 	while(1)
 	{
 	i = 0;
-	env = list_to_env(env_);
+	env = list_to_env(env_, status);
 	promt = readline("Minishell ");
 	if (!promt )
 		return (0);
@@ -125,9 +94,7 @@ int	main(int argc, char **argv, char **env)
 		free (promt);
 		continue ;
 	}
-	if_dollar_question_mark(&promt, status);
 	do_expand(&promt, env_, 0); ///////expand
-	promt = get_correct_cmd(promt);
 	if (lexer(&promt, &pars))
 	{
 		free_pars(pars, count);
@@ -151,7 +118,7 @@ int	main(int argc, char **argv, char **env)
 		free_pars(pars, count);
 	free_pars(pars, count);
 	free(promt);
-	free(env);
+	free_after_split(env);
 }
 
 	return (0);

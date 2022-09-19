@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:37:48 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/18 16:11:24 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/19 17:30:24 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,31 @@
 void	expand_if_does_not_have_quotes(
 	char	**line, int expand_or_not, t_pars *pars)
 {
-	t_env	*en;
-	int		i;
-
-	i = 0;
-	en = *(pars->env_var);
-	if (*line && (*(line)[0] == 34 || (*(line)[0] == 39)))
-			i = 1;
 	if (expand_or_not == 0)
-		do_expand(line, *(pars->env_var), i);
+		do_expand(line, *(pars->env_var), 1);
 }
 
 int	clearquotes(char	**delimetr)
 {
 	char	*delim;
-	char	*newdelim;
+	int		i;
 
-	newdelim = NULL;
+	i = 0;
 	delim = *delimetr;
-	if (delim && (delim[0] == 34 || delim[0] == 39))
+	while (delim && delim[i])
 	{
-		delim[ft_strlen(delim) - 1] = '\0';
-		newdelim = ft_strdup(delim + 1);
-		free(delim);
-		*delimetr = newdelim;
-		return (1);
+		if (delim[i] == 34 || delim[i] == 39)
+		{
+			i = -1;
+			break ;
+		}
+		i++;
 	}
-	return (0);
+	*delimetr = get_correct_cmd(*delimetr);
+	if (i != -1)
+		return (0);
+	else
+		return (1);
 }
 
 int	write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z)

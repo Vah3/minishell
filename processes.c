@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/18 16:02:36 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/19 16:49:40 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ int	open_processes(int count, t_pars **pars, char **env, int *status)
 			if (pars[i]->cmd != NULL)
 			{
 				cmd = ft_split(pars[i]->cmd, 32);
+				while(cmd[j])
+				{
+					cmd[j] = get_correct_cmd(cmd[j]);
+					j++;
+				}
 				check_make(&cmd[0], env);
 			}
 			if (count == 2 && single_pipe(i, fd, pars[i])) //check anoxy utilsnerum a

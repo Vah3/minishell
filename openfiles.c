@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 16:47:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/18 15:32:51 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/19 17:07:22 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	open_in_file(t_pars **pars, char **promt, int j, int i)
 	char	*filename;
 
 	filename = ft_trim_substr(promt, j, i);
+	filename = get_correct_cmd(filename);
 	fd = open(filename, O_RDONLY);
 	(*pars)->fileordoc = 0;
 	if (fd < 0 && (*pars)->errfile == NULL)
@@ -42,6 +43,7 @@ void	open_out_file(t_pars **pars, char **promt, int j, int i)
 	char	*filename;
 
 	filename = ft_trim_substr(promt, j, i);
+	filename = get_correct_cmd(filename);
 	fd = -1;
 	if ((*pars)->errfile == NULL)
 	{

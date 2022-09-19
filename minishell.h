@@ -81,6 +81,7 @@ int		write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z);
 void	skips_and_detect_pipe(char **promt, int *i, int *z);
 int		check_redirections(char *promt);
 
+void	update_status(t_env *env, int status);
 
 int		only_pipe(char	*promt);
 void	free_env(t_env **env);
@@ -91,7 +92,7 @@ int		size_of_env(char **env);
 t_env	*env_initialization(char **env);
 void	print_environment(t_env *env);
 void	remove_from_list(t_env *env, char *key);
-char	**list_to_env(t_env	*head);
+char	**list_to_env(t_env	*head, int status);
 void	init_pipe(int ***fd_, int count);
 int		check_out_or_input(t_pars *pars);
 int		close_pipes(int (*fd)[2], int count);

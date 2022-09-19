@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/18 15:31:51 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/19 17:10:21 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	process_redirections(char *promt, int *i, int *j)
 	*j = *i;
 	if (promt[*i] == '|' || promt[*i] == '<' || promt[*i] == '>')
 		return ;
+	skipquotes(&promt, i);
 	while (promt[*i] && promt[*i] != 32)
 		(*i)++;
 }
