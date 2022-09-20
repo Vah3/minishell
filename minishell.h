@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/19 21:20:07 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/20 20:48:36 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ typedef struct s_env
 }	t_env;
 /*///////////////////////////////////*/
 
+typedef struct	for_help
+{
+	int		(*fd)[2];
+}	t_help;
+
+
 
 /*			T_PARS					*/
 typedef struct s_pars
@@ -57,7 +63,9 @@ typedef struct s_pars
 	char	**outfiles;
 	char	**heredocs;
 	char	**apendfiles;
+	char	**exec_cmd;
 	t_env	**env_var;
+	t_help	hel;
 }	t_pars;
 /*//////////////////////////////////////*/
 
@@ -103,7 +111,7 @@ char	*_getenv(t_env *list, char *key );
 /*////////////////////////////////////////////////////////////////*/
 
 /*						INIT_STRUCT.C	2			   	     */
-t_pars	**init_struct(int count, t_env **env);
+t_pars	**init_struct(int count, t_env **env, t_help hel);
 /*////////////////////////////////////////////////////////////////*/
 
 /*						OPEN_DOCS.C				   	     */
@@ -127,7 +135,7 @@ void	duporjoin(char **line, char **promt, int i, int j);
 
 /*						PIPES.C				   	     */
 int		single_pipe(int i, int (*fd)[2], t_pars *pars);
-int		multi_pipe(int i, int count, int (*fd)[2], t_pars *pars);
+int		multi_pipe(int i, int (*fd)[2], int count, t_pars *pars);
 /*////////////////////////////////////////////////////////////////*/
 
 /*						PIPEX.C				   	     */
@@ -136,7 +144,7 @@ void	check_make(char **cmd, char **env);
 
 /*						PROCESSES.C				   	     */
 void	free_fd_id(int (*fd)[2], pid_t	*id, int count);
-int		open_processes(int count, t_pars **pars, char **env, int *status);
+void	open_processes(int count, t_pars **pars, char **env, int *status);
 /*////////////////////////////////////////////////////////////////*/
 
 /*						REDIRECTIONS.C	5			   	     */

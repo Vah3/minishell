@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 14:06:18 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/19 20:30:35 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/20 14:27:15 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,37 +34,41 @@ static void	skip_if_single_quote(char **line, int *i, int *len)
 	*i = j;
 }
 
+static void	free_params(char	*delim, char	*promt, char	*env_line)
+{
+	free (promt);
+	free(delim);
+	free (env_line);
+}
+
 static void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 {
 	char	*delim;
 	char	*prom;
-	char	*for_free;
+	char	*env_line;
 	int		j;
 
 	delim = NULL;
 	j = 0;
-	if ((*promt)[*i] == '$')
+	if ((*promt)[*i] == '$' && (*promt)[++(*i)])
 	{
-		(*i)++;
 		j = *i;
-		while ((*promt)[*i] && (ft_isalnum((*promt)[*i]) || (*promt)[*i] == '?'))
+		while ((*promt)[*i]
+				&& (ft_isalnum((*promt)[*i]) || (*promt)[*i] == '?'))
 			(*i)++;
 		delim = ft_substr(*promt, j, (*i) - j);
-		for_free = delim;
-		delim = _getenv(env_v, delim);
-		free(for_free);
-		*len += ft_strlen(delim);
+		env_line = _getenv(env_v, delim);
+		*len += ft_strlen(env_line);
 		(*promt)[j - 1] = 0;
 		prom = ft_strdup(*promt);
-		prom = ft_strjoin(prom, delim);
+		prom = ft_strjoin(prom, env_line);
 		prom = ft_strjoin(prom, (*promt) + (*i));
-		free (*promt);
-		free (delim);
+		free_params(delim, *promt, env_line);
 		*promt = prom;
 		(*i)--;
 		(*len)--;
 	}
-}	
+}
 
 void	update_status(t_env *env, int status)
 {
@@ -76,10 +80,10 @@ void	update_status(t_env *env, int status)
 	while (local_env)
 	{
 		if (strncmp(local_env->key, "?", 1) == 0)
-			{
-				free(local_env->value);
-				local_env->value = stat; 
-			}
+		{
+			free(local_env->value);
+			local_env->value = stat;
+		}
 		local_env = local_env->next;
 	}
 }

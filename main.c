@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/19 20:27:20 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/20 20:08:23 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	t_env	*env_;
+	t_help	hel;
 
 	env_ = env_initialization(env);
 
@@ -43,7 +44,7 @@ int	main(int argc, char **argv, char **env)
 		printf("Pipe count--->%d\n", count);
 		return(ft_error("Pipe error\n", 1));
 	}
-	pars = init_struct(count, &env_);
+	pars = init_struct(count, &env_, hel);
 	if(!pars)
 		return (0);
 	if(openheredoc(promt, pars)) // heredocery stexic a bacum
@@ -79,9 +80,7 @@ int	main(int argc, char **argv, char **env)
 	}
 	free_after_split(cmd);
 	cmd = NULL;
-	if (/*ft_strlen(promt) != 0 &&*/ open_processes(count, pars, env, &status) == FAILURE)
-		free_pars(pars, count);
-	free_pars(pars, count);
+	open_processes(count, pars, env, &status);
 	free(promt);
 	free_after_split(env);
 }

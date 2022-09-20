@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:37:48 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/19 21:12:07 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/20 19:58:19 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,9 @@ void	init_pipe(int ***fd_, int count)
 
 int	check_out_or_input(t_pars *pars)
 {
-	static int	i;
-
-	i++;
 	if (pars->fileordoc == 0)
 	{
+		printf("eeeeee\n");
 		if (dup2(pars->infilefd, 0) == -1)
 			return (FAILURE);
 	}

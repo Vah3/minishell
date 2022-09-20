@@ -6,11 +6,26 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 17:47:43 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/18 15:44:26 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/20 16:35:02 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	free_and_exit(char *for_print, char *finaly, int code)
+{
+	printf("%s: %s\n", (finaly + 1), for_print);
+	free(finaly);
+	exit(code);
+}
+
+static int	free_path_rest(char **path, int i)
+{
+	while (path[i])
+		free(path[i++]);
+	free(path);
+	return (1);
+}
 
 static void	check_cmd(char	**command, char **path)
 {
@@ -27,39 +42,18 @@ static void	check_cmd(char	**command, char **path)
 		if (access(*command, X_OK) != 0)
 			free(*command);
 	}
-	if (opendir(finaly + 1))
-	{
-		printf("%s: is a directory\n", (finaly + 1));
-		free(path);
-		free(finaly);
-		exit(126);
-	}
-	else if (ft_strchr(finaly +1, '/') && access((finaly + 1), F_OK) == -1)
-	{
-		printf("%s: No such file or directory\n", (finaly + 1));
-		free(path);
-		free(finaly);
-		exit(127);
-	}
+	if (opendir(finaly + 1) && free_path_rest(path, i))
+		free_and_exit("is a directory", finaly, 126);
+	else if (ft_strchr(finaly + 1, '/')
+		&& (access((finaly + 1), F_OK) == -1) && free_path_rest(path, i))
+		free_and_exit("No such file or directory", finaly, 127);
 	if (((!path || path[i] == NULL)
 			&& (access((finaly + 1), F_OK) == -1)))
-	{
-		printf("%s: Comomand not found\n", (finaly + 1));
-		free(path);
-		free(finaly);
-		exit(127);
-	}
+		free_and_exit("Comomand not found", finaly, 127);
 	if ((!path || path[i] == NULL) && access((finaly + 1), F_OK) == 0)
-	{
-		printf("%s: Permission denied\n", (finaly + 1));
-		free(path);
-		free(finaly);
-		exit(126);
-	}
-	free(finaly);
-	while (path[i])
-		free(path[i++]);
-	free(path);
+		free_and_exit("Permission denied", finaly, 126);
+	free_path_rest(path, i);
+	free (finaly);
 }
 
 void	check_make(char **cmd, char **env)

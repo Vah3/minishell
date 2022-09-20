@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 16:47:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/19 17:07:22 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/20 19:56:55 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	open_in_file(t_pars **pars, char **promt, int j, int i)
 		}
 		(*pars)->errfile = file;
 	}
+	printf("a%d\n",fd);
 	(*pars)->infilefd = fd;
 	free(filename);
 }
