@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:37:48 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/20 19:58:19 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:22:42 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	clearquotes(char	**delimetr)
 		return (1);
 }
 
-int	write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z)
+int	write_in_pipe_and_dup(t_pars **pars, char *delim, int z)
 {
 	int		fd[2];
 	char	*line;
@@ -56,10 +56,7 @@ int	write_in_pipe_and_dup(t_pars **pars, int count, char *delim, int z)
 		line = readline(">");
 		expand_if_does_not_have_quotes(&line, expand_or_not, pars[0]);
 		if (ft_strncmp(delim, line, ft_strlen(line)) == 0)
-		{
-			count--;
 			break ;
-		}
 		if (write(fd[1], line, ft_strlen(line)) == -1)
 			return (FAILURE);
 		if (write(fd[1], "\n", 1) == -1)
@@ -110,28 +107,6 @@ int	check_out_or_input(t_pars *pars)
 	{
 		if (dup2(pars->outfilefd, 1) == -1)
 			return (FAILURE);
-	}
-	return (SUCCESS);
-}
-
-int	close_pipes(int (*fd)[2], int count)
-{
-	int	j;
-
-	j = 0;
-	while (j < count - 1)
-	{
-		if (close(fd[j][0]) == -1)
-		{
-			perror("CLOSE FAILED");
-			return (FAILURE);
-		}
-		if (close(fd[j][1]) == -1)
-		{
-			perror("CLOSE FAILED");
-			return (FAILURE);
-		}
-		j++;
 	}
 	return (SUCCESS);
 }

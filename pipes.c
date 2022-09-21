@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 13:08:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/20 20:22:12 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:12:37 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	last_pipe(int (*fd)[2], t_pars *pars, int i)
 	return (SUCCESS);
 }
 
-int	single_pipe(int i,int (*fd)[2], t_pars *pars)
+int	single_pipe(int i, int (*fd)[2], t_pars *pars)
 {
 	if (i == 0 && when_index_is_zero(fd, pars) == FAILURE)
 		return (FAILURE);

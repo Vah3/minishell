@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/20 20:08:23 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/21 14:39:47 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,16 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	t_env	*env_;
-	t_help	hel;
-
 	env_ = env_initialization(env);
 
 	while(1)
 	{
 	i = 0;
 	env = list_to_env(env_, status);
-	promt = readline("Minishell ");
-	if (!promt )
+	promt = readline("Minishell$ ");
+	if (!promt)
 		return (0);
-	if (ft_strlen(promt) == 0)
+	if (!promt[0])
 		continue;
 	add_history(promt);
 	 if (not_found_second_quote(promt) || only_pipe(promt))
@@ -44,7 +42,7 @@ int	main(int argc, char **argv, char **env)
 		printf("Pipe count--->%d\n", count);
 		return(ft_error("Pipe error\n", 1));
 	}
-	pars = init_struct(count, &env_, hel);
+	pars = init_struct(count, &env_);
 	if(!pars)
 		return (0);
 	if(openheredoc(promt, pars)) // heredocery stexic a bacum

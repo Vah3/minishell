@@ -6,13 +6,13 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:14:27 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/20 20:08:51 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/21 14:40:29 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	struct_zeroed(t_pars **pars, t_env **env, t_help hel)
+static void	struct_zeroed(t_pars **pars, t_env **env)
 {
 	t_pars	*var;
 
@@ -31,10 +31,9 @@ static void	struct_zeroed(t_pars **pars, t_env **env, t_help hel)
 	var->pipecount = 0;
 	var->app_or_trunc = -1;
 	var->errnum = 0;
-	var->hel = hel;
 }
 
-t_pars	**init_struct(int count, t_env **env, t_help hel)
+t_pars	**init_struct(int count, t_env **env)
 {
 	t_pars	**pars;
 	int		i;
@@ -57,7 +56,7 @@ t_pars	**init_struct(int count, t_env **env, t_help hel)
 			free(pars);
 			return (0);
 		}
-		struct_zeroed(&pars[i], env, hel);
+		struct_zeroed(&pars[i], env);
 		i++;
 	}
 	return (pars);

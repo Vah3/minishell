@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/19 21:00:43 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:16:43 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ int	ft_error(char *err_message, int err_code)
 int	openheredoc(char *promt, t_pars **pars)
 {
 	int	i;
-	int	doc_count;
 
 	i = 0;
-	doc_count = 0;
 	while (promt[i])
 	{
 		skipquotes(&promt, &i);
@@ -37,12 +35,11 @@ int	openheredoc(char *promt, t_pars **pars)
 				return (FAILURE);
 			if (promt[i] == '|' || promt[i] == '<' || promt[i] == '>')
 				continue ;
-			doc_count++;
 		}
 		if (promt[i])
 			i++;
 	}
-	if (write_docs(promt, doc_count, pars))
+	if (write_docs(promt, pars))
 		return (1);
 	return (0);
 }
@@ -70,7 +67,7 @@ void	skips_and_detect_pipe(char **promt, int *i, int *z)
 		(*z)++;
 }
 
-int	write_docs(char *promt, int count, t_pars **pars)
+int	write_docs(char *promt, t_pars **pars)
 {
 	int		i;
 	int		j;
@@ -89,7 +86,7 @@ int	write_docs(char *promt, int count, t_pars **pars)
 			if (i == j)
 				continue ;
 			delim = ft_substr(promt, j, i - j);
-			if (write_in_pipe_and_dup(pars, count, delim, z))
+			if (write_in_pipe_and_dup(pars, delim, z))
 				return (1);
 		}
 		if (promt[i])
