@@ -18,18 +18,25 @@ int	ft_error(char *err_message, int err_code)
 	return (err_code);
 }
 
+int	correct_delim(char *promt, int i)
+{
+	if(promt[i] && promt[i] != 32 && promt[i] != '|' && promt[i] != '<' && promt[i] != '>')
+		return (1);
+	return (0);
+}
+
 int	openheredoc(char *promt, t_pars **pars)
 {
 	int	i;
 
 	i = 0;
-	while (promt[i])
+	/*while (promt[i])
 	{
 		skipquotes(&promt, &i);
 		if (promt[i] && promt[i + 1] && promt[i] == '<' && promt[i + 1] == '<'
 			&& promt[i++] && promt[i++])
 		{
-			while (promt[i] && promt[i] == 32)
+			while (correct_delim(promt, i))
 				i++;
 			if (promt[i] == '\0')
 				return (FAILURE);
@@ -38,7 +45,7 @@ int	openheredoc(char *promt, t_pars **pars)
 		}
 		if (promt[i])
 			i++;
-	}
+	}*/
 	if (write_docs(promt, pars))
 		return (1);
 	return (0);
@@ -56,7 +63,7 @@ static void	process_redirections(char *promt, int *i, int *j)
 	if (promt[*i] == '|' || promt[*i] == '<' || promt[*i] == '>')
 		return ;
 	skipquotes(&promt, i);
-	while (promt[*i] && promt[*i] != 32)
+	while (correct_delim(promt, *i))
 		(*i)++;
 }
 
@@ -76,7 +83,8 @@ int	write_docs(char *promt, t_pars **pars)
 
 	z = 0;
 	i = 0;
-	while (promt[i])
+	
+	while (promt[i] != '\0')
 	{
 		skips_and_detect_pipe(&promt, &i, &z);
 		if (promt[i] && promt[i] == '<' && promt[++i]
@@ -89,7 +97,7 @@ int	write_docs(char *promt, t_pars **pars)
 			if (write_in_pipe_and_dup(pars, delim, z))
 				return (1);
 		}
-		if (promt[i])
+		else if (promt[i] != '\0')
 			i++ ;
 	}
 	return (0);

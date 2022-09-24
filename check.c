@@ -57,6 +57,24 @@ int	check_redirections(char *promt)
 	return (SUCCESS);
 }
 
+void	find_quote(char *line, int *i, int *flag, int which)
+{	
+	if (which == 1)
+	{
+		while (line[++(*i)] && line[(*i)] != '\'')
+			if (line[(*i)] == '\\')
+				*i += 1;
+		*flag = (line[(*i)] == '\0');
+	}
+	else if (which == 2)
+	{
+		while (line[++(*i)] && line[(*i)] != '"' && line[(*i) - 1] != '\\')
+			if (line[(*i)] == '\\')
+				*i += 1;
+		*flag = (line[(*i)] == '\0');
+	}
+}
+
 int	not_found_second_quote(char *line)
 {
 	int	i;
@@ -68,15 +86,15 @@ int	not_found_second_quote(char *line)
 	{
 		if (line[i] == '\'')
 		{
-			while (line[++i] && line[i] != '\'')
-				;
-			flag = (line[i] == '\0');
+			if (i > 0 && line[i - 1] == '\\' && i++)
+				continue ;
+			find_quote(line, &i, &flag, 1);
 		}
 		if (line[i] == '"')
 		{
-			while (line[++i] && line[i] != '"')
-				;
-			flag = (line[i] == '\0');
+			if (i > 0 && line[i - 1] == '\\' && i++)
+				continue ;
+			find_quote(line, &i, &flag, 2);
 		}
 		if (line[i])
 			i++;

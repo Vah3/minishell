@@ -12,20 +12,26 @@
 
 #include "minishell.h"
 
-static void	skip_if_single_quote(char **line, int *i, int *len)
+static void	skip_if_single_quote(char *line, int *i, int *len)
 {
 	int		j;
-	char	*line_;
 
 	j = *i;
-	line_ = *line;
-	if (line_ && line_[j] && line_[j] == 39)
+	if (line && line[j] && line[j] == 39)
 	{
+		if (*i > 0 && line[(*i) - 1] == '\\')
+		{
+			*i += 1;
+			return ;
+		}
 		j++;
 		(*len)++;
-		while (line_[j] && line_[j] != 39)
+		while (line[j] && line[j] != 39)
 		{
-			j++;
+			if (line[j] == '\\')
+				j++;
+			if (line[j])
+				j++;
 			(*len)++;
 		}
 		j++;
@@ -98,7 +104,7 @@ void	do_expand(char **promt, t_env *env_, int doc)
 	while (*promt && (*promt)[i])
 	{
 		if (doc == 0)
-			skip_if_single_quote(promt, &i, &len);
+			skip_if_single_quote(*promt, &i, &len);
 		if_dollar_sign(promt, &i, &len, env_);
 		len++;
 		i++;

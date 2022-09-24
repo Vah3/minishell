@@ -122,7 +122,7 @@ void	open_out_file(t_pars **pars, char **promt, int j, int i);
 void	skipquotes(char **promt, int *j);
 int		trimspaces(char	**promt, int *k, char c);
 void	iffiles(char **promt, int *k);
-void	duporjoin(char **line, char **promt, int i, int j);
+void	skip_slesh_quote_1(char *promt, int *i, int *count);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						PIPES.C				   	     */
@@ -148,7 +148,7 @@ void	wait_(int *status, int (*fd)[2], pid_t *id, int count);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						REDIRECTIONS.C	5			   	     */
-int		lexer(char **promt, t_pars ***pars);
+int		lexer(char **promt, t_pars ***pars, char **env);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						UTILS.C				   	     */
@@ -158,5 +158,8 @@ int		check_out_or_input(t_pars *pars);
 
 /*//////////////////////////////////////////////////////////////// */
 int		ft_error(char *err_message, int err_code);
+int	correct_delim(char *promt, int i);
+
+
 
 #endif

@@ -6,12 +6,41 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 19:46:49 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/19 21:15:17 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/24 15:56:00 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "../minishell.h"
+
+static void	skipquotes1(char **promt, int *j)
+{
+	int	i;
+
+	i = *j;
+	if (i > 0 && (*promt)[i - 1] && (*promt)[i - 1] == 92)
+	{
+		(*j)++;
+		return ;
+	}
+	if ((*promt)[i] && (*promt)[i] == 34)
+	{
+		i++;
+		while ((*promt)[i] && (*promt)[i] != 34)
+			i++;
+		if ((*promt)[i])
+			i++;
+	}
+	if ((*promt)[i] && (*promt)[i] == 39)
+	{
+		i++;
+		while ((*promt)[i] && (*promt)[i] != 39)
+			i++;
+		if ((*promt)[i])
+			i++;
+	}
+	*j = i;
+}
 
 static size_t	ft_count(char const *str, char j)
 {
@@ -29,7 +58,7 @@ static size_t	ft_count(char const *str, char j)
 		while (str[i] && str[i] != j)
 		{		
 			if (str[i] == 34 || str[i] == 39)
-				skipquotes((char **)&str, (int *)&i);
+				skipquotes1((char **)&str, (int *)&i);
 			else
 			{
 				if (str[i])
@@ -45,7 +74,7 @@ void	iterstring(char *s, int *len, char c)
 	while (s[*len] != c && s[*len])
 	{
 		if (s[*len] == 34 || s[*len] == 39)
-			skipquotes(&s, len);
+			skipquotes1(&s, len);
 		else
 			*len += 1;
 	}

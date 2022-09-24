@@ -94,7 +94,6 @@ int	check_out_or_input(t_pars *pars)
 {
 	if (pars->fileordoc == 0)
 	{
-		printf("eeeeee\n");
 		if (dup2(pars->infilefd, 0) == -1)
 			return (FAILURE);
 	}

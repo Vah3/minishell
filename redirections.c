@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 15:42:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/18 16:04:59 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/24 16:05:54 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,25 +93,33 @@ static int	if_append_file(char **promt, t_pars **pars, int *i)
 	return (SUCCESS);
 }
 
-int	lexer(char **promt, t_pars ***pars)
+int	lexer(char **promt, t_pars ***pars, char **env)
 {
-	int	i;
-	int	pipe_i;
+	int		i;
+	int		pipe_i;
+	char	**input;
 
 	i = 0;
 	pipe_i = 0;
-	while (*promt && (*promt)[i])
+	input = ft_split(*promt, '|');
+	while(input[pipe_i])
 	{
-		skips_and_detect_pipe(promt, &i, &pipe_i);
-		if (if_here_doc(promt, &((*pars)[pipe_i])->fileordoc, &i))
-			return (FAILURE);
-		if (if_append_file(promt, &((*pars)[pipe_i]), &i))
-			return (FAILURE);
-		if (if_in_file(promt, &((*pars)[pipe_i]), &i))
-			return (FAILURE);
-		if (if_out_file(promt, &((*pars)[pipe_i]), &i))
-			return (FAILURE);
-		i++;
+		while (input[pipe_i][i])
+		{
+			skipquotes(promt, &i);
+			if (if_here_doc(&(input[pipe_i]), &((*pars)[pipe_i])->fileordoc, &i))
+				return (FAILURE);
+			if (if_append_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i))
+				return (FAILURE);
+			if (if_in_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i))
+				return (FAILURE);
+			if (if_out_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i))
+				return (FAILURE);
+			i++;
+		}
+		(*pars)[pipe_i]->cmd = ft_strdup(input[pipe_i]);
+		make_cmd((*pars)[pipe_i], env);
+		pipe_i++;
 	}
 	return (SUCCESS);
 }

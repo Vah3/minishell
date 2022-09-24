@@ -6,11 +6,30 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 22:10:42 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/19 20:11:32 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/23 16:38:45 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	skip_slesh_quote(char *promt, int *i, int *len)
+{
+	if (promt[*i] == '\\' && promt[*i + 1]
+		&& (promt[*i + 1] == '\'' || promt[*i + 1] == '\"'))
+		*i += 1;
+	(*len)++;
+}
+
+static void	assigning(char	**trash, char **cmd, int *i, int *j)
+{
+	if ((*trash)[*i] == '\\' && (*trash)[(*i) + 1]
+		&& ((*trash)[(*i) + 1] == '\'' || (*trash)[(*i) + 1] == '\"'))
+	{
+		(*cmd)[(*j)++] = (*trash)[++(*i)];
+	}
+	else
+		(*cmd)[(*j)++] = (*trash)[(*i)];
+}
 
 static int	correct_len(char *trash)
 {
@@ -21,15 +40,16 @@ static int	correct_len(char *trash)
 	count_of_symbols = 0;
 	while (trash[i])
 	{
+		skip_slesh_quote_1(trash, &i, &count_of_symbols);
 		if (trash[i] == '"')
 		{
 			while (trash[++i] && trash[i] != '"')
-				count_of_symbols++;
+				skip_slesh_quote(trash, &i, &count_of_symbols);
 		}
 		if (trash[i] == '\'')
 		{
 			while (trash[++i] && trash[i] != '\'')
-				count_of_symbols++;
+				skip_slesh_quote(trash, &i, &count_of_symbols);
 		}
 		if (!trash[i])
 			break ;
@@ -54,14 +74,14 @@ static char	*clear_cmd(char *trash, int count_of_symbols)
 	{
 		if (trash[i] == '"')
 			while (trash[++i] && trash[i] != '"')
-				cmd[j++] = trash[i];
+				assigning(&trash, &cmd, &i, &j);
 		if (trash[i] == '\'')
 			while (trash[++i] && trash[i] != '\'')
-				cmd[j++] = trash[i];
+				assigning(&trash, &cmd, &i, &j);
 		if (!trash[i])
 			break ;
 		if (trash[i] != '"' && trash[i] != '\'')
-			cmd[j++] = trash[i];
+			assigning(&trash, &cmd, &i, &j);
 		i++;
 	}
 	cmd[j] = '\0';

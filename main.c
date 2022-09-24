@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/21 14:39:47 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/24 14:53:23 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	main(int argc, char **argv, char **env)
 	int		i;
 	int 	status = 0;
 	int		count;
-	char	**cmd;
 	(void)argc;
 	(void)argv;
 	t_env	*env_;
@@ -39,7 +38,6 @@ int	main(int argc, char **argv, char **env)
 	 	continue ;
 	if (check_pipes_count(&promt, &count))
 	{
-		printf("Pipe count--->%d\n", count);
 		return(ft_error("Pipe error\n", 1));
 	}
 	pars = init_struct(count, &env_);
@@ -59,25 +57,12 @@ int	main(int argc, char **argv, char **env)
 		continue ;
 	}
 	do_expand(&promt, env_, 0); ///////expand
-	if (lexer(&promt, &pars))
+	if (lexer(&promt, &pars, env))
 	{
 		free_pars(pars, count);
 		free(promt);
 		continue ;
 	}
-	cmd = ft_split(promt, '|');
-	if (count < 2)
-		pars[i]->cmd = ft_strdup(promt);
-	else
-	{
-		while(i < count)
-		{
-			pars[i]->cmd = ft_strdup(cmd[i]);
-			i++;
-		}
-	}
-	free_after_split(cmd);
-	cmd = NULL;
 	open_processes(count, pars, env, &status);
 	free(promt);
 	free_after_split(env);

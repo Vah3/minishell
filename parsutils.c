@@ -17,6 +17,8 @@ void	skipquotes(char **promt, int *j)
 	int	i;
 
 	i = *j;
+	if (i > 0 && (*promt)[i - 1] && (*promt)[i - 1] == 92)
+		return ;
 	if ((*promt)[i] && (*promt)[i] == 34)
 	{
 		i++;
@@ -86,23 +88,17 @@ void	iffiles(char **promt, int *k)
 			i++;
 	}
 	else
-		while (*promt && (*promt)[i] && (*promt)[i] != 32)
+		while (*promt && correct_delim(*promt, i))
 			i++;
 	*k = i;
 }
 
-void	duporjoin(char **line, char **promt, int i, int j)
+void	skip_slesh_quote_1(char *promt, int *i, int *count)
 {
-	char	*trimed;
-
-	trimed = NULL;
-	if (!(*line))
-		*line = ft_trim_substr(promt, j, i);
-	else
+	if (promt[*i] == '\\' && promt[*i + 1]
+		&& (promt[*i + 1] == '\'' || promt[*i + 1] == '\"'))
 	{
-		*line = ft_strjoin(*line, " ");
-		trimed = ft_trim_substr(promt, j, i);
-		*line = ft_strjoin(*line, trimed);
-		free(trimed);
+		*i += 2;
+		*count += 1;
 	}
 }
