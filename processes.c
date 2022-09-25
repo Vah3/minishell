@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/21 15:21:24 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:21:38 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	open_processes(int count, t_pars **pars, char **env, int *status)
 {
 	int		i;
 	int		(*fd)[2];
-	pid_t	*id;
+	pid_t	*id = NULL;
 
 	i = -1;
 	malloc_and_check(count, (int ***)&fd, pars, &id);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:53:27 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/19 20:54:14 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:13:23 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ char	**list_to_env(t_env	*head, int status)
 		line = NULL;
 		temp = temp->next;
 	}
-	update_status(head, status);
 	env[i] = NULL;
+	update_status(head, status);
 	return (env);
 }
 
@@ -110,6 +110,6 @@ char	*_getenv(t_env *list, char *key )
 	if (!temp)
 		return (NULL);
 	temp->value = set_back_slesh(temp->value);
-	return (ft_strdup(temp->value));
+	return (temp->value);
 }
 //nayel ardzyoq imast ka dup anel value, arden maloccac a

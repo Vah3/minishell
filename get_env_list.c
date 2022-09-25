@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:20:01 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/02 17:20:02 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:15:36 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ t_env	*env_initialization(char **env)
 		free_after_split(lines);
 		lines = NULL;
 	}
-	env_add_back(&environ, new_env_element("?", "0"));
+	if(getenv("?"))
+		env_add_back(&environ, new_env_element("?", "0"));
 	return (environ);
 }
 

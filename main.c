@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/24 14:53:23 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:18:15 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	t_env	*env_;
-	env_ = env_initialization(env);
 
+	env_ = env_initialization(env);
 	while(1)
 	{
 	i = 0;
 	env = list_to_env(env_, status);
+
 	promt = readline("Minishell$ ");
 	if (!promt)
 		return (0);
@@ -64,7 +65,7 @@ int	main(int argc, char **argv, char **env)
 		// free(promt);
 		continue ;
 	}
-	open_processes(count, pars, env, &status);
+	open_processes(count, pars, env, &status);	
 	//free(promt);
 	//free_after_split(env);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 14:06:18 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/20 14:27:15 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:18:52 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,25 @@ void	update_status(t_env *env, int status)
 	stat = ft_itoa(status);
 	while (local_env)
 	{
-		if (strncmp(local_env->key, "?", 1) == 0)
+		if (ft_strncmp(local_env->key, "?", 1) == 0)
 		{
 			free(local_env->value);
 			local_env->value = stat;
+			break ;
 		}
 		local_env = local_env->next;
 	}
 }
 
-void	do_expand(char **promt, t_env *env_, int doc)
+void	do_expand(char **promt, t_env *env, int doc)
 {
 	int		len;
 	int		i;
+	t_env	*env_;
 
 	i = 0;
 	len = 0;
+	env_ = env;
 	while (*promt && (*promt)[i])
 	{
 		if (doc == 0)
