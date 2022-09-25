@@ -14,6 +14,7 @@
 
 int	main(int argc, char **argv, char **env)
 {
+//	static int a = 0;
 	char	*promt;
 	t_pars	**pars;
 	int		i;
@@ -45,27 +46,27 @@ int	main(int argc, char **argv, char **env)
 		return (0);
 	if(openheredoc(promt, pars)) // heredocery stexic a bacum
 	{
-		free_pars(pars, count);
-		free(promt);
+		// free_pars(pars, count);
+		// free(promt);
 		continue ;
 	}
 	if(check_redirections(promt))
 	{
 		status = 258;
-		free_pars(pars, count);
-		free (promt);
+		// free_pars(pars, count);
+		// free (promt);
 		continue ;
 	}
 	do_expand(&promt, env_, 0); ///////expand
-	if (lexer(&promt, &pars, env))
+	if (lexer(&promt, &pars))
 	{
-		free_pars(pars, count);
-		free(promt);
+		// free_pars(pars, count);
+		// free(promt);
 		continue ;
 	}
 	open_processes(count, pars, env, &status);
-	free(promt);
-	free_after_split(env);
+	//free(promt);
+	//free_after_split(env);
 }
 
 	return (0);

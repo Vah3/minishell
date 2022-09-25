@@ -15,8 +15,10 @@
 static void	free_and_exit(char *for_print, char *finaly, int code)
 {
 	printf("%s: %s\n", (finaly + 1), for_print);
-	free(finaly);
+	//free(finaly);
 	exit(code);
+//	(void)code;
+	(void) finaly;
 }
 
 static int	free_path_rest(char **path, int i)
@@ -42,10 +44,10 @@ static void	check_cmd(char	**command, char **path)
 		if (access(*command, X_OK) != 0)
 			free(*command);
 	}
-	if (opendir(finaly + 1) && free_path_rest(path, i))
+	if (opendir(finaly + 1)) //&& free_path_rest(path, i))
 		free_and_exit("is a directory", finaly, 126);
 	else if (ft_strchr(finaly + 1, '/')
-		&& (access((finaly + 1), F_OK) == -1) && free_path_rest(path, i))
+		&& (access((finaly + 1), F_OK) == -1)) //&& free_path_rest(path, i))
 		free_and_exit("No such file or directory", finaly, 127);
 	if (((!path || path[i] == NULL)
 			&& (access((finaly + 1), F_OK) == -1)))

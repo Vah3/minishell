@@ -93,7 +93,7 @@ static int	if_append_file(char **promt, t_pars **pars, int *i)
 	return (SUCCESS);
 }
 
-int	lexer(char **promt, t_pars ***pars, char **env)
+int	lexer(char **promt, t_pars ***pars)
 {
 	int		i;
 	int		pipe_i;
@@ -102,7 +102,7 @@ int	lexer(char **promt, t_pars ***pars, char **env)
 	i = 0;
 	pipe_i = 0;
 	input = ft_split(*promt, '|');
-	while(input[pipe_i])
+	while(input && input[pipe_i])
 	{
 		while (input[pipe_i][i])
 		{
@@ -118,8 +118,10 @@ int	lexer(char **promt, t_pars ***pars, char **env)
 			i++;
 		}
 		(*pars)[pipe_i]->cmd = ft_strdup(input[pipe_i]);
-		make_cmd((*pars)[pipe_i], env);
+		free(input[pipe_i]);
 		pipe_i++;
 	}
+	//if(input)
+	//free(input);
 	return (SUCCESS);
 }

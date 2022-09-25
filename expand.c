@@ -60,7 +60,7 @@ static void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 	{
 		j = *i;
 		while ((*promt)[*i]
-				&& (ft_isalnum((*promt)[*i]) || (*promt)[*i] == '?'))
+				&& (ft_isalnum((*promt)[*i]) || (*promt)[*i] == '?' || (*promt)[*i] == '_'))
 			(*i)++;
 		delim = ft_substr(*promt, j, (*i) - j);
 		env_line = _getenv(env_v, delim);

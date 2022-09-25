@@ -89,7 +89,7 @@ void	remove_from_list(t_env *env, char *key);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						GET_ENV_UTILS.C	 5			   	     */
-void	free_env(t_env **env);
+//void	free_env(t_env **env);
 t_env	*last_env_element(t_env *start);
 int		size_of_list(t_env *list);
 void	free_after_split(char **store);
@@ -148,7 +148,7 @@ void	wait_(int *status, int (*fd)[2], pid_t *id, int count);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						REDIRECTIONS.C	5			   	     */
-int		lexer(char **promt, t_pars ***pars, char **env);
+int		lexer(char **promt, t_pars ***pars);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						UTILS.C				   	     */

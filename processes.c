@@ -72,7 +72,6 @@ int	do_execve(char **cmd, char **env, t_pars *pars)
 	execve(cmd[0], cmd, env);
 	if (ft_strlen(pars->cmd) == 0)
 		exit(0);
-	printf("aaaaa%s\n", strerror(errno));
 	exit(126);
 	return (1);
 }
@@ -88,11 +87,13 @@ void	open_processes(int count, t_pars **pars, char **env, int *status)
 	while (++i < count)
 	{
 		do_fork(&id, i);
-		if (id[i] == 0 && count == 2 && single_pipe(i, fd, pars[i])
-			&& fr(pars, fd, id, count))
+		if (id[i] == 0 )
+			make_cmd(pars[i], env);
+		if (id[i] == 0 && count == 2 && single_pipe(i, fd, pars[i]))
+			//&& fr(pars, fd, id, count))
 			exit (EXIT_FAILURE);
-		if (id[i] == 0 && count > 2 && multi_pipe(i, fd, count, pars[i])
-			&& fr(pars, fd, id, count))
+		if (id[i] == 0 && count > 2 && multi_pipe(i, fd, count, pars[i]))
+			//&& fr(pars, fd, id, count))
 			exit (EXIT_FAILURE);
 		if (id[i] == 0 && count == 1)
 			without_pipes(pars, fd, id, count);

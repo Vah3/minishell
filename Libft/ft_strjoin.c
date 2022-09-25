@@ -37,5 +37,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	newstr[len] = '\0';
 	free(s1);
+	s1 = NULL;
 	return (newstr);
 }

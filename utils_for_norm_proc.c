@@ -36,7 +36,7 @@ int	make_cmd(t_pars *pars, char **env)
 	if (pars->cmd != NULL && pars->errfile == NULL)
 	{
 		command = ft_split(pars->cmd, 32);
-		if (!command)
+		if (!command )
 			return (FAILURE);
 		while (command[j])
 		{
