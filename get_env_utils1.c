@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:53:27 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/25 09:13:23 by root             ###   ########.fr       */
+/*   Updated: 2022/09/25 09:34:57 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,10 @@ int	count_of_quote(char *line)
 char	*set_back_slesh(char *line)
 {
 	int		i;
-	char	*ret_val;
 	char	*new;
 	char	*new1;
 
 	i = 0;
-	ret_val = (char *)malloc(sizeof(char)
-			* (ft_strlen(line) + count_of_quote(line) + 1));
 	while (line[i])
 	{
 		if (line[i] == '\'')

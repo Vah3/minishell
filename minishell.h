@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/21 15:22:14 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:29:50 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ t_env	*last_env_element(t_env *start);
 int		size_of_list(t_env *list);
 void	free_after_split(char **store);
 int		size_of_env(char **env);
+void	free_env_(t_env **env);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						GET_ENV_UTILS1.C	3			   	     */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 15:42:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/24 16:05:54 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/09/25 10:03:03 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,13 @@ int	lexer(char **promt, t_pars ***pars)
 		while (input[pipe_i][i])
 		{
 			skipquotes(promt, &i);
-			if (if_here_doc(&(input[pipe_i]), &((*pars)[pipe_i])->fileordoc, &i))
+			if (input[pipe_i] && if_here_doc(&(input[pipe_i]), &((*pars)[pipe_i])->fileordoc, &i))
 				return (FAILURE);
-			if (if_append_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i))
+			if (input[pipe_i] && if_append_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i))
 				return (FAILURE);
-			if (if_in_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i))
+			if (input[pipe_i] && if_in_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i))
 				return (FAILURE);
-			if (if_out_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i))
+			if (input[pipe_i] && if_out_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i))
 				return (FAILURE);
 			i++;
 		}
@@ -121,7 +121,7 @@ int	lexer(char **promt, t_pars ***pars)
 		free(input[pipe_i]);
 		pipe_i++;
 	}
-	//if(input)
-	//free(input);
+	if(input)
+	free(input);
 	return (SUCCESS);
 }

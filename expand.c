@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 14:06:18 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/25 09:18:52 by root             ###   ########.fr       */
+/*   Updated: 2022/09/25 09:53:48 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,12 @@ void	update_status(t_env *env, int status)
 	char	*stat;
 
 	local_env = env;
-	stat = ft_itoa(status);
+	stat = NULL;
 	while (local_env)
 	{
 		if (ft_strncmp(local_env->key, "?", 1) == 0)
 		{
+			stat = ft_itoa(status);
 			free(local_env->value);
 			local_env->value = stat;
 			break ;

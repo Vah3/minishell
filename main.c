@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/25 09:18:15 by root             ###   ########.fr       */
+/*   Updated: 2022/09/25 09:46:34 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	main(int argc, char **argv, char **env)
 //	static int a = 0;
 	char	*promt;
 	t_pars	**pars;
-	int		i;
 	int 	status = 0;
 	int		count;
 	(void)argc;
@@ -27,12 +26,15 @@ int	main(int argc, char **argv, char **env)
 	env_ = env_initialization(env);
 	while(1)
 	{
-	i = 0;
 	env = list_to_env(env_, status);
 
 	promt = readline("Minishell$ ");
 	if (!promt)
+	{
+		free_after_split(env);
+		free_env_(&env_);
 		return (0);
+	}
 	if (!promt[0])
 		continue;
 	add_history(promt);
@@ -47,29 +49,28 @@ int	main(int argc, char **argv, char **env)
 		return (0);
 	if(openheredoc(promt, pars)) // heredocery stexic a bacum
 	{
-		// free_pars(pars, count);
-		// free(promt);
+		 free_pars(pars, count);
+		 free(promt);
 		continue ;
 	}
 	if(check_redirections(promt))
 	{
 		status = 258;
-		// free_pars(pars, count);
-		// free (promt);
+		 free_pars(pars, count);
+		 free (promt);
 		continue ;
 	}
 	do_expand(&promt, env_, 0); ///////expand
 	if (lexer(&promt, &pars))
 	{
-		// free_pars(pars, count);
-		// free(promt);
+		 free_pars(pars, count);
+		 free(promt);
 		continue ;
 	}
 	open_processes(count, pars, env, &status);	
-	//free(promt);
-	//free_after_split(env);
+	free(promt);
+	free_after_split(env);
 }
-
 	return (0);
 }
 

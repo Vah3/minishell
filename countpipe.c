@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   countpipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 15:07:22 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/19 20:02:36 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/25 10:18:17 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*ft_trim_substr(char **source, int start, int end)
 	char	*ret_string;
 	char	*new_string;
 	int		i;
-
+	
 	ret_string = ft_substr(*source, start, end - start);
 	new_string = malloc(sizeof(char) * (
 				ft_strlen(*source) - (end - start) + 1));
