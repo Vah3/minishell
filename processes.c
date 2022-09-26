@@ -57,14 +57,23 @@ void	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_)
 	*id_ = id;
 }
 
-void	do_fork(pid_t **id, int i)
+int	do_fork(pid_t **id, int i)
 {
+	int	i_;
+
+	i_ = 0;
 	(*id)[i] = fork();
 	if ((*id)[i] == -1)
 	{
 		perror("forks failed");
-		exit(EXIT_FAILURE);
+		while (i_ < i)
+		{
+			kill ((*id)[i_],SIGKILL);
+			i_++;
+		}
+		return (FAILURE);
 	}
+	return (SUCCESS);
 }
 
 int	do_execve(char **cmd, char **env, t_pars *pars)
@@ -86,7 +95,8 @@ void	open_processes(int count, t_pars **pars, char **env, int *status)
 	malloc_and_check(count, (int ***)&fd, pars, &id);
 	while (++i < count)
 	{
-		do_fork(&id, i);
+		if(do_fork(&id, i))
+			break ;
 		if (id[i] == 0 )
 			make_cmd(pars[i], env);
 		if (id[i] == 0 && count == 2 && single_pipe(i, fd, pars[i]))

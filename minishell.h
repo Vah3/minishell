@@ -26,6 +26,7 @@
 # include "./Libft/libft.h"
 # include <errno.h>
 # include <dirent.h>
+# include <signal.h>
 /*			HEADER	FILES			*/
 
 # define SUCCESS 0

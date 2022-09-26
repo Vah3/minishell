@@ -55,7 +55,7 @@ t_env	*env_initialization(char **env)
 		free_after_split(lines);
 		lines = NULL;
 	}
-	if(getenv("?"))
+	if(!getenv("?"))
 		env_add_back(&environ, new_env_element("?", "0"));
 	return (environ);
 }

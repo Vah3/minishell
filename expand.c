@@ -40,11 +40,10 @@ static void	skip_if_single_quote(char *line, int *i, int *len)
 	*i = j;
 }
 
-static void	free_params(char	*delim, char	*promt, char	*env_line)
+static void	free_params(char	*delim, char	*promt)//, char	*env_line)
 {
 	free (promt);
 	free(delim);
-	free (env_line);
 }
 
 static void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
@@ -69,7 +68,7 @@ static void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 		prom = ft_strdup(*promt);
 		prom = ft_strjoin(prom, env_line);
 		prom = ft_strjoin(prom, (*promt) + (*i));
-		free_params(delim, *promt, env_line);
+		free_params(delim, *promt);//, env_line);
 		*promt = prom;
 		(*i)--;
 		(*len)--;
@@ -88,6 +87,7 @@ void	update_status(t_env *env, int status)
 		if (ft_strncmp(local_env->key, "?", 1) == 0)
 		{
 			stat = ft_itoa(status);
+			printf("%p\n",local_env->value);
 			free(local_env->value);
 			local_env->value = stat;
 			break ;

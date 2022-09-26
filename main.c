@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+
 int	main(int argc, char **argv, char **env)
 {
 //	static int a = 0;
@@ -23,6 +24,11 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	t_env	*env_;
 
+	if(SIGQUIT)
+	{
+		signal(SIGQUIT, clear_and_ignor);
+		rl_replace_line("", 0);
+	}
 	env_ = env_initialization(env);
 	while(1)
 	{
@@ -40,6 +46,12 @@ int	main(int argc, char **argv, char **env)
 	add_history(promt);
 	 if (not_found_second_quote(promt) || only_pipe(promt))
 	 	continue ;
+	if(check_redirections(promt))
+	{
+		status = 258;
+		free (promt);
+		continue ;
+	}
 	if (check_pipes_count(&promt, &count))
 	{
 		return(ft_error("Pipe error\n", 1));
@@ -51,13 +63,6 @@ int	main(int argc, char **argv, char **env)
 	{
 		 free_pars(pars, count);
 		 free(promt);
-		continue ;
-	}
-	if(check_redirections(promt))
-	{
-		status = 258;
-		 free_pars(pars, count);
-		 free (promt);
 		continue ;
 	}
 	do_expand(&promt, env_, 0); ///////expand

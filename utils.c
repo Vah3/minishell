@@ -56,9 +56,13 @@ int	write_in_pipe_and_dup(t_pars **pars, char *delim, int z)
 		line = readline(">");
 		expand_if_does_not_have_quotes(&line, expand_or_not, pars[0]);
 		if (ft_strncmp(delim, line, ft_strlen(line)) == 0)
+		{
+			free(line);
 			break ;
+		}
 		if (write(fd[1], line, ft_strlen(line)) == -1)
 			return (FAILURE);
+		free(line);	
 		if (write(fd[1], "\n", 1) == -1)
 			return (FAILURE);
 	}
