@@ -76,5 +76,10 @@ void	wait_(int *status, int (*fd)[2], pid_t *id, int count)
 		waitpid(id[j++], status, 0);
 		if (WIFEXITED (*status))
 			*status = WEXITSTATUS(*status);
+		else if(WIFSIGNALED(*status))
+		{
+			*status = WTERMSIG(*status) + 128;
+			write(1, "\n", 1);
+		}
 	}
 }

@@ -30,9 +30,9 @@ CLE				= make clean
 
 FCLE			= make fclean
 
-INCLUDES		= -ILibft -I/usr/local/include
+INCLUDES		= -ILibft  -I/Users/vagevorg/readline/include
 
-LINKERS			= -lft -lreadline -L./Libft
+LINKERS			=  -L./Libft -L/Users/vagevorg/readline/lib -lft -lreadline
 
 %.o:%.c
 				@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@

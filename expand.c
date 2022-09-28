@@ -87,7 +87,6 @@ void	update_status(t_env *env, int status)
 		if (ft_strncmp(local_env->key, "?", 1) == 0)
 		{
 			stat = ft_itoa(status);
-			printf("%p\n",local_env->value);
 			free(local_env->value);
 			local_env->value = stat;
 			break ;

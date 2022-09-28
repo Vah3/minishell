@@ -27,6 +27,8 @@
 # include <errno.h>
 # include <dirent.h>
 # include <signal.h>
+#include <termios.h>
+#include <unistd.h>
 /*			HEADER	FILES			*/
 
 # define SUCCESS 0

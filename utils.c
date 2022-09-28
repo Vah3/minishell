@@ -54,6 +54,16 @@ int	write_in_pipe_and_dup(t_pars **pars, char *delim, int z)
 	while (1)
 	{
 		line = readline(">");
+		if (!line)
+		{
+			// printf("---%s---\n", line);
+		// printf("%c", 4);
+			// rl_on_new_line();
+			// printf("\b");
+			rl_replace_line("Minishell$", 1);
+			rl_redisplay();
+			break;
+		}
 		expand_if_does_not_have_quotes(&line, expand_or_not, pars[0]);
 		if (ft_strncmp(delim, line, ft_strlen(line)) == 0)
 		{
@@ -88,7 +98,10 @@ void	init_pipe(int ***fd_, int count)
 	while (i < count - 1)
 	{
 		if (pipe(fd[i]))
-			return ;
+			{
+				perror("Pipe error");
+				return ;
+			}
 		i++;
 	}
 	*fd_ = (int **)fd;

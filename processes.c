@@ -90,13 +90,24 @@ void	open_processes(int count, t_pars **pars, char **env, int *status)
 	int		i;
 	int		(*fd)[2];
 	pid_t	*id = NULL;
+	struct termios a;
+
 
 	i = -1;
+	
 	malloc_and_check(count, (int ***)&fd, pars, &id);
 	while (++i < count)
 	{
 		if(do_fork(&id, i))
 			break ;
+		if (id[i] == 0)
+		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+			tcgetattr(0, &a);
+			a.c_lflag |= ECHOCTL;
+			tcsetattr(0, 0, &a);
+		}
 		if (id[i] == 0 )
 			make_cmd(pars[i], env);
 		if (id[i] == 0 && count == 2 && single_pipe(i, fd, pars[i]))
