@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 15:42:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/25 10:03:03 by root             ###   ########.fr       */
+/*   Updated: 2022/09/29 17:24:32 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int	lexer(char **promt, t_pars ***pars)
 		(*pars)[pipe_i]->cmd = ft_strdup(input[pipe_i]);
 		free(input[pipe_i]);
 		pipe_i++;
+		i=0;
 	}
 	if(input)
 	free(input);

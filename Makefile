@@ -3,14 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/21 16:05:05 by vagevorg          #+#    #+#              #
-#    Updated: 2022/09/24 20:16:04 by vagevorg         ###   ########.fr        #
+#    Updated: 2022/09/29 20:26:23 by edgghaza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # gcc *.c -lft -LLibft -lreadline -o minishell 
+
+PREFIX			= $(shell find ${HOME} -name readline-edgghaza 2>/dev/null)
 
 NAME			= minishell
 
@@ -30,9 +32,9 @@ CLE				= make clean
 
 FCLE			= make fclean
 
-INCLUDES		= -ILibft  -I/Users/vagevorg/readline/include
+INCLUDES		= -ILibft  -I./readline-edgghaza/include
 
-LINKERS			=  -L./Libft -L/Users/vagevorg/readline/lib -lft -lreadline
+LINKERS			=  -L./Libft -L./readline-edgghaza/lib -lft -lreadline
 
 %.o:%.c
 				@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -53,5 +55,8 @@ fclean:			clean
 				@$(FCLE) $(LIBFT)
 
 re:				fclean all
+
+readline:
+	@(cd readline-master && make clean && ./configure --prefix=$(PREFIX) && make && make install)
 
 .PHONY:			all clean fclean re

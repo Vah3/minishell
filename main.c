@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/25 09:46:34 by root             ###   ########.fr       */
+/*   Updated: 2022/09/29 18:59:48 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,18 @@ void	handle(int i)
 	// rl_
 	(void) i;
 	status = 1;
-	 write(1, "\n", 1);
-	 rl_on_new_line();
-	 rl_replace_line("", 0);
-	 rl_redisplay();
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 void	handle1(int i)
 {
 	// rl_
 	(void) i;
 	status = 1;
-	 rl_on_new_line();
-	 rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_replace_line("", 0);
 	 //rl_redisplay();
 }
 
@@ -93,6 +93,11 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		do_expand(&promt, env_, 0); ///////expand
+		if (there_is_builtin(promt))//<-----------------------
+		{
+			call_builtin(promt, there_is_builtin(promt), env_); 
+			continue;
+		}
 		if (lexer(&promt, &pars))
 		{
 			 free_pars(pars, count);
