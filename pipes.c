@@ -27,7 +27,7 @@ static int	when_index_is_zero(int (*fd)[2], t_pars *pars)
 	return (SUCCESS);
 }
 
-static int	last_pipe(int (*fd)[2], t_pars *pars, int i)
+static int	midle_pipe(int (*fd)[2], t_pars *pars, int i)
 {
 	if (pars->errfile)
 	{
@@ -52,6 +52,7 @@ int	single_pipe(int i, int (*fd)[2], t_pars *pars)
 		{
 			printf("minishell: %s : %s\n",
 				pars->errfile, strerror(pars->errnum));
+			// printf("-->>%s<<<--%s---%d", strerror(pars->errnum), __FILE__,__LINE__);
 			return (FAILURE);
 		}
 		if (pars->outfilefd == -1)
@@ -85,7 +86,7 @@ int	multi_pipe(int i, int (*fd)[2], int count, t_pars *pars)
 		if (dup2(fd[i - 1][0], 0) == -1)
 			return (FAILURE);
 	}
-	else if (i > 0 && last_pipe(fd, pars, i) == FAILURE)
+	else if (i > 0 && midle_pipe(fd, pars, i) == FAILURE)
 		return (FAILURE);
 	check_out_or_input(pars);
 	close_pipes(fd, count);

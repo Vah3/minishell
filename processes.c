@@ -39,7 +39,12 @@ void	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_)
 	pid_t	*id;
 
 	id = NULL;
-	init_pipe(fd_, count);
+	if (init_pipe(fd_, count))
+	{
+		free_pars(pars, count);
+		free(*fd_);
+		exit(EXIT_FAILURE);
+	}
 	if (count > 1 && !(*fd_))
 	{
 		perror("fd");
@@ -78,10 +83,14 @@ int	do_fork(pid_t **id, int i)
 
 int	do_execve(char **cmd, char **env, t_pars *pars)
 {
-	execve(cmd[0], cmd, env);
-	if (ft_strlen(pars->cmd) == 0)
-		exit(0);
-	exit(126);
+	if (cmd && cmd[0])
+	{
+		execve(cmd[0], cmd, env);
+		if (ft_strlen(pars->cmd) == 0)
+			exit(0);
+		exit(126);
+	}
+	exit (0);
 	return (1);
 }
 
@@ -118,6 +127,7 @@ void	open_processes(int count, t_pars **pars, char **env, int *status)
 			exit (EXIT_FAILURE);
 		if (id[i] == 0 && count == 1)
 			without_pipes(pars, fd, id, count);
+			printf("%d\n", __LINE__);
 		if (id[i] == 0)
 			do_execve((pars[i])->exec_cmd, env, pars[i]);
 	}

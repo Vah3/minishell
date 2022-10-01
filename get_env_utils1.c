@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	**list_to_env(t_env	*head, int status)
+char	**list_to_env(t_env	*head, int status, char *promt)
 {
 	t_env	*temp;
 	char	**env;
@@ -25,6 +25,7 @@ char	**list_to_env(t_env	*head, int status)
 	i = 0;
 	temp = head;
 	line = NULL;
+	update_status(head, status, promt);
 	while (temp)
 	{
 		line = ft_strdup(temp->key);
@@ -36,7 +37,6 @@ char	**list_to_env(t_env	*head, int status)
 		temp = temp->next;
 	}
 	env[i] = NULL;
-	update_status(head, status);
 	return (env);
 }
 
@@ -76,7 +76,7 @@ char	*set_back_slesh(char *line)
 	char	*new1;
 
 	i = 0;
-	while (line[i])
+	while (line && line[i])
 	{
 		if (line[i] == '\'')
 		{

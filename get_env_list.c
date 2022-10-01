@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:20:01 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/29 20:07:12 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:15:36 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*new_env_element(char *key, char *value)
+static t_env	*new_env_element(char *key, char *value)
 {
 	t_env	*temp;
 
@@ -25,7 +25,7 @@ t_env	*new_env_element(char *key, char *value)
 	return (temp);
 }
 
-void	env_add_back(t_env **list, t_env *new_item)
+static void	env_add_back(t_env **list, t_env *new_item)
 {
 	t_env	*temp;
 
@@ -38,34 +38,22 @@ void	env_add_back(t_env **list, t_env *new_item)
 	}
 }
 
-int	key_len(char *s)
-{
-	int	len;
-
-	len = 0;
-	while (s[len] && s[len] != '=')
-		len++;
-	return (len);
-}
-
 t_env	*env_initialization(char **env)
 {
 	t_env		*environ;
-	char		*key;
-	char		*value;
+	char		**lines;
 	int			length;
 	int			i;
-	
+
 	i = -1;
 	length = size_of_env(env);
 	environ = NULL;
 	while (++i < length)
 	{
-		value = ft_strdup(ft_strchr(env[i], '=') + 1);
-		key = ft_substr(env[i], 0, key_len(env[i]));
-		env_add_back(&environ, new_env_element(key, value));
-		free(key);
-		free(value);
+		lines = ft_split(env[i], '=');
+		env_add_back(&environ, new_env_element(lines[0], lines[1]));
+		free_after_split(lines);
+		lines = NULL;
 	}
 	if(!getenv("?"))
 		env_add_back(&environ, new_env_element("?", "0"));

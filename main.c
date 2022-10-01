@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/29 18:59:48 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:46:34 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,77 @@
 
 int 	status = 0;
 
-
-void	handle(int i)
+int	checking_line(char *line, char *delim)
 {
-	// rl_
-	(void) i;
-	status = 1;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if(status == -1)
+		return (1);
+	if (!line)
+	{
+		rl_replace_line("Minishell$", 1);
+		rl_redisplay();
+		return (1);
+	}
+	if (ft_strncmp(delim, line, ft_strlen(line)) == 0)
+	{
+		free(line);
+		return (1);
+	}
+	return (0);
 }
-void	handle1(int i)
+
+int	set_status_back(int input_fd)
 {
-	// rl_
-	(void) i;
-	status = 1;
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	 //rl_redisplay();
+	if (status == -1)
+	{
+		status = 1;
+		dup2(input_fd, 0);
+		signal(SIGINT, handle4);
+		return (1);
+	}
+	return (0);
+}
+int	close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim)
+{
+	if (close(fd[1]) == -1)
+		return (FAILURE);
+	pars[z]->isheredoc = dup(fd[0]);
+	free(delim);
+	return (0);
+}
+int	write_in_pipe_and_dup(t_pars **pars, char *delim, int z)
+{
+	int		fd[2];
+	char	*line;
+	int		expand_or_not;
+	int		input;
+
+	if (pipe(fd) == -1)
+		return (FAILURE);
+	expand_or_not = clearquotes(&delim);
+	input = dup(0);
+	signal(SIGINT, handle2);
+	while (1)
+	{
+		line = readline(">");
+		expand_if_does_not_have_quotes(&line, expand_or_not, pars[0]);
+		if (checking_line(line, delim))
+			break ;
+		if (write(fd[1], line, ft_strlen(line)) == -1)
+			return (FAILURE);
+		if (write(fd[1], "\n", 1) == -1)
+			return (FAILURE);
+		free(line);
+	}
+	if(close_pipe_and_free_delim(fd, z, pars, delim) == FAILURE
+		|| set_status_back(input))
+		return (FAILURE);
+	return (SUCCESS);
 }
 
 int	main(int argc, char **argv, char **env)
 {
-//	static int a = 0;
+//	static int  a = 0;
+	int 	gr = 0;
 	char	*promt;
 	t_pars	**pars;
 	int		count;
@@ -48,21 +95,21 @@ int	main(int argc, char **argv, char **env)
 	t_env	*env_;
 	struct termios termios_p;
 
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_IGN);
 	env_ = env_initialization(env);
 	while(1)
 	{
 		tcgetattr(0, &termios_p);
 		termios_p.c_lflag &= ~ECHOCTL;
 		tcsetattr(0, 0, &termios_p);
-		signal(SIGINT, handle);
+		if (gr == 0)
+			signal(SIGINT, handle0);
 		promt = readline("Minishell$ ");
 		signal(SIGINT, handle1);
-		env = list_to_env(env_, status);
 		if (!promt)
 		{
-			free_after_split(env);
+			//free_after_split(env);
 			free_env_(&env_);
 			termios_p.c_lflag |= ECHOCTL;
 			tcsetattr(0, 0, &termios_p);
@@ -88,27 +135,27 @@ int	main(int argc, char **argv, char **env)
 			return (0);
 		if(openheredoc(promt, pars)) // heredocery stexic a bacum
 		{
+			gr = 1;
+			free_pars(pars, count);
+			free(promt);
+			signal(SIGINT, handle4);
+		//	env = list_to_env(env_, status);
+			continue ;
+		}
+		do_expand(&promt, env_, 0); ///////expand
+		env = list_to_env(env_, status, promt);
+		if (promt && lexer(&promt, &pars))
+		{
 			free_pars(pars, count);
 			free(promt);
 			continue ;
 		}
-		do_expand(&promt, env_, 0); ///////expand
-		if (there_is_builtin(promt))//<-----------------------
-		{
-			call_builtin(promt, there_is_builtin(promt), env_); 
-			continue;
-		}
-		if (lexer(&promt, &pars))
-		{
-			 free_pars(pars, count);
-			 free(promt);
-			continue ;
-		}
-		open_processes(count, pars, env, &status);	
+		open_processes(count, pars, env, &status);
 		free(promt);
 		free_after_split(env);
 		termios_p.c_lflag |= ECHOCTL;
 		tcsetattr(0, 0, &termios_p);
+		gr = 0;
 	}
 	return (0);
 }

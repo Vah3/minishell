@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 15:42:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/29 17:24:32 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/25 10:03:03 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	if_in_file(char **promt, t_pars **pars, int *i)
+static int	if_in_file(char **promt, t_pars **pars, int *i, int *z)
 {
 	int	j;
 
@@ -27,11 +27,12 @@ static int	if_in_file(char **promt, t_pars **pars, int *i)
 		iffiles(promt, i);
 		open_in_file(pars, promt, j, *i);
 		*i = j;
+		*z = 0;
 	}
 	return (SUCCESS);
 }
 
-static int	if_out_file(char **promt, t_pars **pars, int *i)
+static int	if_out_file(char **promt, t_pars **pars, int *i, int *z)
 {
 	int	j;
 
@@ -47,11 +48,12 @@ static int	if_out_file(char **promt, t_pars **pars, int *i)
 		(*pars)->app_or_trunc = 1;
 		open_out_file(pars, promt, j, *i);
 		*i = j;
+		*z = 0;
 	}
 	return (SUCCESS);
 }
 
-static int	if_here_doc(char **promt, int *fileordoc, int *i)
+static int	if_here_doc(char **promt, int *fileordoc, int *i, int *z)
 {
 	char	*delim;
 	int		j;
@@ -69,11 +71,12 @@ static int	if_here_doc(char **promt, int *fileordoc, int *i)
 		free(delim);
 		*fileordoc = 1;
 		*i = j;
+		*z = 0;
 	}
 	return (SUCCESS);
 }
 
-static int	if_append_file(char **promt, t_pars **pars, int *i)
+static int	if_append_file(char **promt, t_pars **pars, int *i, int *z)
 {
 	int	j;
 
@@ -89,6 +92,7 @@ static int	if_append_file(char **promt, t_pars **pars, int *i)
 		(*pars)->app_or_trunc = 0;
 		open_out_file(pars, promt, j, *i);
 		*i = j;
+		*z = 0;
 	}
 	return (SUCCESS);
 }
@@ -98,6 +102,7 @@ int	lexer(char **promt, t_pars ***pars)
 	int		i;
 	int		pipe_i;
 	char	**input;
+	int		prev_ifs_not_worked;
 
 	i = 0;
 	pipe_i = 0;
@@ -107,20 +112,23 @@ int	lexer(char **promt, t_pars ***pars)
 		while (input[pipe_i][i])
 		{
 			skipquotes(promt, &i);
-			if (input[pipe_i] && if_here_doc(&(input[pipe_i]), &((*pars)[pipe_i])->fileordoc, &i))
+			prev_ifs_not_worked = 1;
+			if (if_here_doc(&(input[pipe_i]), &((*pars)[pipe_i])->fileordoc, &i, &prev_ifs_not_worked))
 				return (FAILURE);
-			if (input[pipe_i] && if_append_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i))
+			if (if_append_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i, &prev_ifs_not_worked))
 				return (FAILURE);
-			if (input[pipe_i] && if_in_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i))
+			if (if_in_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i, &prev_ifs_not_worked))
 				return (FAILURE);
-			if (input[pipe_i] && if_out_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i))
+			if (if_out_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i, &prev_ifs_not_worked))
 				return (FAILURE);
-			i++;
+			if (prev_ifs_not_worked)
+				i++;
 		}
 		(*pars)[pipe_i]->cmd = ft_strdup(input[pipe_i]);
+	//	printf("%s\n",(*pars)[pipe_i]->cmd);
 		free(input[pipe_i]);
 		pipe_i++;
-		i=0;
+		i = 0;
 	}
 	if(input)
 	free(input);
