@@ -6,7 +6,7 @@
 #    By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/21 16:05:05 by vagevorg          #+#    #+#              #
-#    Updated: 2022/10/01 19:40:14 by edgghaza         ###   ########.fr        #
+#    Updated: 2022/10/01 22:10:53 by edgghaza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME			= minishell
 
 CC				= cc
 
-CFLAGS			= -Wall -Wextra -g -ggdb3 -fsanitize=address#-Werror 
+CFLAGS			= -Wall -Wextra -g -ggdb3#-fsanitize=address#-Werror 
 
 RM				= rm -f
 

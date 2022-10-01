@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 12:27:18 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/01 20:34:27 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/01 21:42:59 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int there_is_builtin(char *str)
 		else if (id == IS_EXPORT)
 			return(call_export(prompt, env));
 		else if (id == IS_UNSET)
-			return(printf("hi\n"));//call_unset(prompt, env);
+			return (call_unset(prompt, env));//call_unset(prompt, env);
 		else if (id == IS_ENV)
 			return(call_env(env));//call_env(prompt, env);
 		else if (id == IS_EXIT)
