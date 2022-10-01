@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/01 19:25:11 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/01 20:23:34 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int	main(int argc, char **argv, char **env)
 		if (!promt)
 		{
 			//free_after_split(env);
+			printf("exit\n");
 			free_env_(&env_);
 			termios_p.c_lflag |= ECHOCTL;
 			tcsetattr(0, 0, &termios_p);

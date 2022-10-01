@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/01 19:34:58 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/01 20:33:26 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,8 @@ int		there_is_builtin(char *str);
 int		call_builtin(char *prompt, int id, t_env *env);
 
 int 	call_export(char *prompt, t_env *env);
+int		call_env(t_env *env);
+
 
 
 void	handle4(int i);

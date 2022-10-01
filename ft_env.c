@@ -1,37 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/17 18:27:55 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/01 21:14:26 by edgghaza         ###   ########.fr       */
+/*   Created: 2022/10/01 20:25:22 by edgghaza          #+#    #+#             */
+/*   Updated: 2022/10/01 21:15:46 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strdup(const char *s)
+int	call_env(t_env *env)
 {
-	char	*v;
-	int		i;
+	t_env	*temp;
 	
-	if (!s)
-		return (NULL);
-	
-	i = 0;
-	while (s && *s && s[i] != '\0')
-		i++;
-	v = (char *) malloc(i + 1);
-	if (!v)
-		return (0);
-	i = 0;
-	while (s && *s && s[i] != '\0')
-	{
-		v[i] = s[i];
-		i++;
+	temp = env;
+	while (temp)
+	{		
+		if ((ft_strcmp(temp->key, "?") == 0))
+		{
+			temp = temp->next;	
+			continue;
+		}
+		if (!temp->value)
+		{
+			temp = temp->next;	
+			continue;
+		}
+		if (temp->key && temp->value)
+		{
+			printf("%s=%s\n", temp->key, temp->value);
+			temp = temp->next;
+		}
 	}
-	v[i] = '\0';
-	return (v);
-}
+	return (0)
+;}

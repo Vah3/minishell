@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 12:27:18 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/29 20:36:21 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/01 20:34:27 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int there_is_builtin(char *str)
 	char **splited_str;
 	int		id;
 	splited_str = ft_split(str, ' ');
+	splited_str[0] = get_correct_cmd(splited_str[0]);
 	if(ft_strcmp(splited_str[0], "echo") == 0)
 		id = IS_ECHO;
 	else if(ft_strcmp(splited_str[0], "cd") == 0)
@@ -70,52 +71,8 @@ int there_is_builtin(char *str)
 		else if (id == IS_UNSET)
 			return(printf("hi\n"));//call_unset(prompt, env);
 		else if (id == IS_ENV)
-			return(printf("hi\n"));//call_env(prompt, env);
+			return(call_env(env));//call_env(prompt, env);
 		else if (id == IS_EXIT)
 			return(printf("hi\n"));//call_exit(prompt, env);
 			return (0);
-	} 
-// int	are_equal(char *str, char *to_find)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str[i] && to_find[i])
-// 	{
-// 		if (str[i] != to_find[i])
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-	
-// }
-
-// int there_is_export(char *str, int *i)
-// {
-// 	skip_spaces(str, i);
-// 	if (are_equal((str + (*i)), ("export")))
-// 		(*i) += 6;
-// 	else
-// 		return (0);
-// 	if (str[*i] == ' ' || str[*i] == '\t' || str[*i] == '\0')
-// 	{
-// 		// printf("SUCCESS\n");
-// 		return (1);
-// 	}	
-// 	return (0);
-// }
-
-// int	do_export(char *str, t_env *env)
-// {
-// 	t_export	all;
-// 	int			i;
-// 	char		*trash;
-	
-// 	i = 0;
-// 	if (there_is_export(str, &i))
-// 	{
-// 		skip_spaces(str, &i);
-// 		trash = ft_strdup(str + i);
-		
-// 	}
-// }
+	}
