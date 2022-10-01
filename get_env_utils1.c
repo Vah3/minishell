@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	**list_to_env(t_env	*head, int status, char *promt)
+char	**list_to_env(t_env	*head)
 {
 	t_env	*temp;
 	char	**env;
@@ -25,7 +25,7 @@ char	**list_to_env(t_env	*head, int status, char *promt)
 	i = 0;
 	temp = head;
 	line = NULL;
-	update_status(head, status, promt);
+	update_status(head);
 	while (temp)
 	{
 		line = ft_strdup(temp->key);

@@ -49,8 +49,8 @@ static void	check_cmd(char	**command, char **path)
 	else if (ft_strchr(finaly + 1, '/')
 		&& (access((finaly + 1), F_OK) == -1)) //&& free_path_rest(path, i))
 		free_and_exit("No such file or directory", finaly, 127);
-	if (((!path || path[i] == NULL)
-			&& (access((finaly + 1), F_OK) == -1)))
+	if (((finaly[1] == '\0') || ((!path || path[i] == NULL)
+			&& (access((finaly + 1), F_OK) == -1))))
 		free_and_exit("Comomand not found", finaly, 127);
 	if ((!path || path[i] == NULL) && access((finaly + 1), F_OK) == 0)
 		free_and_exit("Permission denied", finaly, 126);

@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+extern int status;
+
 static void	skip_if_single_quote(char *line, int *i, int *len)
 {
 	int		j;
@@ -75,29 +77,8 @@ static void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 	}
 }
 
-void	dollar_under_score(t_env *local_env, char *promt)
-{
-	int i;
 
-	i = 0;
-	if (promt && ft_strncmp(local_env->key, "_", 1) == 0)
-	{
-		free(local_env->value);
-		while (promt[i])
-		{
-			skipquotes(&promt, &i);
-			if (promt[i] == '|')
-			{
-				local_env->value = NULL;
-				return ;
-			}
-			i++;
-		}
-			local_env->value = ft_strdup(ft_strrchr(promt, 32));
-	}
-}
-
-void	update_status(t_env *env, int status, char *promt)
+void	update_status(t_env *env)
 {
 	t_env	*local_env;
 	char	*stat;
@@ -112,7 +93,6 @@ void	update_status(t_env *env, int status, char *promt)
 			free(local_env->value);
 			local_env->value = stat;
 		}
-		dollar_under_score(local_env, promt);
 		local_env = local_env->next;
 	}
 }
@@ -132,6 +112,7 @@ void	do_expand(char **promt, t_env *env, int doc)
 			skip_if_single_quote(*promt, &i, &len);
 		if_dollar_sign(promt, &i, &len, env_);
 		len++;
-		i++;
+		if ((*promt)[i])
+			i++;
 	}
 }

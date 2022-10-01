@@ -81,20 +81,20 @@ int	do_fork(pid_t **id, int i)
 	return (SUCCESS);
 }
 
-int	do_execve(char **cmd, char **env, t_pars *pars)
+int	do_execve(char **cmd, char **env)
 {
 	if (cmd && cmd[0])
 	{
 		execve(cmd[0], cmd, env);
-		if (ft_strlen(pars->cmd) == 0)
-			exit(0);
+		if (ft_strlen(cmd[0]) == 0)
+			exit(127);
 		exit(126);
 	}
 	exit (0);
 	return (1);
 }
 
-void	open_processes(int count, t_pars **pars, char **env, int *status)
+void	open_processes(int count, t_pars **pars, char **env)
 {
 	int		i;
 	int		(*fd)[2];
@@ -127,10 +127,10 @@ void	open_processes(int count, t_pars **pars, char **env, int *status)
 			exit (EXIT_FAILURE);
 		if (id[i] == 0 && count == 1)
 			without_pipes(pars, fd, id, count);
-			printf("%d\n", __LINE__);
 		if (id[i] == 0)
-			do_execve((pars[i])->exec_cmd, env, pars[i]);
+			do_execve((pars[i])->exec_cmd, env);
+		//	printf("%s %d\n", __FILE__,__LINE__);
 	}
-	wait_(status, fd, id, count);
+	wait_(fd, id, count);
 	fr(pars, fd, id, count);
 }

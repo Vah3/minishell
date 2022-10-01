@@ -12,11 +12,13 @@
 
 # gcc *.c -lft -LLibft -lreadline -o minishell 
 
+PREFIX			= $(shell find ${HOME} -name readline-edgghaza 2>/dev/null)
+
 NAME			= minishell
 
 CC				= cc
 
-CFLAGS			= -Wall -Wextra -g -ggdb3 #-Werror 
+CFLAGS			= -Wall -Wextra -g -ggdb3 -fsanitize=address#-Werror 
 
 RM				= rm -f
 
@@ -30,9 +32,9 @@ CLE				= make clean
 
 FCLE			= make fclean
 
-INCLUDES		= -ILibft  -I/Users/vagevorg/readline/include
+INCLUDES		= -ILibft  -I./readline-edgghaza/include
 
-LINKERS			=  -L./Libft -L/Users/vagevorg/readline/lib -lft -lreadline
+LINKERS			=  -L./Libft -L./readline-edgghaza/lib -lft -lreadline
 
 %.o:%.c
 				@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -54,4 +56,7 @@ fclean:			clean
 
 re:				fclean all
 
-.PHONY:			all clean fclean re
+readline:
+	cd readline-master && make clean && ./configure --prefix=$(PREFIX) && make && make install
+
+.PHONY:			all clean fclean re readline

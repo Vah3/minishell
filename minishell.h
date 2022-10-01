@@ -77,7 +77,7 @@ char	*ft_trim_substr(char **source, int start, int end);
 /*/////////////////////////////////////////////////////////////// */
 
 /*						EXPAND.C	4						     */
-void	update_status(t_env *env, int status, char *promt);
+void	update_status(t_env *env);
 void	do_expand(char **promt, t_env *env_, int doc);
 /*//////////////////////////////////////////////////////////////// */
 
@@ -101,7 +101,7 @@ void	free_env_(t_env **env);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						GET_ENV_UTILS1.C	3			   	     */
-char	**list_to_env(t_env	*head, int status, char *promt);
+char	**list_to_env(t_env	*head);
 void	env_replace(t_env *env, char *key, char *value);
 char	*_getenv(t_env *list, char *key );
 /*//////////////////////////////////////////////////////////////// */
@@ -141,7 +141,7 @@ void	check_make(char **cmd, char **env);
 
 /*						PROCESSES.C				   	     */
 int		close_pipes(int (*fd)[2], int count);
-void	open_processes(int count, t_pars **pars, char **env, int *status);
+void	open_processes(int count, t_pars **pars, char **env);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						UTILS_FOR_NORM_PROC.C				   	     */
@@ -149,7 +149,7 @@ void	free_fd_id(int (*fd)[2], pid_t	*id, int count);
 int		fr(t_pars **pars, int (*fd)[2], pid_t *id, int count);
 int		make_cmd(t_pars *pars, char **env);
 void	without_pipes(t_pars **pars, int (*fd)[2], pid_t *id, int count);
-void	wait_(int *status, int (*fd)[2], pid_t *id, int count);
+void	wait_(int (*fd)[2], pid_t *id, int count);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						REDIRECTIONS.C	5			   	     */
@@ -160,9 +160,9 @@ int		lexer(char **promt, t_pars ***pars);
 int		write_in_pipe_and_dup(t_pars **pars, char *delim, int z);
 int		init_pipe(int ***fd_, int count);
 int		check_out_or_input(t_pars *pars);
-int	clearquotes(char	**delimetr);
+int		clearquotes(char	**delimetr);
 void	expand_if_does_not_have_quotes(
-	char	**line, int expand_or_not, t_pars *pars);
+char	**line, int expand_or_not, t_pars *pars);
 
 /*//////////////////////////////////////////////////////////////// */
 int		ft_error(char *err_message, int err_code);

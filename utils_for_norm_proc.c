@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+extern int status;
 void	free_fd_id(int (*fd)[2], pid_t *id, int count)
 {
 	if (count > 1)
@@ -65,7 +66,7 @@ void	without_pipes(t_pars **pars, int (*fd)[2], pid_t *id, int count)
 		exit(EXIT_FAILURE);
 }
 
-void	wait_(int *status, int (*fd)[2], pid_t *id, int count)
+void	wait_(int (*fd)[2], pid_t *id, int count)
 {
 	int	j;
 
@@ -73,12 +74,12 @@ void	wait_(int *status, int (*fd)[2], pid_t *id, int count)
 	close_pipes(fd, count);
 	while (j < count)
 	{
-		waitpid(id[j++], status, 0);
-		if (j == count && WIFEXITED (*status))
-			*status = WEXITSTATUS(*status);
-		else if(j == count && WIFSIGNALED(*status))
+		waitpid(id[j++], &status, 0);
+		if (j == count && WIFEXITED (status))
+			status = WEXITSTATUS(status);
+		else if(j == count && WIFSIGNALED(status))
 		{
-			*status = WTERMSIG(*status) + 128;
+			status = WTERMSIG(status) + 128;
 			 write(1, "\n", 1);
 		}
 	}

@@ -113,15 +113,15 @@ int	lexer(char **promt, t_pars ***pars)
 		{
 			skipquotes(promt, &i);
 			prev_ifs_not_worked = 1;
-			if (if_here_doc(&(input[pipe_i]), &((*pars)[pipe_i])->fileordoc, &i, &prev_ifs_not_worked))
+			if (input[pipe_i][i] && if_here_doc(&(input[pipe_i]), &((*pars)[pipe_i])->fileordoc, &i, &prev_ifs_not_worked))
 				return (FAILURE);
-			if (if_append_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i, &prev_ifs_not_worked))
+			if (input[pipe_i][i] && if_append_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i, &prev_ifs_not_worked))
 				return (FAILURE);
-			if (if_in_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i, &prev_ifs_not_worked))
+			if (input[pipe_i][i] && if_in_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i, &prev_ifs_not_worked))
 				return (FAILURE);
-			if (if_out_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i, &prev_ifs_not_worked))
+			if (input[pipe_i][i] && if_out_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i, &prev_ifs_not_worked))
 				return (FAILURE);
-			if (prev_ifs_not_worked)
+			if (input[pipe_i][i] && prev_ifs_not_worked)
 				i++;
 		}
 		(*pars)[pipe_i]->cmd = ft_strdup(input[pipe_i]);

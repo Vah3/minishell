@@ -106,6 +106,7 @@ int	main(int argc, char **argv, char **env)
 		if (gr == 0)
 			signal(SIGINT, handle0);
 		promt = readline("Minishell$ ");
+		env = list_to_env(env_);
 		signal(SIGINT, handle1);
 		if (!promt)
 		{
@@ -143,14 +144,13 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		do_expand(&promt, env_, 0); ///////expand
-		env = list_to_env(env_, status, promt);
 		if (promt && lexer(&promt, &pars))
 		{
 			free_pars(pars, count);
 			free(promt);
 			continue ;
 		}
-		open_processes(count, pars, env, &status);
+		open_processes(count, pars, env);
 		free(promt);
 		free_after_split(env);
 		termios_p.c_lflag |= ECHOCTL;

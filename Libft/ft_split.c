@@ -87,8 +87,10 @@ char	**ft_split(char const *s, char c)
 	size_t	len;
 	size_t	z;
 
+	if (!s)
+		return (0);
 	array = (char **)malloc ((ft_count(s, c) + 1) * sizeof(char *));
-	if (!array || !s)
+	if (!array)
 		return (0);
 	z = 0;
 	start = 0;
