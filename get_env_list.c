@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:20:01 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/25 09:15:36 by root             ###   ########.fr       */
+/*   Updated: 2022/10/01 19:35:54 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_env	*new_env_element(char *key, char *value)
+t_env	*new_env_element(char *key, char *value)
 {
 	t_env	*temp;
 
@@ -25,7 +25,7 @@ static t_env	*new_env_element(char *key, char *value)
 	return (temp);
 }
 
-static void	env_add_back(t_env **list, t_env *new_item)
+void	env_add_back(t_env **list, t_env *new_item)
 {
 	t_env	*temp;
 
@@ -36,6 +36,16 @@ static void	env_add_back(t_env **list, t_env *new_item)
 		temp = last_env_element(*list);
 		temp->next = new_item;
 	}
+}
+
+int	key_len(char *s)
+{
+	int	len;
+
+	len = 0;
+	while (s[len] && s[len] != '=')
+		len++;
+	return (len);
 }
 
 t_env	*env_initialization(char **env)

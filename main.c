@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/25 09:46:34 by root             ###   ########.fr       */
+/*   Updated: 2022/10/01 19:25:11 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,11 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		do_expand(&promt, env_, 0); ///////expand
+		if (there_is_builtin(promt))//<-----------------------
+		{
+			call_builtin(promt, there_is_builtin(promt), env_); 
+			continue;
+		}
 		if (promt && lexer(&promt, &pars))
 		{
 			free_pars(pars, count);

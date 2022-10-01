@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/25 09:29:50 by root             ###   ########.fr       */
+/*   Updated: 2022/10/01 19:34:58 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,17 @@
 
 # define SUCCESS 0
 # define FAILURE 1
+
+# define IS_ECHO		2
+# define IS_CD			3	
+# define IS_PWD			4
+# define IS_EXPORT		5
+# define IS_UNSET		6
+# define IS_ENV			7
+# define IS_EXIT		8
+
+# define JOIN_MODE		0
+# define ADD_MODE		1
 
 /*			ENV		LIST			*/
 typedef struct s_env
@@ -89,6 +100,9 @@ char	*get_correct_cmd(char *trash);
 t_env	*env_initialization(char **env);
 void	print_environment(t_env *env);
 void	remove_from_list(t_env *env, char *key);
+void	env_add_back(t_env **list, t_env *new_item);
+t_env	*new_env_element(char *key, char *value);
+int		key_len(char *s);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						GET_ENV_UTILS.C	 5			   	     */
@@ -166,8 +180,14 @@ char	**line, int expand_or_not, t_pars *pars);
 
 /*//////////////////////////////////////////////////////////////// */
 int		ft_error(char *err_message, int err_code);
-int	correct_delim(char *promt, int i);
+int		correct_delim(char *promt, int i);
 
+/*						BUILTIN_EXPORT.C				   	     */
+void	skip_spaces(char *str, int *i);
+int		there_is_builtin(char *str);
+int		call_builtin(char *prompt, int id, t_env *env);
+
+int 	call_export(char *prompt, t_env *env);
 
 
 void	handle4(int i);
