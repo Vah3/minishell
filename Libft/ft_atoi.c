@@ -20,6 +20,8 @@ int	ft_atoi(const char *str)
 	index = 0;
 	convert = 0;
 	sign = 1;
+	if (!str)
+		return (0);
 	while ((str[index] >= 9 && str[index] <= 13) || str[index] == 32)
 		index++;
 	if (str[index] == '-' || str[index] == '+')

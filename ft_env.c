@@ -24,6 +24,12 @@ int	call_env(t_env *env)
 			temp = temp->next;	
 			continue;
 		}
+		if ((ft_strcmp(temp->key, "SHLVL") == 0) && !temp->value)
+		{
+			printf("%s=\n", temp->key);
+			temp = temp->next;	
+			continue;
+		}
 		if (!temp->value)
 		{
 			temp = temp->next;	

@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/01 20:23:34 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/01 19:25:11 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,42 @@ int	write_in_pipe_and_dup(t_pars **pars, char *delim, int z)
 		return (FAILURE);
 	return (SUCCESS);
 }
+void	change_under_score(t_env *env, char *promt)
+{
+	int		i;
+	t_env *head;
 
+	i = 0;
+	head = env;
+	while (env)
+	{
+		if (!ft_strcmp(env->key, "_"))
+			break;
+		env = env->next;
+	}
+	while(promt && promt[i])
+	{
+		skipquotes(&promt, &i);
+		if (promt[i] == '|')
+		{
+			free(env->value);
+			env->value = NULL;
+			return ;
+		}
+		if(promt[i])
+			i++;
+	}
+	i = ft_strlen(promt) - 1;
+	while(promt && i > 0 && promt[i] == 32)
+		i--;
+	while(promt && i > 0 && promt[i] != 32)
+		i--;
+	if (promt && !(promt[i] == '$' && promt[i + 1] && promt[i + 1] == '_' && (!promt[i + 2] || promt[i + 2] == 32)))
+	{
+		free(env->value);
+		env->value = ft_strdup(ft_strrchr(promt, 32));
+	}
+}
 int	main(int argc, char **argv, char **env)
 {
 //	static int  a = 0;
@@ -90,6 +125,7 @@ int	main(int argc, char **argv, char **env)
 	char	*promt;
 	t_pars	**pars;
 	int		count;
+	char	*grox;
 	(void)argc;
 	(void)argv;
 	t_env	*env_;
@@ -117,8 +153,21 @@ int	main(int argc, char **argv, char **env)
 			tcsetattr(0, 0, &termios_p);
 			return (0);
 		}
-		if (!promt[0])
+		if (!ft_strcmp(promt, "\"\"") || !ft_strcmp(promt, "''"))
+		{
+			printf("minishell: : command not found\n");
+			status = 127;
+			free(promt);
+			free_after_split(env);
 			continue;
+		}
+		if (promt[0] == '\0')
+		{
+			free(promt);
+			free_after_split(env);
+			continue;
+		}
+		grox = ft_strdup(promt);
 		add_history(promt);
 		 if (not_found_second_quote(promt) || only_pipe(promt))
 		 	continue ;
@@ -133,8 +182,8 @@ int	main(int argc, char **argv, char **env)
 			return(ft_error("Pipe error\n", 1));
 		}
 		pars = init_struct(count, &env_);
-		if(!pars)
-			return (0);
+		//if(!pars)
+		//	return (0);
 		if(openheredoc(promt, pars)) // heredocery stexic a bacum
 		{
 			gr = 1;
@@ -147,7 +196,12 @@ int	main(int argc, char **argv, char **env)
 		do_expand(&promt, env_, 0); ///////expand
 		if (there_is_builtin(promt))//<-----------------------
 		{
+			change_under_score(env_, promt);
 			call_builtin(promt, there_is_builtin(promt), env_); 
+			free(grox);
+			free_pars(pars, count);
+			free(promt);
+			free_after_split(env);
 			continue;
 		}
 		if (promt && lexer(&promt, &pars))
@@ -157,6 +211,8 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		open_processes(count, pars, env);
+		change_under_score(env_, grox);
+		free(grox);
 		free(promt);
 		free_after_split(env);
 		termios_p.c_lflag |= ECHOCTL;

@@ -31,6 +31,7 @@ static void	struct_zeroed(t_pars **pars, t_env **env)
 	var->pipecount = 0;
 	var->app_or_trunc = -1;
 	var->errnum = 0;
+	var->exec_cmd = 0;
 }
 
 t_pars	**init_struct(int count, t_env **env)

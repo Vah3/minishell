@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:20:01 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/01 21:51:56 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/01 19:35:54 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,35 @@ int	key_len(char *s)
 	return (len);
 }
 
+void	set_shlvl(t_env *env)
+{
+	int	lvl;
+
+	lvl = 0;
+	while(env)
+	{
+		if (!ft_strcmp(env->key, "SHLVL"))
+		{
+			lvl = ft_atoi(env->value);
+			free(env->value);
+			lvl++;
+			if (lvl == 1000)
+			{
+				env->value = NULL;
+				break ;
+			}
+			else if (lvl > 1000)
+			{
+				printf("minishell: warning: shell level (%d) too high, resetting to 1\n", lvl);
+				lvl = 1;
+			}
+			env->value = ft_itoa(lvl);
+			break;
+		}
+		env = env->next;
+	}
+}
+
 t_env	*env_initialization(char **env)
 {
 	t_env		*environ;
@@ -67,6 +96,7 @@ t_env	*env_initialization(char **env)
 	}
 	if(!getenv("?"))
 		env_add_back(&environ, new_env_element("?", "0"));
+	set_shlvl(environ);
 	return (environ);
 }
 
@@ -98,6 +128,7 @@ void	remove_from_list(t_env *env, char *key)
 		return ;
 	tofree = temp;
 	prev->next = tofree->next;
+	printf("%s=%s\n", tofree->key, tofree->value);
 	free(tofree->key);
 	free(tofree->value);
 	free(tofree);

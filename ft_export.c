@@ -131,7 +131,10 @@ int call_export(char *prompt, t_env *env)
 	i = 1;
 	splited_prompt = ft_split(prompt, ' ');
 	if (*splited_prompt && !splited_prompt[1])
+	{
+		free_after_split(splited_prompt);
 		return (print_export(env));
+	}
 	while (splited_prompt[i])
 	{
 		splited_prompt[i] = get_correct_cmd(splited_prompt[i]);

@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 18:27:55 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/01 21:14:26 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:13:05 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@ char	*ft_strdup(const char *s)
 {
 	char	*v;
 	int		i;
-	
-	if (!s)
-		return (NULL);
-	
+
+	if(!s)
+		return (0);
 	i = 0;
 	while (s && *s && s[i] != '\0')
 		i++;

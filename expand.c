@@ -72,7 +72,9 @@ static void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 		prom = ft_strjoin(prom, (*promt) + (*i));
 		free_params(delim, *promt);//, env_line);
 		*promt = prom;
-		(*i)--;
+		(*i) = (*len) - 1;
+		if ((*i) == -1)
+			*i = 0;
 		(*len)--;
 	}
 }
@@ -111,8 +113,10 @@ void	do_expand(char **promt, t_env *env, int doc)
 		if (doc == 0)
 			skip_if_single_quote(*promt, &i, &len);
 		if_dollar_sign(promt, &i, &len, env_);
-		len++;
 		if ((*promt)[i])
+		{
 			i++;
+			len++;
+		}
 	}
 }

@@ -50,7 +50,7 @@ void	free_after_split(char **store)
 	int	i;
 
 	i = 0;
-	while (store[i])
+	while (store && store[i])
 	{
 		free(store[i]);
 		store[i] = NULL;

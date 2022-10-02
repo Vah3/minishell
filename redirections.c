@@ -125,7 +125,6 @@ int	lexer(char **promt, t_pars ***pars)
 				i++;
 		}
 		(*pars)[pipe_i]->cmd = ft_strdup(input[pipe_i]);
-	//	printf("%s\n",(*pars)[pipe_i]->cmd);
 		free(input[pipe_i]);
 		pipe_i++;
 		i = 0;

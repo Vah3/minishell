@@ -36,7 +36,11 @@ int there_is_builtin(char *str)
 {
 	char **splited_str;
 	int		id;
+
+	splited_str = NULL;
 	splited_str = ft_split(str, ' ');
+	if (!splited_str)
+		return (0);
 	splited_str[0] = get_correct_cmd(splited_str[0]);
 	if(ft_strcmp(splited_str[0], "echo") == 0)
 		id = IS_ECHO;
