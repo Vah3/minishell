@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 12:27:18 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/01 21:42:59 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:25:14 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int there_is_builtin(char *str)
 	int	call_builtin(char *prompt, int id, t_env *env)
 	{
 		if(id == IS_ECHO)
-			return(printf("hi\n"));//call_echo(prompt, env);
+			return(call_echo(prompt));//call_echo(prompt, env);
 		else if (id == IS_CD)
 			return(printf("hi\n"));//call_cd((prompt, env));
 		else if (id == IS_PWD)
@@ -75,7 +75,7 @@ int there_is_builtin(char *str)
 		else if (id == IS_UNSET)
 			return (call_unset(prompt, env));//call_unset(prompt, env);
 		else if (id == IS_ENV)
-			return(call_env(env));//call_env(prompt, env);
+			return(call_env(env));
 		else if (id == IS_EXIT)
 			return(printf("hi\n"));//call_exit(prompt, env);
 			return (0);

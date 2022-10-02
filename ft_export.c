@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 20:06:45 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/01 21:12:01 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/02 19:20:30 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,8 @@ int call_export(char *prompt, t_env *env)
 			{
 				join_value(&env, key, value);
 				i++;
+				free(key);
+				free(value);
 				continue;	
 			}
 			if (exists_key(key, env))
@@ -180,5 +182,6 @@ int call_export(char *prompt, t_env *env)
 		i++;
 	}
 
+	free_after_split(splited_prompt);
 	return (status);	
 }

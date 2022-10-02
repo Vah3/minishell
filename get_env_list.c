@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:20:01 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/01 19:35:54 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/02 19:23:28 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ void	remove_from_list(t_env *env, char *key)
 		return ;
 	tofree = temp;
 	prev->next = tofree->next;
-	printf("%s=%s\n", tofree->key, tofree->value);
 	free(tofree->key);
 	free(tofree->value);
 	free(tofree);
