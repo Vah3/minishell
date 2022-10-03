@@ -4,5 +4,5 @@
 minishell
 libft.a
 *.swp
-readline-master/
-readline-edgghaza/
+readline-master/*
+readline-edgghaza/*

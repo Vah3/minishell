@@ -14,7 +14,7 @@
 
 static void	free_and_exit(char *for_print, char *finaly, int code)
 {
-	printf("%s: %s\n", (finaly + 1), for_print);
+	printf("minishell: %s: %s\n", (finaly + 1), for_print);
 	//free(finaly);
 	exit(code);
 //	(void)code;
@@ -39,20 +39,20 @@ static void	check_cmd(char	**command, char **path)
 	while (path && path[i] && finaly[1])
 	{
 		*command = ft_strjoin(path[i++], finaly);
-		if (access(*command, X_OK) == 0)
+		if (access(*command, F_OK) == 0)
 			break ;
-		if (access(*command, X_OK) != 0)
+		if (access(*command, F_OK) != 0)
 			free(*command);
 	}
 	if (opendir(finaly + 1)) //&& free_path_rest(path, i))
 		free_and_exit("is a directory", finaly, 126);
 	else if (ft_strchr(finaly + 1, '/')
 		&& (access((finaly + 1), F_OK) == -1)) //&& free_path_rest(path, i))
-		free_and_exit("No such file or directory", finaly, 127);
-	if (((!path || path[i] == NULL)
+		free_and_exit( "No such file or directory", finaly, 127);
+	if (finaly[1] == '\0' || ((!path || path[i] == NULL)
 			&& (access((finaly + 1), F_OK) == -1)))
 		free_and_exit("Comomand not found", finaly, 127);
-	if ((!path || path[i] == NULL) && access((finaly + 1), F_OK) == 0)
+	if ((!path || path[i] != NULL) && access((finaly + 1), X_OK) == 0)
 		free_and_exit("Permission denied", finaly, 126);
 	free_path_rest(path, i);
 	free (finaly);

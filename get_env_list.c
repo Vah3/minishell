@@ -60,6 +60,8 @@ void	set_shlvl(t_env *env)
 			lvl = ft_atoi(env->value);
 			free(env->value);
 			lvl++;
+			if (lvl < 0)
+				lvl = 0;
 			if (lvl == 1000)
 			{
 				env->value = NULL;

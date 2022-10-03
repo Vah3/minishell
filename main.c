@@ -22,8 +22,9 @@ int	checking_line(char *line, char *delim)
 		return (1);
 	if (!line)
 	{
-		rl_replace_line("Minishell$", 1);
-		rl_redisplay();
+		//rl_replace_line("Minishell$", 1);
+		//rl_redisplay();
+		status = 0;
 		return (1);
 	}
 	if (ft_strncmp(delim, line, ft_strlen(line)) == 0)
@@ -153,15 +154,7 @@ int	main(int argc, char **argv, char **env)
 			tcsetattr(0, 0, &termios_p);
 			return (0);
 		}
-		if (!ft_strcmp(promt, "\"\"") || !ft_strcmp(promt, "''"))
-		{
-			printf("minishell: : command not found\n");
-			status = 127;
-			free(promt);
-			free_after_split(env);
-			continue;
-		}
-		if (promt[0] == '\0')
+		if (!promt || promt[0] == '\0')
 		{
 			free(promt);
 			free_after_split(env);
@@ -184,7 +177,7 @@ int	main(int argc, char **argv, char **env)
 		pars = init_struct(count, &env_);
 		//if(!pars)
 		//	return (0);
-		if(openheredoc(promt, pars)) // heredocery stexic a bacum
+		if(openheredoc(promt, pars))// || !promt) // heredocery stexic a bacum
 		{
 			gr = 1;
 			free_pars(pars, count);
@@ -204,7 +197,7 @@ int	main(int argc, char **argv, char **env)
 			free_after_split(env);
 			continue;
 		}
-		if (promt && lexer(&promt, &pars))
+		if (lexer(&promt, &pars))
 		{
 			free_pars(pars, count);
 			free(promt);

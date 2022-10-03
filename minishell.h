@@ -200,5 +200,6 @@ void	handle2(int i);
 void	handle1(int i);
 void	handle0(int i);
 void	change_under_score(t_env *env, char *promt);
+void	clear_spaces_if_all_are_spaces(char **line);
 
 #endif

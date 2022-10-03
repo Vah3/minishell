@@ -95,7 +95,7 @@ void	iffiles(char **promt, int *k)
 
 void	skip_slesh_quote_1(char *promt, int *i, int *count)
 {
-	if (promt[*i] == '\\' && promt[*i + 1]
+	if (promt && promt[*i] == '\\' && promt[*i + 1]
 		&& (promt[*i + 1] == '\'' || promt[*i + 1] == '\"'))
 	{
 		*i += 2;

@@ -117,8 +117,8 @@ void	open_processes(int count, t_pars **pars, char **env)
 			a.c_lflag |= ECHOCTL;
 			tcsetattr(0, 0, &a);
 		}
-		if (id[i] == 0 )
-			make_cmd(pars[i], env);
+		 if (id[i] == 0 )
+		 	make_cmd(pars[i], env);
 		if (id[i] == 0 && count == 2 && single_pipe(i, fd, pars[i]))
 			//&& fr(pars, fd, id, count))
 			exit (EXIT_FAILURE);

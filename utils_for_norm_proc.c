@@ -42,6 +42,7 @@ int	make_cmd(t_pars *pars, char **env)
 		while (command[j])
 		{
 			command[j] = get_correct_cmd(command[j]);
+			//clear_spaces_if_all_are_spaces(&(command[j]));
 			j++;
 		}
 		check_make(&command[0], env);

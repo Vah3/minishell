@@ -67,7 +67,7 @@ static char	*clear_cmd(char *trash, int count_of_symbols)
 
 	i = 0;
 	j = 0;
-	cmd = (char *)malloc(sizeof(char) * count_of_symbols + 1);
+	cmd = (char *)malloc(sizeof(char) *  (count_of_symbols + 1));
 	if (!cmd)
 		return (NULL);
 	while (trash && trash[i])
