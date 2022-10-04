@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 12:27:18 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/02 20:25:14 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/04 18:25:24 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int there_is_builtin(char *str)
 		if(id == IS_ECHO)
 			return(call_echo(prompt));//call_echo(prompt, env);
 		else if (id == IS_CD)
-			return(printf("hi\n"));//call_cd((prompt, env));
+				return(call_cd(prompt, env));//<------------------------------------------
 		else if (id == IS_PWD)
 			return(printf("hi\n"));//call_pwd(prompt, env);
 		else if (id == IS_EXPORT)

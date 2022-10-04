@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:20:01 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/02 19:23:28 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/04 18:24:24 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,39 +79,38 @@ void	set_shlvl(t_env *env)
 	}
 }
 
-t_env	*env_initialization(char **env)
+t_env	*env_initialization(char **env_)
 {
-	t_env		*environ;
+	t_env		*env;
 	char		**lines;
 	int			length;
 	int			i;
-
+	char		*cur_pwd;
 	i = -1;
-	length = size_of_env(env);
-	environ = NULL;
+	length = size_of_env(env_);
+	env = NULL;
 	while (++i < length)
 	{
-		lines = ft_split(env[i], '=');
-		env_add_back(&environ, new_env_element(lines[0], lines[1]));
+		lines = ft_split(env_[i], '=');
+		env_add_back(&env, new_env_element(lines[0], lines[1]));
 		free_after_split(lines);
 		lines = NULL;
 	}
 	if(!getenv("?"))
-		env_add_back(&environ, new_env_element("?", "0"));
-	set_shlvl(environ);
-	return (environ);
-}
-
-void	print_environment(t_env *env)
-{
-	t_env	*temp;
-
-	temp = env;
-	while (temp)
-	{
-		printf("%s=%s\n", temp->key, temp->value);
-		temp = temp->next;
-	}
+		env_add_back(&env, new_env_element("?", "0"));
+	cur_pwd = getcwd(NULL, 0);
+	if (!cur_pwd)
+		return ((void *)ft_error("CURENT_PWD-n feylvela, pti dzenq\n", 1));
+	if (!exists_key("PWD", env))
+		env_add_back(&env, new_env_element("PWD", cur_pwd));
+	else
+		update_value(&env, "PWD", cur_pwd);
+	if (!exists_key("OLDPWD", env))
+		env_add_back(&env, new_env_element("OLDPWD", NULL));
+	else
+		update_value(&env, "OLDPWD", NULL);
+	set_shlvl(env);
+	return (env);
 }
 
 void	remove_from_list(t_env *env, char *key)
