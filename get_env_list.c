@@ -109,6 +109,7 @@ t_env	*env_initialization(char **env_)
 		env_add_back(&env, new_env_element("OLDPWD", NULL));
 	else
 		update_value(&env, "OLDPWD", NULL);
+	free (cur_pwd);
 	set_shlvl(env);
 	return (env);
 }

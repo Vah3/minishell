@@ -112,7 +112,10 @@ char	*ft_trim_substr(char **source, int start, int end)
 	new_string[i] = '\0';
 	free(*source);
 	if(!new_string || !*new_string)
+	{
+		free (new_string);
 		*source = NULL;
+	}
 	else
 		*source = new_string;
 	return (ret_string);
