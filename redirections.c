@@ -101,16 +101,19 @@ void	clear_spaces_if_all_are_spaces(char **line)
 {
 	int		i;
 	char	*line_;
+	char	*delim;
 
 	i = 0;
 	line_ = *line;
+	delim = NULL;
 	while(line_ && line_[i] == 32)
 		i++;
 	if (line_ && !line_[i])
-		ft_trim_substr(line, 0, i);
+		delim = ft_trim_substr(line, 0, i);
+	free(delim);
 }
 
-int	lexer(char **promt, t_pars ***pars)
+int	lexer(char **promt, t_pars **pars)
 {
 	int		i;
 	int		pipe_i;
@@ -119,6 +122,7 @@ int	lexer(char **promt, t_pars ***pars)
 
 	i = 0;
 	pipe_i = 0;
+	input = NULL;
 	input = ft_split(*promt, '|');
 	while(input && input[pipe_i])
 	{
@@ -126,24 +130,23 @@ int	lexer(char **promt, t_pars ***pars)
 		{
 			skipquotes(promt, &i);
 			prev_ifs_not_worked = 1;
-			if (input[pipe_i] && input[pipe_i][i] && if_here_doc(&(input[pipe_i]), &((*pars)[pipe_i])->fileordoc, &i, &prev_ifs_not_worked))
+			if (input[pipe_i] && input[pipe_i][i] && if_here_doc(&(input[pipe_i]), &(pars[pipe_i])->fileordoc, &i, &prev_ifs_not_worked))
 				return (FAILURE);
-			if (input[pipe_i] && input[pipe_i][i] && if_append_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i, &prev_ifs_not_worked))
+			if (input[pipe_i] && input[pipe_i][i] && if_append_file(&(input[pipe_i]), &(pars[pipe_i]), &i, &prev_ifs_not_worked))
 				return (FAILURE);
-			if (input[pipe_i] && input[pipe_i][i] && if_in_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i, &prev_ifs_not_worked))
+			if (input[pipe_i] && input[pipe_i][i] && if_in_file(&(input[pipe_i]), &(pars[pipe_i]), &i, &prev_ifs_not_worked))
 				return (FAILURE);
-			if (input[pipe_i] && input[pipe_i][i] && if_out_file(&(input[pipe_i]), &((*pars)[pipe_i]), &i, &prev_ifs_not_worked))
+			if (input[pipe_i] && input[pipe_i][i] && if_out_file(&(input[pipe_i]), &(pars[pipe_i]), &i, &prev_ifs_not_worked))
 				return (FAILURE);
 			if (input[pipe_i] && input[pipe_i][i] && prev_ifs_not_worked)
 				i++;
 		}
 		clear_spaces_if_all_are_spaces(&(input[pipe_i]));
-		(*pars)[pipe_i]->cmd = ft_strdup(input[pipe_i]);
+		pars[pipe_i]->cmd = ft_strdup(input[pipe_i]);
 		free(input[pipe_i]);
 		pipe_i++;
 		i = 0;
 	}
-	if(input)
-		free(input);
+	free(input);
 	return (SUCCESS);
 }

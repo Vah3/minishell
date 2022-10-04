@@ -49,7 +49,7 @@ int	check_pipes_count(char **promt, int *count)
 
 	*count = 1;
 	i = 0;
-	while ((*promt)[i])
+	while (*promt && (*promt)[i])
 	{
 		skip_index_until_pipe(promt, &i);
 		if ((*promt)[i] && (*promt)[i] == '|')
@@ -75,7 +75,14 @@ int	check_pipes_count(char **promt, int *count)
 void	free_pars(t_pars **pars, int count)
 {
 	int	i;
+/*	t_env *env;
+	
+	env = NULL;
+	env = *(pars[0]->env_var);
+	while(env)
+	{*/
 
+	
 	i = 0;
 	while (i < count)
 	{

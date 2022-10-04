@@ -126,7 +126,6 @@ int	main(int argc, char **argv, char **env)
 	char	*promt;
 	t_pars	**pars;
 	int		count;
-	char	*grox;
 	(void)argc;
 	(void)argv;
 	t_env	*env_;
@@ -147,8 +146,8 @@ int	main(int argc, char **argv, char **env)
 		signal(SIGINT, handle1);
 		if (!promt)
 		{
-			//free_after_split(env);
 			printf("exit\n");
+			free_after_split(env);
 			free_env_(&env_);
 			termios_p.c_lflag |= ECHOCTL;
 			tcsetattr(0, 0, &termios_p);
@@ -160,7 +159,6 @@ int	main(int argc, char **argv, char **env)
 			free_after_split(env);
 			continue;
 		}
-		grox = ft_strdup(promt);
 		add_history(promt);
 		 if (not_found_second_quote(promt) || only_pipe(promt))
 		 	continue ;
@@ -168,6 +166,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			status = 258;
 			free (promt);
+			free_after_split (env);
 			continue ;
 		}
 		if (check_pipes_count(&promt, &count))
@@ -182,6 +181,7 @@ int	main(int argc, char **argv, char **env)
 			gr = 1;
 			free_pars(pars, count);
 			free(promt);
+			free_after_split (env);
 			signal(SIGINT, handle4);
 		//	env = list_to_env(env_, status);
 			continue ;
@@ -191,21 +191,20 @@ int	main(int argc, char **argv, char **env)
 		{
 			change_under_score(env_, promt);
 			call_builtin(promt, there_is_builtin(promt), env_); 
-			free(grox);
 			free_pars(pars, count);
 			free(promt);
 			free_after_split(env);
 			continue;
 		}
-		if (lexer(&promt, &pars))
+		if (lexer(&promt, pars))
 		{
 			free_pars(pars, count);
 			free(promt);
+			free_after_split (env);
 			continue ;
 		}
 		open_processes(count, pars, env);
-		change_under_score(env_, grox);
-		free(grox);
+		change_under_score(env_, promt);
 		free(promt);
 		free_after_split(env);
 		termios_p.c_lflag |= ECHOCTL;

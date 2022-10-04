@@ -167,7 +167,7 @@ void	wait_(int (*fd)[2], pid_t *id, int count);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						REDIRECTIONS.C	5			   	     */
-int		lexer(char **promt, t_pars ***pars);
+int		lexer(char **promt, t_pars **pars);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						UTILS.C				   	     */

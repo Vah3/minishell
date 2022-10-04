@@ -48,6 +48,26 @@ static void	free_params(char	*delim, char	*promt)//, char	*env_line)
 	free(delim);
 }
 
+char *change_delim_key(char *delim)
+{
+	char *new_key;
+
+	new_key = NULL;
+	if (ft_strcmp(delim, "PWD") == 0)
+	{
+		new_key = ft_strdup("+PWD");
+		free(delim);
+		return (new_key);
+	}
+	else if (ft_strcmp(delim, "OLDPWD") == 0)
+	{
+		new_key = ft_strdup("+OLDPWD");
+		free (delim);
+		return (new_key);
+	}
+	return (delim);
+}
+
 static void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 {
 	char	*delim;
@@ -64,6 +84,7 @@ static void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 				&& (ft_isalnum((*promt)[*i]) || (*promt)[*i] == '?' || (*promt)[*i] == '_'))
 			(*i)++;
 		delim = ft_substr(*promt, j, (*i) - j);
+		delim = change_delim_key(delim);
 		env_line = _getenv(env_v, delim);
 		*len += ft_strlen(env_line);
 		(*promt)[j - 1] = 0;
