@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 20:06:45 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/02 19:20:30 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/04 21:45:49 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,21 +98,17 @@ int print_export(t_env *env)
 	temp = env;
 	while (temp)
 	{
-		if (ft_strncmp(temp->key, "?", 1) == 0)
-			temp = temp->next;
-		if (temp && temp->value == NULL)
+		if (temp && is_valid_key(temp->key) && temp->value == NULL)
 		{
 			printf("declare -x ");
 			printf("%s\n", temp->key);
 		}
-		else if (temp)
+		else if (temp && is_valid_key(temp->key))
 		{
 			printf("declare -x ");
 			printf("%s=\"", temp->key);
 			printf("%s\"\n", temp->value);
 		}
-		else 
-			break;
 		temp = temp->next;
 	}	
 	return (SUCCESS);

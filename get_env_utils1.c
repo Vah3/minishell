@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:53:27 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/25 09:34:57 by root             ###   ########.fr       */
+/*   Updated: 2022/10/04 21:46:52 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,15 @@ char	**list_to_env(t_env	*head)
 	update_status(head);
 	while (temp)
 	{
-		line = ft_strdup(temp->key);
-		line = ft_strjoin(line, "=");
-		line = ft_strjoin(line, temp->value);
-		env[i++] = ft_strdup(line);
-		free(line);
-		line = NULL;
+		if (is_valid_key(temp->key))
+		{
+			line = ft_strdup(temp->key);
+			line = ft_strjoin(line, "=");
+			line = ft_strjoin(line, temp->value);
+			env[i++] = ft_strdup(line);
+			free(line);
+			line = NULL;
+		}
 		temp = temp->next;
 	}
 	env[i] = NULL;

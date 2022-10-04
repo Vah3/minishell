@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:20:01 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/04 18:24:24 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/04 21:46:24 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,16 @@ t_env	*env_initialization(char **env_)
 		env_add_back(&env, new_env_element("OLDPWD", NULL));
 	else
 		update_value(&env, "OLDPWD", NULL);
-	free (cur_pwd);
+	if (!exists_key("+PWD", env))
+		env_add_back(&env, new_env_element("+PWD", cur_pwd));
+	else
+		update_value(&env, "+PWD", cur_pwd);
+	if (!exists_key("+OLDPWD", env))
+		env_add_back(&env, new_env_element("+OLDPWD", NULL));
+	else
+		update_value(&env, "+OLDPWD", NULL);
 	set_shlvl(env);
+	free(cur_pwd);
 	return (env);
 }
 

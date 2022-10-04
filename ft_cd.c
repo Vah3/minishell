@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 17:50:38 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/04 18:34:16 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/04 21:34:20 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,10 @@ int	call_cd(char *prompt, t_env *env)
 		}
 		else
 		{
-			if (!exists_key("OLDPWD", env))
-				env_add_back(&env, new_env_element("OLDPWD", _getenv(env, "PWD")));
-			else
-				update_value(&env, "OLDPWD", _getenv(env, "PWD"));
+			update_value(&env, "OLDPWD", _getenv(env, "PWD"));
+			update_value(&env, "+OLDPWD", _getenv(env, "+PWD"));
 			update_value(&env, "PWD", _getenv(env, "HOME"));
+			update_value(&env, "+PWD", _getenv(env, "HOME"));
 		}
 	}
 	else
