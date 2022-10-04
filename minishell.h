@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/04 18:24:51 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/04 18:31:00 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,7 @@ int		call_cd(char *prompt, t_env *env);
 
 int		exists_key(char *key, t_env *env);
 void	update_value(t_env **env, char *key, char *value);
+int		is_valid_key(char *key);
 
 
 

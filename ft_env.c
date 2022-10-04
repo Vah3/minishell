@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 20:25:22 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/01 21:15:46 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/04 18:32:22 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ int	call_env(t_env *env)
 	temp = env;
 	while (temp)
 	{		
-		if ((ft_strcmp(temp->key, "?") == 0))
-		{
-			temp = temp->next;	
-			continue;
-		}
 		if ((ft_strcmp(temp->key, "SHLVL") == 0) && !temp->value)
 		{
 			printf("%s=\n", temp->key);
@@ -35,11 +30,9 @@ int	call_env(t_env *env)
 			temp = temp->next;	
 			continue;
 		}
-		if (temp->key && temp->value)
-		{
+		if (is_valid_key(temp->key) && temp->key && temp->value)
 			printf("%s=%s\n", temp->key, temp->value);
-			temp = temp->next;
-		}
+		temp = temp->next;
 	}
 	return (0)
 ;}
