@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 17:50:38 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/04 22:04:59 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/05 14:13:37 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	call_cd(char *prompt, t_env *env)
 		}
 		else
 		{
-			update_value(&env, "OLDPWD", _getenv(env, "PWD"));
+			update_value_cd(&env, "OLDPWD", _getenv(env, "+PWD"));
 			update_value(&env, "+OLDPWD", _getenv(env, "+PWD"));
 			update_value(&env, "PWD", _getenv(env, "HOME"));
 			update_value(&env, "+PWD", _getenv(env, "HOME"));
@@ -46,7 +46,10 @@ int	call_cd(char *prompt, t_env *env)
 	}
 	else
 	{
-		
+		if (chdir (splited_prompt[1]) < 0)
+		{
+			printf("UROD\n");
+		}
 	}
 	free_after_split(splited_prompt);				
 	return (0);

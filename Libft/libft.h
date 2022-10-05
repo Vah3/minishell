@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 20:54:58 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/01 19:29:00 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:41:11 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_putnbr_fd(int n, int fd);
 void	ft_putendl_fd(char *s, int fd);
 char	*ft_itoa(int n);
 int		ft_strcmp(char *s1, char *s2);
-
+char	*ft_strdup_env(const char *s);
 typedef struct s_list
 {
 	void			*content;

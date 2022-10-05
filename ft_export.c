@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 20:06:45 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/04 21:45:49 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:42:36 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,30 @@ void	update_value(t_env **env, char *key, char *value)
 	while (temp)
 	{
 		if (ft_strcmp(key, temp->key) == 0)
+		{
+			free(temp->value);
+			temp->value = ft_strdup(value);
 			break;
+		}
 		temp = temp->next;
 	}
-	free(temp->value);
-	temp->value = ft_strdup(value);
+}
+
+void	update_value_cd(t_env **env, char *key, char *value)
+{
+	t_env	*temp;
+
+	temp = *env;
+	while (temp)
+	{
+		if (ft_strcmp(key, temp->key) == 0)
+		{
+			free(temp->value);
+			temp->value = ft_strdup_env(value);
+			break;
+		}
+		temp = temp->next;
+	}
 }
 
 void	join_value(t_env **env, char *key, char *value)
@@ -161,18 +180,41 @@ int call_export(char *prompt, t_env *env)
 			if (mode == JOIN_MODE)
 			{
 				join_value(&env, key, value);
+				if (ft_strcmp(key, "PWD") == 0)
+					join_value(&env, "+PWD", value);
+				else if (ft_strcmp(key, "OLDPWD") == 0)
+					join_value(&env, "+OLDPWD", value);
 				i++;
 				free(key);
 				free(value);
 				continue;	
 			}
 			if (exists_key(key, env))
+			{
 				update_value(&env, key, value);
+				if (ft_strcmp(key, "PWD") == 0)
+					update_value(&env, "+PWD", value);
+				if (ft_strcmp(key, "OLDPWD") == 0)
+					update_value(&env, "+OLDPWD", value);
+			}
 			else
+			{
+				if (ft_strcmp(key, "PWD") == 0)
+					update_value(&env, "+PWD", value);
+				else if (ft_strcmp(key, "OLDPWD") == 0)
+					update_value(&env, "+OLDPWD", value);
 				env_add_back(&env, new_env_element(key, value));
+			}
 		}
 		else if (!exists_key(key, env))
+		{
+			if (ft_strcmp(key, "PWD") == 0)
+				update_value(&env, "+PWD", value);
+			else if (ft_strcmp(key, "OLDPWD") == 0)
+				update_value(&env, "+OLDPWD", value);
 			env_add_back(&env, new_env_element(key, value));
+		
+		}
 		free(key);
 		free(value);
 		i++;
