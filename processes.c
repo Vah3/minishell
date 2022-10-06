@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 20:26:56 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/06 21:09:27 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,21 @@ void	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_)
 	id = NULL;
 	if (init_pipe(fd_, count))
 	{
-		free_pars(pars, count);
+		free_pars(pars);
 		free(*fd_);
 		exit(EXIT_FAILURE);
 	}
 	if (count > 1 && !(*fd_))
 	{
 		perror("fd");
-		free_pars(pars, count);
+		free_pars(pars);
 		exit (EXIT_FAILURE);
 	}
 	id = (pid_t *)malloc(sizeof(pid_t) * count);
 	if (!id)
 	{
 		perror("malloc failed");
-		free_pars(pars, count);
+		free_pars(pars);
 		free(*fd_);
 		exit (EXIT_FAILURE);
 	}
@@ -106,8 +106,14 @@ void	print_in_errno_and_free_exit(char **command, char *print, int code , char *
 	exit(code);
 }
 
+typedef struct for_free
+{
+	int		(*fd)[2];
+	pid_t	*id;
+	t_pars **pars;
+} t_free;
 
-void	do_execve(t_pars *pars, char **env, t_env *env_)
+void	do_execve(t_pars *pars, char **env, t_env *env_, t_free *__fre)
 {
 	char	**cmd;
 	char	*line;
@@ -120,7 +126,12 @@ void	do_execve(t_pars *pars, char **env, t_env *env_)
 		exit( call_builtin(line, there_is_builtin(line), env_));
 	execve(cmd[0], cmd, env);
 	if (cmd[0] && opendir(cmd[0]))
+	{
+		free(__fre->fd);
+		free(__fre->id);
+		free_pars(__fre->pars);
 		print_in_errno_and_free_exit(command, " is a directory", 126, cmd);
+	}
 	if (!cmd[0] && ft_strchr(command[0], '/'))
 		print_in_errno_and_free_exit(command, " No such file or directory", 127, cmd);
 	else if (!cmd[0] || !ft_strchr(command[0], '/'))
@@ -130,17 +141,22 @@ void	do_execve(t_pars *pars, char **env, t_env *env_)
 	exit(0);
 }
 
+
+
 void	open_processes(int count, t_pars **pars, char **env, t_env *env_)
 {
 	int		i;
 	int		(*fd)[2];
 	pid_t	*id = NULL;
 	struct termios a;
-
+	t_free __fre;
 
 	i = -1;
 
 	malloc_and_check(count, (int ***)&fd, pars, &id);
+	__fre.id = id;
+	__fre.fd = fd;
+	__fre.pars = pars;
 	while (++i < count)
 	{
 		if(do_fork(&id, i))
@@ -159,17 +175,16 @@ void	open_processes(int count, t_pars **pars, char **env, t_env *env_)
 		}
 		if (id[i] == 0 )
 		 	make_cmd(pars[i], env);
-		if (id[i] == 0 && count == 2 && single_pipe(i, fd, pars[i]))
-			//&& fr(pars, fd, id, count))
+		if (id[i] == 0 && count == 2 && single_pipe(i, fd, pars[i])
+			&& fr(pars, fd, id, count))
 			exit (EXIT_FAILURE);
-		if (id[i] == 0 && count > 2 && multi_pipe(i, fd, count, pars[i]))
-			//&& fr(pars, fd, id, count))
+		if (id[i] == 0 && count > 2 && multi_pipe(i, fd, count, pars[i])
+			&& fr(pars, fd, id, count))
 			exit (EXIT_FAILURE);
 		if (id[i] == 0 && count == 1)
 			without_pipes(pars, fd, id, count);
 		if (id[i] == 0)
-			do_execve(pars[i], env, env_);
-		//	printf("%s %d\n", __FILE__,__LINE__);
+			do_execve(pars[i], env, env_, &__fre);
 	}
 	wait_(fd, id, count);
 	fr(pars, fd, id, count);

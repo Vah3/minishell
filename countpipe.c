@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 15:07:22 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 20:47:08 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/06 21:00:37 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,12 @@ int	check_pipes_count(char **promt, int *count)
 	return (0);
 }
 
-void	free_pars(t_pars **pars, int count)
+void	free_pars(t_pars **pars)
 {
 	int	i;
-/*	t_env *env;
-	
-	env = NULL;
-	env = *(pars[0]->env_var);
-	while(env)
-	{*/
-
 	
 	i = 0;
-	while (i < count)
+	while (pars && pars[i])
 	{
 		free(pars[i]->cmd);
 		if (pars[i]->errfile)

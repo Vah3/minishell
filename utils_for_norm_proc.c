@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_for_norm_proc.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:21:20 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/21 14:22:52 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/06 21:01:35 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	free_fd_id(int (*fd)[2], pid_t *id, int count)
 int	fr(t_pars **pars, int (*fd)[2], pid_t *id, int count)
 {
 	free_fd_id(fd, id, count);
-	free_pars(pars, count);
+	free_pars(pars);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 20:31:41 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/06 21:02:18 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ int	main(int argc, char **argv, char **env)
 		if(openheredoc(promt, pars))// || !promt) // heredocery stexic a bacum
 		{
 			gr = 1;
-			free_pars(pars, count);
+			free_pars(pars);
 			free(promt);
 			free_after_split (env);
 			signal(SIGINT, handle4);
@@ -197,7 +197,7 @@ int	main(int argc, char **argv, char **env)
 		do_expand(&promt, env_, 0); ///////expand
 		if (lexer(&promt, pars))
 		{
-			free_pars(pars, count);
+			free_pars(pars);
 			free(promt);
 			free_after_split (env);
 			continue ;
@@ -208,14 +208,14 @@ int	main(int argc, char **argv, char **env)
 			{
 				printf("minishell: %s : %s\n",
 					pars[0]->errfile, strerror(pars[0]->errnum));
-				free_pars(pars, count);
+				free_pars(pars);
 				free(promt);
 				free_after_split(env);
 				continue;
 			}
 			if (pars[0]->outfilefd == -1)
 			{
-				free_pars(pars, count);
+				free_pars(pars);
 				free(promt);
 				free_after_split(env);
 				continue ;
@@ -223,7 +223,7 @@ int	main(int argc, char **argv, char **env)
 			check_out_or_input(pars[0]);
 			change_under_score(env_, pars[0]->cmd);
 			call_builtin(pars[0]->cmd, there_is_builtin(pars[0]->cmd), env_); 
-			free_pars(pars, count);
+			free_pars(pars);
 			free(promt);
 			free_after_split(env);
 			dup2(stdin_, STDIN_FILENO);

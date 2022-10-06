@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 15:20:50 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/06 21:01:13 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int		only_pipe(char	*promt);
 
 /*						COUNTPIPE.C	5					     */
 int		check_pipes_count(char **promt, int *count);
-void	free_pars(t_pars **pars, int count);
+void	free_pars(t_pars **pars);
 char	*ft_trim_substr(char **source, int start, int end);
 /*/////////////////////////////////////////////////////////////// */
 
