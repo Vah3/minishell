@@ -34,6 +34,8 @@ int	make_cmd(t_pars *pars, char **env)
 
 	j = 0;
 	command = NULL;
+	if (there_is_builtin(pars->cmd))
+		return (SUCCESS);
 	if (pars->cmd != NULL && pars->errfile == NULL)
 	{
 		command = ft_split(pars->cmd, 32);

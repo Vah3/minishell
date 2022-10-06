@@ -62,6 +62,62 @@ int there_is_builtin(char *str)
 	return (id);
 }
 
+static size_t	ft_atoi_(const char *str)
+{
+	int	index;
+	int	convert;
+	int	sign;
+
+	index = 0;
+	convert = 0;
+	sign = 1;
+	if (!str)
+		return (0);
+	while ((str[index] >= 9 && str[index] <= 13) || str[index] == 32)
+		index++;
+	if (str[index] == '-' || str[index] == '+')
+	{
+		if (str[index] == '-')
+			sign = -sign;
+		index++;
+	}
+	while (str[index] >= '0' && str[index] <= '9')
+	{
+		convert = convert * 10 + str[index] - '0';
+		index++;
+	}
+	return (sign * convert);
+}
+
+int	ft_string_isdigit(char *str)
+{
+	int i;
+
+	i = 0;
+    while (str[i] && str[i] >= '0' && str[i] <= '9')
+		i++;
+	if (i < (int)ft_strlen(str))
+		return (0);
+    return (1);
+}
+
+int	call_exit(char *line)
+{
+	char	**splited_prompt;
+	int len;
+
+	len = 0;
+	splited_prompt = ft_split(line, ' ');
+	if (!splited_prompt)
+		return (FAILURE);
+	while(splited_prompt[len])
+		len++;
+	printf("%d\n",len);
+	if (len == 1)
+		exit(0);
+	return (0);
+}
+
 	int	call_builtin(char *prompt, int id, t_env *env)
 	{
 		if(id == IS_ECHO)
@@ -75,8 +131,9 @@ int there_is_builtin(char *str)
 		else if (id == IS_UNSET)
 			return (call_unset(prompt, env));//call_unset(prompt, env);
 		else if (id == IS_ENV)
-			return(call_env(env));
+			return (call_env(env));
 		else if (id == IS_EXIT)
-			return(printf("hi\n"));//call_exit(prompt, env);
+			return (call_exit(prompt));
+			//return(printf("hi\n"));//call_exit(prompt, env);
 			return (0);
 	}

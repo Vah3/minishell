@@ -59,10 +59,7 @@ int	check_pipes_count(char **promt, int *count)
 			while ((*promt)[i] && (*promt)[i] == 32)
 				i++;
 			if ((*promt)[i] && (*promt)[i] == '|')
-			{
-				(*count)--;
 				return (1);
-			}
 			if (when_promt_ends_with_pipe(promt, i))
 				return (1);
 		}

@@ -81,20 +81,51 @@ int	do_fork(pid_t **id, int i)
 	return (SUCCESS);
 }
 
-int	do_execve(char **cmd, char **env)
+
+void	print_in_errno_and_free_exit(char **command, char *print, int code , char **cmd)
 {
-	if (cmd && cmd[0])
+	int 	i;
+
+	i = 0;
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(command[0], 2);
+	ft_putendl_fd(print, 2);
+	while(command && command[i])
 	{
-		execve(cmd[0], cmd, env);
-		if (ft_strlen(cmd[0]) == 0)
-			exit(127);
-		exit(126);
+		free(command[i]);
+		free(cmd[i]);
+		i++;
 	}
-	exit (0);
-	return (1);
+	free(command);
+	free(cmd);
+	exit(code);
 }
 
-void	open_processes(int count, t_pars **pars, char **env)
+
+void	do_execve(t_pars *pars, char **env, t_env *env_)
+{
+	char	**cmd;
+	char	*line;
+	char	**command;
+
+	cmd = pars->exec_cmd;
+	line = pars->cmd;
+	command = ft_split(line, 32);
+	if (there_is_builtin(line))
+		exit( call_builtin(line, there_is_builtin(line), env_));
+	execve(cmd[0], cmd, env);
+	if (cmd[0] && opendir(cmd[0]))
+		print_in_errno_and_free_exit(command, " is a directory", 126, cmd);
+	if (!cmd[0] && ft_strchr(command[0], '/'))
+		print_in_errno_and_free_exit(command, " No such file or directory", 127, cmd);
+	else if (!cmd[0] || !ft_strchr(command[0], '/'))
+		print_in_errno_and_free_exit(command, " Comomand not found", 127, cmd);
+	if (cmd[0] && access(cmd[0], F_OK) == 0 && access(cmd[0], X_OK) == -1)
+		print_in_errno_and_free_exit(command, " Permission denied", 126, cmd);
+	exit(0);
+}
+
+void	open_processes(int count, t_pars **pars, char **env, t_env *env_)
 {
 	int		i;
 	int		(*fd)[2];
@@ -128,7 +159,7 @@ void	open_processes(int count, t_pars **pars, char **env)
 		if (id[i] == 0 && count == 1)
 			without_pipes(pars, fd, id, count);
 		if (id[i] == 0)
-			do_execve((pars[i])->exec_cmd, env);
+			do_execve(pars[i], env, env_);
 		//	printf("%s %d\n", __FILE__,__LINE__);
 	}
 	wait_(fd, id, count);

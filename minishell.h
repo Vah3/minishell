@@ -29,6 +29,7 @@
 # include <signal.h>
 #include <termios.h>
 #include <unistd.h>
+#include <limits.h>
 /*			HEADER	FILES			*/
 
 # define SUCCESS 0
@@ -155,7 +156,7 @@ void	check_make(char **cmd, char **env);
 
 /*						PROCESSES.C				   	     */
 int		close_pipes(int (*fd)[2], int count);
-void	open_processes(int count, t_pars **pars, char **env);
+void	open_processes(int count, t_pars **pars, char **env, t_env *env_);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						UTILS_FOR_NORM_PROC.C				   	     */

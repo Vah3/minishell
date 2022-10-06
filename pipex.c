@@ -41,19 +41,9 @@ static void	check_cmd(char	**command, char **path)
 		*command = ft_strjoin(path[i++], finaly);
 		if (access(*command, F_OK) == 0)
 			break ;
-		if (access(*command, F_OK) != 0)
-			free(*command);
+		free(*command);
+		*command = NULL;
 	}
-	if (opendir(finaly + 1)) //&& free_path_rest(path, i))
-		free_and_exit("is a directory", finaly, 126);
-	else if (ft_strchr(finaly + 1, '/')
-		&& (access((finaly + 1), F_OK) == -1)) //&& free_path_rest(path, i))
-		free_and_exit( "No such file or directory", finaly, 127);
-	if (finaly[1] == '\0' || ((!path || path[i] == NULL)
-			&& (access((finaly + 1), F_OK) == -1)))
-		free_and_exit("Comomand not found", finaly, 127);
-	if ((!path || path[i] != NULL) && access((finaly + 1), X_OK) == 0)
-		free_and_exit("Permission denied", finaly, 126);
 	free_path_rest(path, i);
 	free (finaly);
 }
@@ -68,7 +58,7 @@ void	check_make(char **cmd, char **env)
 	newenv = NULL;
 	i = 0;
 	command = *cmd;
-	if (!opendir(command) && access(command, X_OK) == 0)
+	if (access(command, F_OK) == 0)
 		return ;
 	slash = ft_strdup("/");
 	command = ft_strjoin(slash, *cmd);
@@ -77,7 +67,6 @@ void	check_make(char **cmd, char **env)
 		i++;
 	if (env[i])
 		newenv = ft_split(env[i] + 5, ':');
-	i = 0;
 	check_cmd(&command, newenv);
 	*cmd = command;
 }

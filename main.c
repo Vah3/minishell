@@ -123,6 +123,7 @@ int	main(int argc, char **argv, char **env)
 {
 //	static int  a = 0;
 	int 	gr = 0;
+	int		stdin_, stdout_;
 	char	*promt;
 	t_pars	**pars;
 	int		count;
@@ -134,6 +135,8 @@ int	main(int argc, char **argv, char **env)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_IGN);
 	env_ = env_initialization(env);
+	stdin_ = dup(STDIN_FILENO);
+	stdout_ = dup(STDOUT_FILENO);
 	while(1)
 	{
 		tcgetattr(0, &termios_p);
@@ -187,15 +190,6 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		do_expand(&promt, env_, 0); ///////expand
-		if (there_is_builtin(promt))//<-----------------------
-		{
-			change_under_score(env_, promt);
-			call_builtin(promt, there_is_builtin(promt), env_); 
-			free_pars(pars, count);
-			free(promt);
-			free_after_split(env);
-			continue;
-		}
 		if (lexer(&promt, pars))
 		{
 			free_pars(pars, count);
@@ -203,7 +197,35 @@ int	main(int argc, char **argv, char **env)
 			free_after_split (env);
 			continue ;
 		}
-		open_processes(count, pars, env);
+		if (count == 1 && there_is_builtin(pars[0]->cmd))//<-----------------------
+		{
+			if (pars[0]->errfile)
+			{
+				printf("minishell: %s : %s\n",
+					pars[0]->errfile, strerror(pars[0]->errnum));
+				free_pars(pars, count);
+				free(promt);
+				free_after_split(env);
+				continue;
+			}
+			if (pars[0]->outfilefd == -1)
+			{
+				free_pars(pars, count);
+				free(promt);
+				free_after_split(env);
+				continue ;
+			}
+			check_out_or_input(pars[0]);
+			change_under_score(env_, pars[0]->cmd);
+			call_builtin(pars[0]->cmd, there_is_builtin(pars[0]->cmd), env_); 
+			free_pars(pars, count);
+			free(promt);
+			free_after_split(env);
+			dup2(stdin_, STDIN_FILENO);
+			dup2(stdout_, STDOUT_FILENO);
+			continue;
+		}
+		open_processes(count, pars, env, env_);
 		change_under_score(env_, promt);
 		free(promt);
 		free_after_split(env);

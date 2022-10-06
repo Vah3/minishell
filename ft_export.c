@@ -155,9 +155,9 @@ int call_export(char *prompt, t_env *env)
 		splited_prompt[i] = get_correct_cmd(splited_prompt[i]);
 		if (!is_valid(splited_prompt[i], &mode))
 		{
-			ft_putstr_fd("minishell: export: `",2);
+			ft_putstr_fd("minishell: export: `", 2);
 			ft_putstr_fd(splited_prompt[i], 2);
-			ft_putstr_fd("\': not a valid identifier\n",2);			
+			ft_putstr_fd("\': not a valid identifier\n", 2);			
 			i++;
 			status = 1;
 			continue;

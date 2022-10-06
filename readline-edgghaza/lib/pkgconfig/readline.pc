@@ -1,4 +1,4 @@
-prefix=/Users/edgghaza/Desktop/minishell/readline-edgghaza
+prefix=/Users/vagevorg/Desktop/minishell/readline-edgghaza
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
