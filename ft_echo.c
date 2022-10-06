@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 19:12:41 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/02 20:45:37 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/06 18:15:36 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ int	call_echo(char *prompt)
 	i = 1;
 	flag = 1;
 	splited_prompt = ft_split(prompt, ' ');
+	while (splited_prompt[i])
+	{
+		splited_prompt[i] = get_correct_cmd(splited_prompt[i]);
+		i++;
+	}
+	i = 1;
 	while (splited_prompt[i] && is_all_n(splited_prompt[i]))
 	{
 		flag = 0;

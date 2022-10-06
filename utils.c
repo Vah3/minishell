@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:37:48 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/21 15:22:42 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/06 19:40:19 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,12 @@ int	init_pipe(int ***fd_, int count)
 		if (pipe(fd[i]))
 			{
 				perror("Pipe error");
+				while(i > 0)
+				{
+					i--;
+					close(fd[i][0]);
+					close(fd[i][1]);
+				}
 				return (FAILURE);
 			}
 		i++;

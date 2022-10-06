@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/25 09:21:38 by root             ###   ########.fr       */
+/*   Updated: 2022/10/06 20:18:50 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int status;
 
 int	close_pipes(int (*fd)[2], int count)
 {
@@ -70,12 +72,15 @@ int	do_fork(pid_t **id, int i)
 	(*id)[i] = fork();
 	if ((*id)[i] == -1)
 	{
-		perror("forks failed");
 		while (i_ < i)
 		{
-			kill ((*id)[i_],SIGKILL);
+			if (kill((*id)[i_], SIGKILL))
+				perror("kill");
+			if(wait(NULL) < 0)
+				perror("");
 			i_++;
 		}
+		status = 1;
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -134,12 +139,17 @@ void	open_processes(int count, t_pars **pars, char **env, t_env *env_)
 
 
 	i = -1;
-	
+
 	malloc_and_check(count, (int ***)&fd, pars, &id);
 	while (++i < count)
 	{
 		if(do_fork(&id, i))
-			break ;
+		{
+			wait(NULL);
+			close_pipes(fd, count);
+			fr(pars, fd, id, count);
+			return ;
+		}
 		if (id[i] == 0)
 		{
 			signal(SIGINT, SIG_DFL);
@@ -148,7 +158,7 @@ void	open_processes(int count, t_pars **pars, char **env, t_env *env_)
 			a.c_lflag |= ECHOCTL;
 			tcsetattr(0, 0, &a);
 		}
-		 if (id[i] == 0 )
+		if (id[i] == 0 )
 		 	make_cmd(pars[i], env);
 		if (id[i] == 0 && count == 2 && single_pipe(i, fd, pars[i]))
 			//&& fr(pars, fd, id, count))

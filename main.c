@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/02 19:47:50 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:19:42 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,11 @@ int	main(int argc, char **argv, char **env)
 		}
 		add_history(promt);
 		 if (not_found_second_quote(promt) || only_pipe(promt))
+		 {
+			free(promt);
+			free_after_split(env);
 		 	continue ;
+		 }
 		if(check_redirections(promt))
 		{
 			status = 258;
@@ -174,7 +178,9 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (check_pipes_count(&promt, &count))
 		{
-			return(ft_error("Pipe error\n", 1));
+			free(promt);
+			free_after_split(env);
+		 	continue ;
 		}
 		pars = init_struct(count, &env_);
 		//if(!pars)

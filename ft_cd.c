@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 17:50:38 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/06 15:26:47 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:25:12 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,18 @@ int	call_cd(char *prompt, t_env *env)
 		{
 			ft_putstr_fd("minishell: cd: ", 2);
 			perror(splited_prompt[1]);
-			// ft_putendl_fd(": No such file or directory", 2);
 			free_after_split(splited_prompt);
 			return (1);
 		}
 		else
 		{
 			cur_pwd = getcwd(NULL, 0);
+            if (!cur_pwd)
+            {
+                perror("minishell: can not get curent directory: ");
+                free_after_split(splited_prompt);
+                return (1);
+            }
 			update_value(&env, "OLDPWD", _getenv(env, "+PWD"));
 			update_value(&env, "+OLDPWD", _getenv(env, "+PWD"));
 			update_value(&env, "PWD", cur_pwd);
