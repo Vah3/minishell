@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   countpipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 15:07:22 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/25 10:18:17 by root             ###   ########.fr       */
+/*   Updated: 2022/10/06 20:47:08 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ static int	when_promt_ends_with_pipe(char **promt, int i)
 	{
 		while (newline == NULL || ft_strlen(newline) == 0)
 			newline = readline(">");
-		if (not_found_second_quote(newline))
-			return (ft_error("Quote error\n", 1));
-		if (only_pipe(newline))
-			return (ft_error("There is only pipe\n", 1));
+		if (not_found_second_quote(newline) || only_pipe(newline) || check_redirections(newline))
+		{
+			free(newline);
+			return (FAILURE);
+		}
 		*promt = ft_strjoin(*promt, " ");
 		*promt = ft_strjoin(*promt, newline);
 		free(newline);

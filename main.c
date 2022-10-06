@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 20:19:42 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:31:41 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,6 @@ int	main(int argc, char **argv, char **env)
 		 }
 		if(check_redirections(promt))
 		{
-			status = 258;
 			free (promt);
 			free_after_split (env);
 			continue ;

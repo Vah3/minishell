@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 20:18:50 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:26:56 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ void	open_processes(int count, t_pars **pars, char **env, t_env *env_)
 	{
 		if(do_fork(&id, i))
 		{
-			wait(NULL);
 			close_pipes(fd, count);
 			fr(pars, fd, id, count);
 			return ;

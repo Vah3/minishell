@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 17:03:32 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/19 20:03:38 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:44:46 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int status;
 
 static int	check_error(char *promt, int *i)
 {
@@ -18,12 +20,16 @@ static int	check_error(char *promt, int *i)
 		(*i)++;
 	if (!promt[*i])
 	{
-		printf ("%s", "syntax error near unexpected token `newline'\n");
+		ft_putendl_fd("minishell: syntax error near unexpected token  `newline'", 2);
+		status = 258;
 		return (FAILURE);
 	}
 	else if (promt[*i] == '<' || promt[*i] == '|' || promt[*i] == '>')
 	{
-		printf ("syntax error near unexpected token `%c'\n", promt[*i]);
+		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+		ft_putchar_fd(promt[*i], 2);
+		ft_putendl_fd("'", 2);
+		status = 258;
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -101,7 +107,7 @@ int	not_found_second_quote(char *line)
 			i++;
 	}
 	if (flag)
-		printf("NOT FOUND SECOND QUOTE\n");
+		ft_putendl_fd("minishell: syntax error: not found second quote", 2);
 	return (flag);
 }
 
@@ -114,7 +120,7 @@ int	only_pipe(char *prompt)
 		;
 	if (prompt[i] == '|')
 	{
-		printf ("syntax error near unexpected token `|'\n");
+		ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
 		return (FAILURE);
 	}
 	return (SUCCESS);
