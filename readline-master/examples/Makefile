@@ -21,7 +21,7 @@ RL_LIBRARY_VERSION = 8.0
 SHELL = /bin/sh
 RM = rm -f
 
-prefix = /Users/vagevorg/Desktop/minishell/readline-edgghaza
+prefix = /Users/edgghaza/Desktop/minishell/readline-edgghaza
 exec_prefix = ${prefix}
 
 datarootdir = ${prefix}/share
@@ -32,7 +32,7 @@ datadir = ${datarootdir}
 
 top_srcdir = ..
 #BUILD_DIR = .
-BUILD_DIR = /Users/vagevorg/Desktop/minishell/readline-master
+BUILD_DIR = /Users/edgghaza/Desktop/minishell/readline-master
 installdir = $(datadir)/readline
 
 INSTALL = /usr/bin/install -c

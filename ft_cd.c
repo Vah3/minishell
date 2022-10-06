@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 17:50:38 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/05 14:13:37 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/06 15:26:47 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 int	call_cd(char *prompt, t_env *env)
 {
 	char	**splited_prompt;
-	char	*to_go;
-	t_env	*key;
+	char	*cur_pwd;
 	
 	splited_prompt = ft_split(prompt, ' ');
 	if (!splited_prompt[1])
@@ -46,12 +45,46 @@ int	call_cd(char *prompt, t_env *env)
 	}
 	else
 	{
-		if (chdir (splited_prompt[1]) < 0)
+		if (chdir(splited_prompt[1]) < 0)
 		{
-			printf("UROD\n");
+			ft_putstr_fd("minishell: cd: ", 2);
+			perror(splited_prompt[1]);
+			// ft_putendl_fd(": No such file or directory", 2);
+			free_after_split(splited_prompt);
+			return (1);
+		}
+		else
+		{
+			cur_pwd = getcwd(NULL, 0);
+			update_value(&env, "OLDPWD", _getenv(env, "+PWD"));
+			update_value(&env, "+OLDPWD", _getenv(env, "+PWD"));
+			update_value(&env, "PWD", cur_pwd);
+			update_value(&env, "+PWD", cur_pwd);
+			free(cur_pwd);
 		}
 	}
 	free_after_split(splited_prompt);				
 	return (0);
+}
+
+int	call_pwd(void)
+{
 	
+	char		*pwd;
+	size_t		size;
+
+	size = 1024;
+	pwd = NULL;
+	pwd = getcwd(pwd, size);
+	if (pwd == NULL)
+	{
+		ft_putstr_fd("Error getting pwd: ", 2);
+		ft_putendl_fd(pwd, 2);
+		ft_putendl_fd("(just go to your existing directory ;) )",  2); 
+		ft_putendl_fd("(AND REMEMBER, IF YOU ARE \"KRIS\" EVALUATOR , KARMA WILL PUNISH YOU! ;)", 2); 
+		return (1);
+	}
+	ft_putendl_fd(pwd, 1);
+	free(pwd);
+	return (0);
 }

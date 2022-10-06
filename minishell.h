@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/05 13:42:50 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/06 15:20:50 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,7 @@ int		call_env(t_env *env);
 int		call_unset(char *prompt, t_env *env);
 int		call_echo(char *prompt);
 int		call_cd(char *prompt, t_env *env);
+int		call_pwd(void);
 
 int		exists_key(char *key, t_env *env);
 void	update_value(t_env **env, char *key, char *value);
