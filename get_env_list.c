@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:20:01 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/04 21:46:24 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/08 17:45:44 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_env	*env_initialization(char **env_)
 		env_add_back(&env, new_env_element("?", "0"));
 	cur_pwd = getcwd(NULL, 0);
 	if (!cur_pwd)
-		return ((void *)ft_error("CURENT_PWD-n feylvela, pti dzenq\n", 1));
+		return (ft_error("CURENT_PWD-n feylvela, pti dzenq\n", 1));
 	if (!exists_key("PWD", env))
 		env_add_back(&env, new_env_element("PWD", cur_pwd));
 	else

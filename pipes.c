@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 13:08:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/21 15:12:37 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/08 18:25:29 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	single_pipe(int i, int (*fd)[2], t_pars *pars)
 		{
 			printf("minishell: %s : %s\n",
 				pars->errfile, strerror(pars->errnum));
-			// printf("-->>%s<<<--%s---%d", strerror(pars->errnum), __FILE__,__LINE__);
 			return (FAILURE);
 		}
 		if (pars->outfilefd == -1)

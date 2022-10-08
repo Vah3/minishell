@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 21:02:18 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/08 18:40:29 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,109 +16,8 @@
 
 int 	status = 0;
 
-int	checking_line(char *line, char *delim)
-{
-	if(status == -1)
-		return (1);
-	if (!line)
-	{
-		//rl_replace_line("Minishell$", 1);
-		//rl_redisplay();
-		status = 0;
-		return (1);
-	}
-	if (ft_strncmp(delim, line, ft_strlen(line)) == 0)
-	{
-		free(line);
-		return (1);
-	}
-	return (0);
-}
 
-int	set_status_back(int input_fd)
-{
-	if (status == -1)
-	{
-		status = 1;
-		dup2(input_fd, 0);
-		signal(SIGINT, handle4);
-		return (1);
-	}
-	return (0);
-}
-int	close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim)
-{
-	if (close(fd[1]) == -1)
-		return (FAILURE);
-	pars[z]->isheredoc = dup(fd[0]);
-	free(delim);
-	return (0);
-}
-int	write_in_pipe_and_dup(t_pars **pars, char *delim, int z)
-{
-	int		fd[2];
-	char	*line;
-	int		expand_or_not;
-	int		input;
 
-	if (pipe(fd) == -1)
-		return (FAILURE);
-	expand_or_not = clearquotes(&delim);
-	input = dup(0);
-	signal(SIGINT, handle2);
-	while (1)
-	{
-		line = readline(">");
-		expand_if_does_not_have_quotes(&line, expand_or_not, pars[0]);
-		if (checking_line(line, delim))
-			break ;
-		if (write(fd[1], line, ft_strlen(line)) == -1)
-			return (FAILURE);
-		if (write(fd[1], "\n", 1) == -1)
-			return (FAILURE);
-		free(line);
-	}
-	if(close_pipe_and_free_delim(fd, z, pars, delim) == FAILURE
-		|| set_status_back(input))
-		return (FAILURE);
-	return (SUCCESS);
-}
-void	change_under_score(t_env *env, char *promt)
-{
-	int		i;
-	t_env *head;
-
-	i = 0;
-	head = env;
-	while (env)
-	{
-		if (!ft_strcmp(env->key, "_"))
-			break;
-		env = env->next;
-	}
-	while(promt && promt[i])
-	{
-		skipquotes(&promt, &i);
-		if (promt[i] == '|')
-		{
-			free(env->value);
-			env->value = NULL;
-			return ;
-		}
-		if(promt[i])
-			i++;
-	}
-	i = ft_strlen(promt) - 1;
-	while(promt && i > 0 && promt[i] == 32)
-		i--;
-	while(promt && i > 0 && promt[i] != 32)
-		i--;
-	if (promt && !(promt[i] == '$' && promt[i + 1] && promt[i + 1] == '_' && (!promt[i + 2] || promt[i + 2] == 32)))
-	{
-		free(env->value);
-		env->value = ft_strdup(ft_strrchr(promt, 32));
-	}
-}
 int	main(int argc, char **argv, char **env)
 {
 //	static int  a = 0;
@@ -154,7 +53,7 @@ int	main(int argc, char **argv, char **env)
 			free_env_(&env_);
 			termios_p.c_lflag |= ECHOCTL;
 			tcsetattr(0, 0, &termios_p);
-			return (0);
+			return (status);
 		}
 		if (!promt || promt[0] == '\0')
 		{
@@ -204,6 +103,7 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (count == 1 && there_is_builtin(pars[0]->cmd))//<-----------------------
 		{
+			env = change_under_score(env_, pars[0]->cmd, env);
 			if (pars[0]->errfile)
 			{
 				printf("minishell: %s : %s\n",
@@ -221,8 +121,7 @@ int	main(int argc, char **argv, char **env)
 				continue ;
 			}
 			check_out_or_input(pars[0]);
-			change_under_score(env_, pars[0]->cmd);
-			call_builtin(pars[0]->cmd, there_is_builtin(pars[0]->cmd), env_); 
+			call_builtin(pars, pars[0]->cmd, there_is_builtin(pars[0]->cmd), env_); 
 			free_pars(pars);
 			free(promt);
 			free_after_split(env);
@@ -230,8 +129,8 @@ int	main(int argc, char **argv, char **env)
 			dup2(stdout_, STDOUT_FILENO);
 			continue;
 		}
+		env = change_under_score(env_, promt, env);
 		open_processes(count, pars, env, env_);
-		change_under_score(env_, promt);
 		free(promt);
 		free_after_split(env);
 		termios_p.c_lflag |= ECHOCTL;

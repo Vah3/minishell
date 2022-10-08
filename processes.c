@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 21:09:27 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/08 18:41:59 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ typedef struct for_free
 	t_pars **pars;
 } t_free;
 
-void	do_execve(t_pars *pars, char **env, t_env *env_, t_free *__fre)
+void	do_execve(t_pars *pars, char **env, t_env *env_)
 {
 	char	**cmd;
 	char	*line;
@@ -121,24 +121,21 @@ void	do_execve(t_pars *pars, char **env, t_env *env_, t_free *__fre)
 
 	cmd = pars->exec_cmd;
 	line = pars->cmd;
+	line = get_correct_cmd(line);
 	command = ft_split(line, 32);
 	if (there_is_builtin(line))
-		exit( call_builtin(line, there_is_builtin(line), env_));
-	execve(cmd[0], cmd, env);
-	if (cmd[0] && opendir(cmd[0]))
-	{
-		free(__fre->fd);
-		free(__fre->id);
-		free_pars(__fre->pars);
+		exit( call_builtin(&pars, line, there_is_builtin(line), env_));
+	if(cmd && cmd[0])
+		execve(cmd[0], cmd, env);
+	if (cmd && cmd[0] && opendir(cmd[0]))
 		print_in_errno_and_free_exit(command, " is a directory", 126, cmd);
-	}
-	if (!cmd[0] && ft_strchr(command[0], '/'))
+	if (cmd && !cmd[0] && ft_strchr(command[0], '/'))
 		print_in_errno_and_free_exit(command, " No such file or directory", 127, cmd);
-	else if (!cmd[0] || !ft_strchr(command[0], '/'))
-		print_in_errno_and_free_exit(command, " Comomand not found", 127, cmd);
-	if (cmd[0] && access(cmd[0], F_OK) == 0 && access(cmd[0], X_OK) == -1)
+	else if (cmd && (!cmd[0] || !ft_strchr(command[0], '/')))
+		print_in_errno_and_free_exit(command, " Command not found", 127, cmd);
+	if (cmd && cmd[0] && access(cmd[0], F_OK) == 0 && access(cmd[0], X_OK) == -1)
 		print_in_errno_and_free_exit(command, " Permission denied", 126, cmd);
-	exit(0);
+	exit(status);
 }
 
 
@@ -149,14 +146,10 @@ void	open_processes(int count, t_pars **pars, char **env, t_env *env_)
 	int		(*fd)[2];
 	pid_t	*id = NULL;
 	struct termios a;
-	t_free __fre;
 
 	i = -1;
 
 	malloc_and_check(count, (int ***)&fd, pars, &id);
-	__fre.id = id;
-	__fre.fd = fd;
-	__fre.pars = pars;
 	while (++i < count)
 	{
 		if(do_fork(&id, i))
@@ -184,7 +177,7 @@ void	open_processes(int count, t_pars **pars, char **env, t_env *env_)
 		if (id[i] == 0 && count == 1)
 			without_pipes(pars, fd, id, count);
 		if (id[i] == 0)
-			do_execve(pars[i], env, env_, &__fre);
+			do_execve(pars[i], env, env_);
 	}
 	wait_(fd, id, count);
 	fr(pars, fd, id, count);

@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:59:08 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 18:00:31 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/08 18:45:24 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,8 @@ int non_numeric(char *str)
 
 int	checks(char **args, int count_of_args)
 {
-	int	i;
-
-	i = 1;
 	if (count_of_args == 1)
-		return (1);
+		return (0);
 	if(ft_string_isdigit(args[1]) == 0 || non_numeric(args[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
@@ -111,7 +108,7 @@ int	checks(char **args, int count_of_args)
 }
 
 
-int	call_exit(char *line)
+int	call_exit(t_pars **pars, char *line)
 {
 	char	**splited_prompt;
 	int count_of_args;
@@ -127,15 +124,28 @@ int	call_exit(char *line)
 		count_of_args++;
 	}
 	if (checks(splited_prompt, count_of_args))
+	{
+		free_after_split(splited_prompt);
 		exit (255);
+	}
 	if (count_of_args == 1)
-		exit(0);
+	{
+		free_after_split(splited_prompt);
+		exit(status);
+	}
 	else if (count_of_args == 2)
+	{
+		free_after_split(splited_prompt);
+		free_env_(pars[0]->env_var);
 		exit(ft_atoi_(splited_prompt[1]));
+	}
 	else if (count_of_args > 2)
 	{
 		status = 1;
-		ft_putendl_fd("bash: exit: too many arguments", 2);
+		free_after_split(splited_prompt);
+		free_pars(pars);
+		free_env_(pars[0]->env_var);
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
 	}
 	return (0);
 }

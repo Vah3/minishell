@@ -6,11 +6,13 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 15:07:22 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 21:00:37 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/08 15:44:18 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int status;
 
 static void	skip_index_until_pipe(char **promt, int *i)
 {
@@ -25,12 +27,28 @@ static void	skip_index_until_pipe(char **promt, int *i)
 static int	when_promt_ends_with_pipe(char **promt, int i)
 {
 	char	*newline;
+	int		stdin_;
 
+	stdin_ = dup(STDIN_FILENO);
 	newline = NULL;
+	signal(SIGINT, handle2);
 	if (!(*promt)[i])
 	{
-		while (newline == NULL || ft_strlen(newline) == 0)
+		while (1)
+		{
 			newline = readline(">");
+		if (!newline && status != -1)
+		{		
+			ft_putendl_fd(" minishell: syntax error: unexpected end of file", 2);
+			status = 258;
+			return (1);
+		}
+		clear_spaces_if_all_are_spaces(&newline);
+		if (!newline && status != -1)
+			continue ;
+		else
+			break ;
+		}
 		if (not_found_second_quote(newline) || only_pipe(newline) || check_redirections(newline))
 		{
 			free(newline);
@@ -41,6 +59,10 @@ static int	when_promt_ends_with_pipe(char **promt, int i)
 		free(newline);
 		newline = NULL;
 	}
+	//printf("%d\n", status);
+	if(set_status_back(stdin_))
+		return (1);
+	signal(SIGINT, handle4);
 	return (0);
 }
 

@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 17:47:43 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/20 16:35:02 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/08 17:45:12 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	free_and_exit(char *for_print, char *finaly, int code)
-{
-	printf("minishell: %s: %s\n", (finaly + 1), for_print);
-	//free(finaly);
-	exit(code);
-//	(void)code;
-	(void) finaly;
-}
 
 static int	free_path_rest(char **path, int i)
 {

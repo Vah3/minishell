@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   opendocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/25 09:58:31 by root             ###   ########.fr       */
+/*   Updated: 2022/10/08 17:39:36 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int status;
 
 int	ft_error(char *err_message, int err_code)
 {
@@ -104,47 +106,71 @@ void	skips_and_detect_pipe(char **promt, int *i, int *z)
 	if ((*promt)[*i] == '|')
 		(*z)++;
 }
+ int	write_in_pipe_and_dup(t_pars **pars, char *delim, int z)
+{
+	int		fd[2];
+	char	*line;
+	int		expand_or_not;
+	int		input;
 
-// void	handle3(int i)
-// {
-// 	(void) i;
-// 	status = -1;
-// }
+	if (pipe(fd) == -1)
+		return (FAILURE);
+	expand_or_not = clearquotes(&delim);
+	input = dup(0);
+	signal(SIGINT, handle2);
+	while (1)
+	{
+		line = readline(">");
+		expand_if_does_not_have_quotes(&line, expand_or_not, pars[0]);
+		if (checking_line(line, delim))
+			break ;
+		if (write(fd[1], line, ft_strlen(line)) == -1)
+			return (FAILURE);
+		if (write(fd[1], "\n", 1) == -1)
+			return (FAILURE);
+		free(line);
+	}
+	if(close_pipe_and_free_delim(fd, z, pars, delim) == FAILURE
+		|| set_status_back(input))
+		return (FAILURE);
+	return (SUCCESS);
+}
 
+int	set_status_back(int input_fd)
+{
+	if (status == -1)
+	{
+		status = 1;
+		dup2(input_fd, 0);
+		signal(SIGINT, handle4);
+		return (1);
+	}
+	return (0);
+}
+int	close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim)
+{
+	if (close(fd[1]) == -1)
+		return (FAILURE);
+	pars[z]->isheredoc = dup(fd[0]);
+	free(delim);
+	return (0);
+}
 
-// int	write_docs(char *promt, t_pars **pars)
-// {
-// 	int		i;
-// 	int		j;
-// 	int		z;
-// 	char	*delim;
-
-// 	z = 0;
-// 	i = 0;
-// 	signal(SIGINT, handle3);
-	
-// 	while (promt[i] != '\0')
-// 	{
-// 		skips_and_detect_pipe(&promt, &i, &z);
-// 		if(status == -1)
-// 			break ;
-// 		if (promt[i] && promt[i] == '<' && promt[++i]
-// 			&& promt[i] && promt[i] == '<' && promt[++i])
-// 		{
-// 			process_redirections(promt, &i, &j);
-// 			if (i == j)
-// 				continue ;
-// 			delim = ft_substr(promt, j, i - j);
-// 			if (write_in_pipe_and_dup(pars, delim, z))
-// 				return (1);
-// 		}
-// 		else if (promt[i] != '\0')
-// 			i++;
-// 	}
-// 	if (status == -1)
-// 	{
-// 		status = 1;
-// 		return (1);
-// 	}
-// 	return (0);
-// }
+int	checking_line(char *line, char *delim)
+{
+	if(status == -1)
+		return (1);
+	if (!line)
+	{
+		//rl_replace_line("Minishell$", 1);
+		//rl_redisplay();
+		status = 0;
+		return (1);
+	}
+	if (ft_strncmp(delim, line, ft_strlen(line)) == 0)
+	{
+		free(line);
+		return (1);
+	}
+	return (0);
+}

@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 17:03:32 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 20:44:46 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/08 18:01:47 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	not_found_second_quote(char *line)
 
 	i = 0;
 	flag = 0;
-	while (line[i] != '\0')
+	while (line && line[i] != '\0')
 	{
 		if (line[i] == '\'')
 		{
@@ -115,13 +115,18 @@ int	only_pipe(char *prompt)
 {
 	int	i;
 
-	i = -1;
-	while (prompt[++i] && (prompt[i] == ' ' || prompt[i] == '\t'))
-		;
-	if (prompt[i] == '|')
+	i = 0;
+//	while (prompt && prompt[++i] && (prompt[i] == ' ' || prompt[i] == '\t'))
+//		;
+	while(prompt && prompt[i])
 	{
-		ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
-		return (FAILURE);
+		while (prompt && prompt[i] && prompt[i] != '|')
+			i++;
+		if (prompt && prompt[i] && prompt[++i] && prompt[i] == '|')
+		{
+			ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
+			return (FAILURE);
+		}
 	}
 	return (SUCCESS);
 }

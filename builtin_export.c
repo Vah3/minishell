@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 12:27:18 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/06 18:12:13 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/08 18:37:24 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,22 +64,22 @@ int there_is_builtin(char *str)
 	return (id);
 }
 
-int	call_builtin(char *prompt, int id, t_env *env)
+int	call_builtin(t_pars **pars, char *prompt, int id, t_env *env)
 {
 	if(id == IS_ECHO)
 		return(call_echo(prompt));//call_echo(prompt, env);
 	else if (id == IS_CD)
-			return(call_cd(prompt, env));//<------------------------------------------
+			return(call_cd(prompt, *(pars[0]->env_var)));//<------------------------------------------
 	else if (id == IS_PWD)
 		return(call_pwd());//call_pwd(prompt, env);
 	else if (id == IS_EXPORT)
-		return(call_export(prompt, env));
+		return(call_export(prompt, *(pars[0]->env_var)));
 	else if (id == IS_UNSET)
-		return (call_unset(prompt, env));//call_unset(prompt, env);
+		return (call_unset(prompt, *(pars[0]->env_var)));//call_unset(prompt, env);
 	else if (id == IS_ENV)
 		return (call_env(env));
 	else if (id == IS_EXIT)
-		return (call_exit(prompt));
+		return (call_exit(pars,prompt));
 		//return(printf("hi\n"));//call_exit(prompt, env);
 		return (0);
 }

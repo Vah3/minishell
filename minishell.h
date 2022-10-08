@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 21:01:13 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/08 18:39:28 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ int		correct_delim(char *promt, int i);
 /*						BUILTIN_EXPORT.C				   	     */
 void	skip_spaces(char *str, int *i);
 int		there_is_builtin(char *str);
-int		call_builtin(char *prompt, int id, t_env *env);
+int		call_builtin(t_pars **pars, char *prompt, int id, t_env *env);
 
 int 	call_export(char *prompt, t_env *env);
 int		call_env(t_env *env);
@@ -194,6 +194,7 @@ int		call_unset(char *prompt, t_env *env);
 int		call_echo(char *prompt);
 int		call_cd(char *prompt, t_env *env);
 int		call_pwd(void);
+int		call_exit(t_pars **pars, char *line);
 
 int		exists_key(char *key, t_env *env);
 void	update_value(t_env **env, char *key, char *value);
@@ -201,13 +202,14 @@ void	update_value_cd(t_env **env, char *key, char *value);
 int		is_valid_key(char *key);
 
 
-
-
+int	set_status_back(int input_fd);
 void	handle4(int i);
 void	handle2(int i);
 void	handle1(int i);
 void	handle0(int i);
-void	change_under_score(t_env *env, char *promt);
+char	**change_under_score(t_env *env_list, char *promt, char **env);
 void	clear_spaces_if_all_are_spaces(char **line);
+int		close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim);
+int		checking_line(char *line, char *delim);
 
 #endif
