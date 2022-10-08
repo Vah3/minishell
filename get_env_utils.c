@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:20:27 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/25 09:44:57 by root             ###   ########.fr       */
+/*   Updated: 2022/10/08 19:47:21 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	free_env_(t_env **env)
 {
 	t_env	*temp;
 
-	while (*env)
+	while (env && *env)
 	{
 		temp = *env;
 		*env = (*env)->next;
