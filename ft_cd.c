@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 17:50:38 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/06 20:25:12 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/08 19:03:54 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-// || (splited_prompt[1][0] == '-' && ft_strlen(splited_prompt[1]) == 1)--> -depqn a
-
 int	call_cd(char *prompt, t_env *env)
 {
 	char	**splited_prompt;

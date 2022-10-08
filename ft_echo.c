@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 19:12:41 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/06 18:15:36 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/08 19:25:41 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*--------->PRINTFY KAROXA POXVI FT_PUTSTR_FD<-----------------*/
-
 
 int	is_all_n(char *arg)
 {
@@ -26,7 +25,7 @@ int	is_all_n(char *arg)
 	while (arg[i])
 	{
 		if (arg[i] != 'n')
-			 return (0);
+			return (0);
 		i++;
 	}
 	return (1);
@@ -37,21 +36,15 @@ int	call_echo(char *prompt)
 	char	**splited_prompt;
 	int		i;
 	int		flag;
-	
-	i = 1;
+
+	i = 0;
 	flag = 1;
 	splited_prompt = ft_split(prompt, ' ');
-	while (splited_prompt[i])
-	{
+	while (splited_prompt[++i])
 		splited_prompt[i] = get_correct_cmd(splited_prompt[i]);
-		i++;
-	}
-	i = 1;
-	while (splited_prompt[i] && is_all_n(splited_prompt[i]))
-	{
+	i = 0;
+	while (splited_prompt[++i] && is_all_n(splited_prompt[i]))
 		flag = 0;
-		i++;
-	}
 	while (splited_prompt[i])
 	{
 		if (!splited_prompt[i + 1])

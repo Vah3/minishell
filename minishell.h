@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/08 18:39:28 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/08 22:16:44 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,14 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 }	t_env;
+
+typedef struct s_export
+{
+	char	**splited_prompt;
+	char	*key;
+	char	*value;
+	int		mode;
+}	t_export;
 /*/////////////////////////////////// */
 
 /*			T_PARS					*/
