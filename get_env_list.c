@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:20:01 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/08 17:45:44 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/09 14:40:11 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	set_shlvl(t_env *env)
 	int	lvl;
 
 	lvl = 0;
-	while(env)
+	while (env)
 	{
 		if (!ft_strcmp(env->key, "SHLVL"))
 		{
@@ -69,11 +69,12 @@ void	set_shlvl(t_env *env)
 			}
 			else if (lvl > 1000)
 			{
-				printf("minishell: warning: shell level (%d) too high, resetting to 1\n", lvl);
+				printf("minishell: warning: shell level (%d) too \
+						high, resetting to 1\n", lvl);
 				lvl = 1;
 			}
 			env->value = ft_itoa(lvl);
-			break;
+			break ;
 		}
 		env = env->next;
 	}
@@ -86,9 +87,11 @@ t_env	*env_initialization(char **env_)
 	int			length;
 	int			i;
 	char		*cur_pwd;
+
 	i = -1;
 	length = size_of_env(env_);
 	env = NULL;
+	cur_pwd = getcwd(NULL, 0);
 	while (++i < length)
 	{
 		lines = ft_split(env_[i], '=');
@@ -96,11 +99,8 @@ t_env	*env_initialization(char **env_)
 		free_after_split(lines);
 		lines = NULL;
 	}
-	if(!getenv("?"))
+	if (!getenv("?"))
 		env_add_back(&env, new_env_element("?", "0"));
-	cur_pwd = getcwd(NULL, 0);
-	if (!cur_pwd)
-		return (ft_error("CURENT_PWD-n feylvela, pti dzenq\n", 1));
 	if (!exists_key("PWD", env))
 		env_add_back(&env, new_env_element("PWD", cur_pwd));
 	else
@@ -118,6 +118,11 @@ t_env	*env_initialization(char **env_)
 	else
 		update_value(&env, "+OLDPWD", NULL);
 	set_shlvl(env);
+	if (!cur_pwd)
+	{
+		printf("CURENT_PWD-n feylvela, pti dzenq\n");
+		return (env);	
+	}
 	free(cur_pwd);
 	return (env);
 }

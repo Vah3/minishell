@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 21:18:33 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/04 18:23:53 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/09 13:58:17 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ int	call_unset(char *prompt, t_env *env)
 {
 	char	**splited_prompt;
 	int		i;
-	t_env	*temp;
 	char	*key;
-	
-	temp = env;
+
 	i = 1;
 	splited_prompt = ft_split(prompt, ' ');
 	while (splited_prompt[i])
@@ -45,7 +43,7 @@ int	call_unset(char *prompt, t_env *env)
 		key = get_correct_cmd(key);
 		if (is_valid_key(key))
 		{
-			if (ft_strcmp(key, "PWD") == 0)	
+			if (ft_strcmp(key, "PWD") == 0)
 				update_value(&env, "+PWD", NULL);
 			else if (ft_strcmp(key, "OLDPWD") == 0)
 				update_value(&env, "+OLDPWD", NULL);

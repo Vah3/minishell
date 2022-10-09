@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/08 18:41:59 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/09 14:57:22 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,9 @@ void	do_execve(t_pars *pars, char **env, t_env *env_)
 	char	**cmd;
 	char	*line;
 	char	**command;
+	// char	*cr_cwd;
 
+	// cr_cwd = getcwd(NULL, 0);
 	cmd = pars->exec_cmd;
 	line = pars->cmd;
 	line = get_correct_cmd(line);
@@ -135,6 +137,8 @@ void	do_execve(t_pars *pars, char **env, t_env *env_)
 		print_in_errno_and_free_exit(command, " Command not found", 127, cmd);
 	if (cmd && cmd[0] && access(cmd[0], F_OK) == 0 && access(cmd[0], X_OK) == -1)
 		print_in_errno_and_free_exit(command, " Permission denied", 126, cmd);
+	// if (!cr_cwd)
+	// 	printf("feyyyl\n");
 	exit(status);
 }
 

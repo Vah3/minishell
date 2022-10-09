@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 22:10:42 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/09/23 16:38:45 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/09 14:01:52 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static char	*clear_cmd(char *trash, int count_of_symbols)
 
 	i = 0;
 	j = 0;
-	cmd = (char *)malloc(sizeof(char) *  (count_of_symbols + 1));
+	cmd = (char *)malloc(sizeof(char) * (count_of_symbols + 1));
 	if (!cmd)
 		return (NULL);
 	while (trash && trash[i])
@@ -93,7 +93,7 @@ char	*get_correct_cmd(char *trash)
 	int		count_of_symbols;
 	char	*cmd;
 
-	if(!trash)
+	if (!trash)
 		return (0);
 	count_of_symbols = correct_len(trash);
 	cmd = clear_cmd(trash, count_of_symbols);
