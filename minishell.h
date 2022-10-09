@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/08 22:16:44 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/09 16:50:50 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ int		call_env(t_env *env);
 int		call_unset(char *prompt, t_env *env);
 int		call_echo(char *prompt);
 int		call_cd(char *prompt, t_env *env);
-int		call_pwd(void);
+int		call_pwd(t_env *list);
 int		call_exit(t_pars **pars, char *line);
 
 int		exists_key(char *key, t_env *env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:20:01 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/09 14:40:11 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/09 15:23:16 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ t_env	*env_initialization(char **env_)
 	set_shlvl(env);
 	if (!cur_pwd)
 	{
-		printf("CURENT_PWD-n feylvela, pti dzenq\n");
+		printf("minishell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
 		return (env);	
 	}
 	free(cur_pwd);

@@ -31,7 +31,7 @@ PACKAGE_TARNAME = readline
 srcdir = .
 
 top_srcdir = .
-BUILD_DIR = /Users/edgghaza/Desktop/minishell/readline-master
+BUILD_DIR = /Users/vagevorg/Desktop/minishell/readline-master
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
@@ -48,7 +48,7 @@ MV = mv
 
 SHELL = /bin/sh
 
-prefix = /Users/edgghaza/Desktop/minishell/readline-edgghaza
+prefix = /Users/vagevorg/Desktop/minishell/readline-edgghaza
 exec_prefix = ${prefix}
 
 datarootdir = ${prefix}/share

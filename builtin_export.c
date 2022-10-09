@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 12:27:18 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/08 19:15:35 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/09 16:50:34 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	call_builtin(t_pars **pars, char *prompt, int id, t_env *env)
 	else if (id == IS_CD)
 		return (call_cd(prompt, *(pars[0]->env_var)));
 	else if (id == IS_PWD)
-		return (call_pwd());
+		return (call_pwd(env));
 	else if (id == IS_EXPORT)
 		return (call_export(prompt, *(pars[0]->env_var)));
 	else if (id == IS_UNSET)

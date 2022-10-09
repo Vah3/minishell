@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/08 17:39:36 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/09 18:45:17 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ int	set_status_back(int input_fd)
 		signal(SIGINT, handle4);
 		return (1);
 	}
+	else
+		status = 0;
 	return (0);
 }
 int	close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim)

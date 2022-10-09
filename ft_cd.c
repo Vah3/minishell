@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 17:50:38 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/08 19:03:54 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/09 17:10:19 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	call_cd(char *prompt, t_env *env)
 	return (0);
 }
 
-int	call_pwd(void)
+int	call_pwd(t_env *list)
 {
 	
 	char		*pwd;
@@ -79,15 +79,10 @@ int	call_pwd(void)
 	size = 1024;
 	pwd = NULL;
 	pwd = getcwd(pwd, size);
-	if (pwd == NULL)
-	{
-		ft_putstr_fd("Error getting pwd: ", 2);
-		ft_putendl_fd(pwd, 2);
-		ft_putendl_fd("(just go to your existing directory ;) )",  2); 
-		ft_putendl_fd("(AND REMEMBER, IF YOU ARE \"KRIS\" EVALUATOR , KARMA WILL PUNISH YOU! ;)", 2); 
-		return (1);
-	}
-	ft_putendl_fd(pwd, 1);
+	if (pwd)
+		ft_putendl_fd(pwd, 1);
+	else
+		ft_putendl_fd(_getenv(list, "PWD"),1);
 	free(pwd);
 	return (0);
 }
