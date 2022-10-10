@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 19:45:26 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 22:29:46 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,6 @@ int	close_pipes(int (*fd)[2], int count)
 	return (SUCCESS);
 }
 
-void	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_)
-{
-	pid_t	*id;
-
-	id = NULL;
-	*id_ = NULL;
-	if (init_pipe(fd_, count))
-	{
-		free_pars(pars);
-		free(*fd_);
-		exit(EXIT_FAILURE);
-	}
-	if (count > 1 && !(*fd_))
-	{
-		perror("fd");
-		free_pars(pars);
-		exit (EXIT_FAILURE);
-	}
-	id = (pid_t *)malloc(sizeof(pid_t) * count);
-	if (!id)
-	{
-		perror("malloc failed");
-		free_pars(pars);
-		free(*fd_);
-		exit (EXIT_FAILURE);
-	}
-	*id_ = id;
-}
-
 int	do_fork(pid_t **id, int i)
 {
 	int	i_;
@@ -85,26 +56,6 @@ int	do_fork(pid_t **id, int i)
 		return (FAILURE);
 	}
 	return (SUCCESS);
-}
-
-void	print_in_errno_and_free_exit(
-	char **command, char *print, int code, char **cmd)
-{
-	int	i;
-
-	i = 0;
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(command[0], 2);
-	ft_putendl_fd(print, 2);
-	while (command && command[i])
-	{
-		free(command[i]);
-		free(cmd[i]);
-		i++;
-	}
-	free(command);
-	free(cmd);
-	exit(code);
 }
 
 void	do_execve(t_pars *pars, char **env, t_env *env_)
@@ -147,13 +98,6 @@ void	sig_and_set_attr(pid_t *id, int i)
 		a.c_lflag |= ECHOCTL;
 		tcsetattr(0, 0, &a);
 	}
-}
-
-int	free_and_close(int (*fd)[2], int count, t_pars **pars, pid_t *id)
-{
-	close_pipes(fd, count);
-	fr(pars, fd, id, count);
-	return (1);
 }
 
 void	open_processes(int count, t_pars **pars, char **env, t_env *env_)

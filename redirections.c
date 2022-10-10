@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 15:42:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 20:40:25 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 22:34:37 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	if_in_file(char **promt, t_pars **pars, int *i, int *z)
+int	if_in_file(char **promt, t_pars **pars, int *i, int *z)
 {
 	int	j;
 
@@ -32,7 +32,7 @@ static int	if_in_file(char **promt, t_pars **pars, int *i, int *z)
 	return (SUCCESS);
 }
 
-static int	if_out_file(char **promt, t_pars **pars, int *i, int *z)
+int	if_out_file(char **promt, t_pars **pars, int *i, int *z)
 {
 	int	j;
 
@@ -53,7 +53,7 @@ static int	if_out_file(char **promt, t_pars **pars, int *i, int *z)
 	return (SUCCESS);
 }
 
-static int	if_here_doc(char **promt, int *fileordoc, int *i, int *z)
+int	if_here_doc(char **promt, int *fileordoc, int *i, int *z)
 {
 	char	*delim;
 	int		j;
@@ -76,7 +76,7 @@ static int	if_here_doc(char **promt, int *fileordoc, int *i, int *z)
 	return (SUCCESS);
 }
 
-static int	if_append_file(char **promt, t_pars **pars, int *i, int *z)
+int	if_append_file(char **promt, t_pars **pars, int *i, int *z)
 {
 	int	j;
 
@@ -94,50 +94,6 @@ static int	if_append_file(char **promt, t_pars **pars, int *i, int *z)
 		*i = j;
 		*z = 0;
 	}
-	return (SUCCESS);
-}
-
-void	clear_spaces_if_all_are_spaces(char **line)
-{
-	int		i;
-	char	*line_;
-	char	*delim;
-
-	i = 0;
-	line_ = *line;
-	delim = NULL;
-	while (line_ && line_[i] == 32)
-		i++;
-	if (line_ && !line_[i])
-		delim = ft_trim_substr(line, 0, i);
-	free(delim);
-}
-
-int	do_parsing(char **line, t_pars **pars)
-{
-	int		i;
-	int		work;
-	char	*input;
-
-	i = 0;
-	input = *line;
-	while (input && input[i])
-	{
-		skipquotes(&input, &i);
-		work = 1;
-		if (input && input[i]
-			&& if_here_doc(&input, &((*pars)->fileordoc), &i, &work))
-			return (FAILURE);
-		if (input && input[i] && if_append_file(&input, pars, &i, &work))
-			return (FAILURE);
-		if (input && input[i] && if_in_file(&input, pars, &i, &work))
-			return (FAILURE);
-		if (input && input[i] && if_out_file(&input, pars, &i, &work))
-			return (FAILURE);
-		if (input && input[i] && work)
-			i++;
-	}
-	*line = input;
 	return (SUCCESS);
 }
 

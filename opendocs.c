@@ -3,30 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   opendocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 21:02:10 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 22:21:46 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern int	g_status;
-
-int	ft_error(char *err_message, int err_code)
-{
-	ft_putstr_fd(err_message, 2);
-	return (err_code);
-}
-
-int	correct_delim(char *promt, int i)
-{
-	if (promt[i] && promt[i] != 32
-		&& promt[i] != '|' && promt[i] != '<' && promt[i] != '>')
-		return (1);
-	return (0);
-}
 
 int	write_docs(char *promt, t_pars **pars)
 {
@@ -65,7 +51,7 @@ int	openheredoc(char *promt, t_pars **pars)
 	count = 0;
 	while (promt && promt[i])
 	{
-		skipquotes(&promt, &i);		
+		skipquotes(&promt, &i);
 		if (promt[i] && promt[i + 1] && promt[i] == '<' && promt[i + 1] == '<'
 			&& promt[i++] && promt[i++])
 		{
@@ -81,28 +67,6 @@ int	openheredoc(char *promt, t_pars **pars)
 			i++;
 	}
 	return (write_docs(promt, pars));
-}
-
-/*
-	Writes in pipes and dups -- see utils.c
-*/
-void	process_redirections(char *promt, int *i, int *j)
-{
-	while (promt && promt[*i] && promt[*i] == 32)
-		(*i)++;
-	*j = *i;
-	if (promt && (promt[*i] == '|' || promt[*i] == '<' || promt[*i] == '>'))
-		return ;
-	skipquotes(&promt, i);
-	while (correct_delim(promt, *i))
-		(*i)++;
-}
-
-void	skips_and_detect_pipe(char **promt, int *i, int *z)
-{
-	skipquotes(promt, i);
-	if ((*promt)[*i] == '|')
-		(*z)++;
 }
 
 int	write_in_pipe_and_dup(t_pars **pars, char *delim, int z)
@@ -145,15 +109,6 @@ int	set_status_back(int input_fd)
 	else
 		g_status = 0;
 	return (0);
-}
-
-int	close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim)
-{
-	if (close(fd[1]) == -1)
-		return (FAILURE);
-	pars[z]->isheredoc = dup(fd[0]);
-	free(delim);
-	return (SUCCESS);
 }
 
 int	checking_line(char *line, char *delim)

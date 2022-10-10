@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 15:42:33 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 22:35:01 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ void	free_env_(t_env **env);
 /*						GET_ENV_UTILS1.C	3			   	     */
 char	**list_to_env(t_env	*head);
 void	env_replace(t_env *env, char *key, char *value);
-char	*_getenv(t_env *list, char *key );
 /*//////////////////////////////////////////////////////////////// */
 
 /*						INIT_STRUCT.C	2			   	     */
@@ -176,6 +175,10 @@ void	wait_(int (*fd)[2], pid_t *id, int count);
 
 /*						REDIRECTIONS.C	5			   	     */
 int		lexer(char **promt, t_pars **pars);
+int		if_in_file(char **promt, t_pars **pars, int *i, int *z);
+int		if_out_file(char **promt, t_pars **pars, int *i, int *z);
+int		if_here_doc(char **promt, int *fileordoc, int *i, int *z);
+int		if_append_file(char **promt, t_pars **pars, int *i, int *z);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						UTILS.C				   	     */
@@ -209,7 +212,7 @@ void	update_value_cd(t_env **env, char *key, char *value);
 int		is_valid_key(char *key);
 
 
-int	set_status_back(int input_fd);
+int		set_status_back(int input_fd);
 void	handle4(int i);
 void	handle2(int i);
 void	handle1(int i);
@@ -218,5 +221,49 @@ char	**change_under_score(t_env *env_list, char *promt, char **env);
 void	clear_spaces_if_all_are_spaces(char **line);
 int		close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim);
 int		checking_line(char *line, char *delim);
+char	*change_delim_key(char *delim);
 
+//exit_utils.c
+int	ft_string_isdigit(char *str);
+int	non_numeric(char *str);
+void	exiting(int count_of_args, int code);
+char	*_getenv(t_env *list, char *key );
+
+//ft_export_utils1.c
+void	update_key_values(char *key, char *value, t_env *env);
+void	join_and_free(t_env **env, char **key, char **value, int *i);
+void	get_correct_key_value(char *str, int mode, char **key, char **value);
+char	*get_key(int mode, char *arg);
+void	print_export_err_and_ch_s(char *str, int *i);
+
+//ft_export_utils2.c
+void	update_value_cd(t_env **env, char *key, char *value);
+void	join_value(t_env **env, char *key, char *value);
+int	is_valid(char *str, int *mode);
+int	print_export(t_env *env, char **splited_prompt);
+void	update_and_add(t_env *env, char *key, char *value);
+
+//get_env_list_utils.c
+int		set_lvl(t_env *env, int *lvl);
+void	set_shlvl(t_env *env);
+void	set_def_env(char **env_, t_env **env_list);
+void	set_pwd_oldpwd(t_env *env, char *cur_pwd);
+void	set_additional_pwd_oldpwd(t_env *env, char *cur_pwd);
+char	*set_back_slesh(char *line);
+
+
+//opendocs_utils.c
+int	ft_error(char *err_message, int err_code);
+int	correct_delim(char *promt, int i);
+void	skips_and_detect_pipe(char **promt, int *i, int *z);
+void	process_redirections(char *promt, int *i, int *j);
+int	close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim);
+
+//processes_utils.c
+void	print_in_errno_and_free_exit(
+	char **command, char *print, int code, char **cmd);
+void	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_);
+int		free_and_close(int (*fd)[2], int count, t_pars **pars, pid_t *id);
+void	clear_spaces_if_all_are_spaces(char **line);
+int		do_parsing(char **line, t_pars **pars);
 #endif

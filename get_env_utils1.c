@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:53:27 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/10 17:16:23 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/10 22:15:21 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,19 +104,3 @@ char	*set_back_slesh(char *line)
 	}
 	return (line);
 }
-
-char	*_getenv(t_env *list, char *key )
-{
-	t_env	*temp;
-
-	temp = list;
-	if (!key)
-		return (NULL);
-	while (temp && ft_strncmp(temp->key, key, ft_strlen(temp->key)))
-		temp = temp->next;
-	if (!temp)
-		return (NULL);
-	temp->value = set_back_slesh(temp->value);
-	return (temp->value);
-}
-//nayel ardzyoq imast ka dup anel value, arden maloccac a

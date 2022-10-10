@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 14:06:18 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 17:55:22 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 21:54:48 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,6 @@ static void	free_params(char	*delim, char	*promt)
 	free(delim);
 }
 
-char	*change_delim_key(char *delim)
-{
-	char	*new_key;
-
-	new_key = NULL;
-	if (ft_strcmp(delim, "PWD") == 0)
-	{
-		new_key = ft_strdup("+PWD");
-		free(delim);
-		return (new_key);
-	}
-	else if (ft_strcmp(delim, "OLDPWD") == 0)
-	{
-		new_key = ft_strdup("+OLDPWD");
-		free (delim);
-		return (new_key);
-	}
-	return (delim);
-}
-
 char	*join(char *promt, int i, char *delim, char *env_line)
 {
 	char	*prom;
@@ -103,25 +83,6 @@ static void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 		if ((*i) == -1)
 			*i = 0;
 		(*len)--;
-	}
-}
-
-void	update_status(t_env *env)
-{
-	t_env	*local_env;
-	char	*stat;
-
-	local_env = env;
-	stat = NULL;
-	while (local_env)
-	{
-		if (ft_strncmp(local_env->key, "?", 1) == 0)
-		{
-			stat = ft_itoa(g_status);
-			free(local_env->value);
-			local_env->value = stat;
-		}
-		local_env = local_env->next;
 	}
 }
 
