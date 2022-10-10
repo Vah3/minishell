@@ -3,42 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:53:27 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/08 17:13:57 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:16:23 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**list_to_env(t_env	*head)
+void	env_init(t_env *head, int *i, char **env)
 {
 	t_env	*temp;
-	char	**env;
 	char	*line;
+
+	line = NULL;
+	temp = head;
+	while (temp)
+	{
+		if (is_valid_key(temp->key)
+			&& (temp->value || ft_strcmp(temp->key, "SHLVL") == 0))
+		{
+			line = ft_strdup(temp->key);
+			line = ft_strjoin(line, "=");
+			line = ft_strjoin(line, temp->value);
+			env[(*i)++] = ft_strdup(line);
+			free(line);
+			line = NULL;
+		}
+		temp = temp->next;
+	}
+}
+
+char	**list_to_env(t_env	*head)
+{
+	char	**env;
 	int		i;
 
 	env = malloc(sizeof(char *) * (size_of_list(head) + 1));
 	if (!env)
 		return (NULL);
 	i = 0;
-	temp = head;
-	line = NULL;
 	update_status(head);
-	while (temp)
-	{
-		if (is_valid_key(temp->key) && temp->value)
-		{
-			line = ft_strdup(temp->key);
-			line = ft_strjoin(line, "=");
-			line = ft_strjoin(line, temp->value);
-			env[i++] = ft_strdup(line);
-			free(line);
-			line = NULL;
-		}
-		temp = temp->next;
-	}
+	env_init(head, &i, env);
 	env[i] = NULL;
 	return (env);
 }
