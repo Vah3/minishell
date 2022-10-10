@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils_for_norm_proc.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:21:20 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 21:01:35 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int status;
+extern int g_status;
 void	free_fd_id(int (*fd)[2], pid_t *id, int count)
 {
 	if (count > 1)
@@ -77,12 +77,12 @@ void	wait_(int (*fd)[2], pid_t *id, int count)
 	close_pipes(fd, count);
 	while (j < count)
 	{
-		waitpid(id[j++], &status, 0);
-		if (j == count && WIFEXITED (status))
-			status = WEXITSTATUS(status);
-		else if(j == count && WIFSIGNALED(status))
+		waitpid(id[j++], &g_status, 0);
+		if (j == count && WIFEXITED (g_status))
+			g_status = WEXITSTATUS(g_status);
+		else if(j == count && WIFSIGNALED(g_status))
 		{
-			status = WTERMSIG(status) + 128;
+			g_status = WTERMSIG(g_status) + 128;
 			 write(1, "\n", 1);
 		}
 	}

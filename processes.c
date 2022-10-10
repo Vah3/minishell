@@ -6,13 +6,13 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/09 14:57:22 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int status;
+extern int g_status;
 
 int	close_pipes(int (*fd)[2], int count)
 {
@@ -80,7 +80,7 @@ int	do_fork(pid_t **id, int i)
 				perror("");
 			i_++;
 		}
-		status = 1;
+		g_status = 1;
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -139,7 +139,7 @@ void	do_execve(t_pars *pars, char **env, t_env *env_)
 		print_in_errno_and_free_exit(command, " Permission denied", 126, cmd);
 	// if (!cr_cwd)
 	// 	printf("feyyyl\n");
-	exit(status);
+	exit(g_status);
 }
 
 

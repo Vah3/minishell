@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 14:06:18 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/25 09:53:48 by root             ###   ########.fr       */
+/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int status;
+extern int g_status;
 
 static void	skip_if_single_quote(char *line, int *i, int *len)
 {
@@ -112,7 +112,7 @@ void	update_status(t_env *env)
 	{
 		if (ft_strncmp(local_env->key, "?", 1) == 0)
 		{
-			stat = ft_itoa(status);
+			stat = ft_itoa(g_status);
 			free(local_env->value);
 			local_env->value = stat;
 		}

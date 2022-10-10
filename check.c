@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 17:03:32 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 16:20:11 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int	status;
+extern int	g_status;
 
 static int	check_error(char *promt, int *i)
 {
@@ -22,7 +22,7 @@ static int	check_error(char *promt, int *i)
 	{
 		ft_putendl_fd
 		("minishell: syntax error near unexpected token  `newline'", 2);
-		status = 258;
+		g_status = 258;
 		return (FAILURE);
 	}
 	else if (promt[*i] == '<' || promt[*i] == '|' || promt[*i] == '>')
@@ -30,7 +30,7 @@ static int	check_error(char *promt, int *i)
 		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 		ft_putchar_fd(promt[*i], 2);
 		ft_putendl_fd("'", 2);
-		status = 258;
+		g_status = 258;
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -132,7 +132,7 @@ int	only_pipe(char *prompt)
 		{
 			ft_putendl_fd
 			("minishell: syntax error near unexpected token `|'", 2);
-			status = 258;
+			g_status = 258;
 			return (FAILURE);
 		}
 	}

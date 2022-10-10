@@ -6,13 +6,13 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 20:06:45 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/08 22:30:48 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int	status;
+extern int	g_status;
 
 int	exists_key(char *key, t_env *env)
 {
@@ -140,7 +140,7 @@ void	print_export_err_and_ch_s(char *str, int *i)
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("\': not a valid identifier\n", 2);
 	(*i)++;
-	status = 1;
+	g_status = 1;
 }
 
 char	*get_key(int mode, char *arg)
@@ -250,5 +250,5 @@ int	call_export(char *prompt, t_env *env)
 		return (print_export(env, exp.splited_prompt));
 	do_all_stuff(exp, env, &i);
 	free_after_split(exp.splited_prompt);
-	return (status);
+	return (g_status);
 }

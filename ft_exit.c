@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:59:08 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/08 20:15:14 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int	status;
+extern int	g_status;
 
 static unsigned char	ft_atoi_(const char *str)
 {
@@ -106,12 +106,12 @@ int	checks(char **args, int count_of_args, int write)
 void	exiting(int count_of_args, int code)
 {
 	if (count_of_args == 1)
-		exit(status);
+		exit(g_status);
 	else if (count_of_args == 2)
 		exit(code);
 	else if (count_of_args > 2)
 	{
-		status = 1;
+		g_status = 1;
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 	}
 }

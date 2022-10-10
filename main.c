@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 16:08:53 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	status = 0;
+int	g_status = 0;
 
 void	set_term_attr(int on_off)
 {
@@ -92,7 +92,7 @@ void	free_and_exit(t_env *env_, char **env)
 	free_after_split(env);
 	free_env_(&env_);
 	set_term_attr(1);
-	exit (status);
+	exit (g_status);
 }
 
 int	some_checks(char *promt, t_env *env_, char ***env, int *count)

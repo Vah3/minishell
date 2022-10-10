@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   opendocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/09 18:45:17 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:35:36 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int status;
+extern int	g_status;
 
 int	ft_error(char *err_message, int err_code)
 {
@@ -22,7 +22,8 @@ int	ft_error(char *err_message, int err_code)
 
 int	correct_delim(char *promt, int i)
 {
-	if(promt[i] && promt[i] != 32 && promt[i] != '|' && promt[i] != '<' && promt[i] != '>')
+	if (promt[i] && promt[i] != 32
+		&& promt[i] != '|' && promt[i] != '<' && promt[i] != '>')
 		return (1);
 	return (0);
 }
@@ -36,7 +37,6 @@ int	write_docs(char *promt, t_pars **pars)
 
 	z = 0;
 	i = 0;
-	
 	while (promt[i] != '\0')
 	{
 		skips_and_detect_pipe(&promt, &i, &z);
@@ -75,20 +75,18 @@ int	openheredoc(char *promt, t_pars **pars)
 				i++;
 			count++;
 			if (count > 16)
-			exit (2);
+				exit (2);
 		}
 		if (promt[i])
 			i++;
-	}	if (write_docs(promt, pars))
-		return (1);
-	return (0);
+	}
+	return (write_docs(promt, pars));
 }
 
 /*
 	Writes in pipes and dups -- see utils.c
 */
-
- void	process_redirections(char *promt, int *i, int *j)
+void	process_redirections(char *promt, int *i, int *j)
 {
 	while (promt && promt[*i] && promt[*i] == 32)
 		(*i)++;
@@ -106,7 +104,8 @@ void	skips_and_detect_pipe(char **promt, int *i, int *z)
 	if ((*promt)[*i] == '|')
 		(*z)++;
 }
- int	write_in_pipe_and_dup(t_pars **pars, char *delim, int z)
+
+int	write_in_pipe_and_dup(t_pars **pars, char *delim, int z)
 {
 	int		fd[2];
 	char	*line;
@@ -130,43 +129,40 @@ void	skips_and_detect_pipe(char **promt, int *i, int *z)
 			return (FAILURE);
 		free(line);
 	}
-	if(close_pipe_and_free_delim(fd, z, pars, delim) == FAILURE
-		|| set_status_back(input))
-		return (FAILURE);
-	return (SUCCESS);
+	return (close_pipe_and_free_delim(fd, z, pars, delim)
+		|| set_status_back(input));
 }
 
 int	set_status_back(int input_fd)
 {
-	if (status == -1)
+	if (g_status == -1)
 	{
-		status = 1;
+		g_status = 1;
 		dup2(input_fd, 0);
 		signal(SIGINT, handle4);
 		return (1);
 	}
 	else
-		status = 0;
+		g_status = 0;
 	return (0);
 }
+
 int	close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim)
 {
 	if (close(fd[1]) == -1)
 		return (FAILURE);
 	pars[z]->isheredoc = dup(fd[0]);
 	free(delim);
-	return (0);
+	return (SUCCESS);
 }
 
 int	checking_line(char *line, char *delim)
 {
-	if(status == -1)
+	if (g_status == -1)
 		return (1);
 	if (!line)
 	{
-		//rl_replace_line("Minishell$", 1);
-		//rl_redisplay();
-		status = 0;
+		g_status = 0;
 		return (1);
 	}
 	if (ft_strncmp(delim, line, ft_strlen(line)) == 0)

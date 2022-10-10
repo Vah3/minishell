@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   countpipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 15:07:22 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/08 15:44:18 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int status;
+extern int g_status;
 
 static void	skip_index_until_pipe(char **promt, int *i)
 {
@@ -37,14 +37,14 @@ static int	when_promt_ends_with_pipe(char **promt, int i)
 		while (1)
 		{
 			newline = readline(">");
-		if (!newline && status != -1)
+		if (!newline && g_status != -1)
 		{		
 			ft_putendl_fd(" minishell: syntax error: unexpected end of file", 2);
-			status = 258;
+			g_status = 258;
 			return (1);
 		}
 		clear_spaces_if_all_are_spaces(&newline);
-		if (!newline && status != -1)
+		if (!newline && g_status != -1)
 			continue ;
 		else
 			break ;
