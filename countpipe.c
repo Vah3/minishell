@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   countpipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 15:07:22 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/10 21:13:12 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int g_status;
+extern int	g_status;
 
 static void	skip_index_until_pipe(char **promt, int *i)
 {
@@ -22,6 +22,32 @@ static void	skip_index_until_pipe(char **promt, int *i)
 		if ((*promt)[*i])
 			(*i)++;
 	}
+}
+
+int	get_new_line(char **newline)
+{
+	while (1)
+	{
+		*newline = readline(">");
+		if (!(*newline) && g_status != -1)
+		{		
+			ft_putendl_fd(" minishell: syntax error: "
+				"unexpected end of file", 2);
+			g_status = 258;
+			return (1);
+		}
+		clear_spaces_if_all_are_spaces(newline);
+		if (!(*newline) && g_status != -1)
+			continue ;
+		break ;
+	}
+	if (not_found_second_quote(*newline)
+		|| only_pipe(*newline) || check_redirections(*newline))
+	{
+		free(*newline);
+		return (FAILURE);
+	}
+	return (SUCCESS);
 }
 
 static int	when_promt_ends_with_pipe(char **promt, int i)
@@ -34,33 +60,14 @@ static int	when_promt_ends_with_pipe(char **promt, int i)
 	signal(SIGINT, handle2);
 	if (!(*promt)[i])
 	{
-		while (1)
-		{
-			newline = readline(">");
-		if (!newline && g_status != -1)
-		{		
-			ft_putendl_fd(" minishell: syntax error: unexpected end of file", 2);
-			g_status = 258;
-			return (1);
-		}
-		clear_spaces_if_all_are_spaces(&newline);
-		if (!newline && g_status != -1)
-			continue ;
-		else
-			break ;
-		}
-		if (not_found_second_quote(newline) || only_pipe(newline) || check_redirections(newline))
-		{
-			free(newline);
+		if (get_new_line(&newline))
 			return (FAILURE);
-		}
 		*promt = ft_strjoin(*promt, " ");
 		*promt = ft_strjoin(*promt, newline);
 		free(newline);
 		newline = NULL;
 	}
-	//printf("%d\n", status);
-	if(set_status_back(stdin_))
+	if (set_status_back(stdin_))
 		return (1);
 	signal(SIGINT, handle4);
 	return (0);
@@ -95,7 +102,7 @@ int	check_pipes_count(char **promt, int *count)
 void	free_pars(t_pars **pars)
 {
 	int	i;
-	
+
 	i = 0;
 	while (pars && pars[i])
 	{
@@ -113,7 +120,7 @@ char	*ft_trim_substr(char **source, int start, int end)
 	char	*ret_string;
 	char	*new_string;
 	int		i;
-	
+
 	ret_string = ft_substr(*source, start, end - start);
 	new_string = malloc(sizeof(char) * (
 				ft_strlen(*source) - (end - start) + 1));
@@ -124,7 +131,7 @@ char	*ft_trim_substr(char **source, int start, int end)
 		new_string[i++] = (*source)[end++];
 	new_string[i] = '\0';
 	free(*source);
-	if(!new_string || !*new_string)
+	if (!new_string || !*new_string)
 	{
 		free (new_string);
 		*source = NULL;

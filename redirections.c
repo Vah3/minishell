@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 15:42:36 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 17:37:04 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/10 20:40:25 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,46 +106,56 @@ void	clear_spaces_if_all_are_spaces(char **line)
 	i = 0;
 	line_ = *line;
 	delim = NULL;
-	while(line_ && line_[i] == 32)
+	while (line_ && line_[i] == 32)
 		i++;
 	if (line_ && !line_[i])
 		delim = ft_trim_substr(line, 0, i);
 	free(delim);
 }
 
-int	lexer(char **promt, t_pars **pars)
+int	do_parsing(char **line, t_pars **pars)
 {
 	int		i;
-	int		pipe_i;
-	char	**input;
-	int		prev_ifs_not_worked;
+	int		work;
+	char	*input;
 
 	i = 0;
+	input = *line;
+	while (input && input[i])
+	{
+		skipquotes(&input, &i);
+		work = 1;
+		if (input && input[i]
+			&& if_here_doc(&input, &((*pars)->fileordoc), &i, &work))
+			return (FAILURE);
+		if (input && input[i] && if_append_file(&input, pars, &i, &work))
+			return (FAILURE);
+		if (input && input[i] && if_in_file(&input, pars, &i, &work))
+			return (FAILURE);
+		if (input && input[i] && if_out_file(&input, pars, &i, &work))
+			return (FAILURE);
+		if (input && input[i] && work)
+			i++;
+	}
+	*line = input;
+	return (SUCCESS);
+}
+
+int	lexer(char **promt, t_pars **pars)
+{
+	int		pipe_i;
+	char	**input;
+
 	pipe_i = 0;
 	input = NULL;
 	input = ft_split(*promt, '|');
-	while(input && input[pipe_i])
+	while (input && input[pipe_i])
 	{
-		while (input[pipe_i] && input[pipe_i][i])
-		{
-			skipquotes(promt, &i);
-			prev_ifs_not_worked = 1;
-			if (input[pipe_i] && input[pipe_i][i] && if_here_doc(&(input[pipe_i]), &(pars[pipe_i])->fileordoc, &i, &prev_ifs_not_worked))
-				return (FAILURE);
-			if (input[pipe_i] && input[pipe_i][i] && if_append_file(&(input[pipe_i]), &(pars[pipe_i]), &i, &prev_ifs_not_worked))
-				return (FAILURE);
-			if (input[pipe_i] && input[pipe_i][i] && if_in_file(&(input[pipe_i]), &(pars[pipe_i]), &i, &prev_ifs_not_worked))
-				return (FAILURE);
-			if (input[pipe_i] && input[pipe_i][i] && if_out_file(&(input[pipe_i]), &(pars[pipe_i]), &i, &prev_ifs_not_worked))
-				return (FAILURE);
-			if (input[pipe_i] && input[pipe_i][i] && prev_ifs_not_worked)
-				i++;
-		}
+		do_parsing(&(input[pipe_i]), &(pars[pipe_i]));
 		clear_spaces_if_all_are_spaces(&(input[pipe_i]));
 		pars[pipe_i]->cmd = ft_strdup(input[pipe_i]);
 		free(input[pipe_i]);
 		pipe_i++;
-		i = 0;
 	}
 	free(input);
 	return (SUCCESS);

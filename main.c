@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 18:36:22 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 21:18:12 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,11 @@ void	free_and_exit(t_env *env_, char **env)
 	exit (g_status);
 }
 
-int	some_checks(char *promt, t_env *env_, char ***env, int *count)
+int	some_checks(char **promt_, t_env *env_, char ***env, int *count)
 {
+	char	*promt;
+
+	promt = *promt_;
 	*env = list_to_env(env_);
 	signal(SIGINT, handle1);
 	if (!promt)
@@ -105,7 +108,7 @@ int	some_checks(char *promt, t_env *env_, char ***env, int *count)
 		return (1);
 	add_history(promt);
 	if ((not_found_second_quote(promt) || only_pipe(promt)
-			|| check_redirections(promt) || check_pipes_count(&promt, count))
+			|| check_redirections(promt) || check_pipes_count(promt_, count))
 		&& fret(NULL, promt, *env))
 		return (1);
 	return (0);
@@ -159,7 +162,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		set_setting(gr);
 		promt = readline("Minishell$ ");
-		if (some_checks(promt, env_, &env, &count))
+		if (some_checks(&promt, env_, &env, &count))
 			continue ;
 		pars = init_struct(count, &env_);
 		if (some_stuff(&promt, env_, pars, &gr) && fret(pars, promt, env))

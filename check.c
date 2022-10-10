@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 17:03:32 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/10 21:17:14 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int	only_pipe(char *prompt)
 	if (prompt[i] && prompt[i] == '|')
 	{
 		ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
+		g_status = 258;
 		return (FAILURE);
 	}
 	while (prompt && prompt[i])

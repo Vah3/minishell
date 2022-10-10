@@ -6,11 +6,10 @@
 #    By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/21 16:05:05 by vagevorg          #+#    #+#              #
-#    Updated: 2022/10/10 18:20:40 by vagevorg         ###   ########.fr        #
+#    Updated: 2022/10/10 21:04:37 by vagevorg         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# gcc *.c -lft -LLibft -lreadline -o minishell 
 
 PREFIX			= $(shell find ${HOME} -name readline-edgghaza 2>/dev/null)
 
@@ -18,7 +17,7 @@ NAME			= minishell
 
 CC				= cc
 
-CFLAGS			= -Wall -Wextra -g -ggdb3 -fsanitize=address#-Werror 
+CFLAGS			= -Wall -Wextra -g -ggdb3 #-fsanitize=address#-Werror 
 
 RM				= rm -f
 

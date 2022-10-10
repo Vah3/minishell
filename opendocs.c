@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opendocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 17:35:36 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/10 21:02:10 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ int	openheredoc(char *promt, t_pars **pars)
 
 	i = 0;
 	count = 0;
-	while (promt[i])
+	while (promt && promt[i])
 	{
-		skipquotes(&promt, &i);
+		skipquotes(&promt, &i);		
 		if (promt[i] && promt[i + 1] && promt[i] == '<' && promt[i + 1] == '<'
 			&& promt[i++] && promt[i++])
 		{
