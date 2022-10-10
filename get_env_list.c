@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 17:20:01 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/10 17:02:14 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:57:15 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	set_lvl(t_env *env, int *lvl)
 		else if (*lvl > 1000)
 		{
 			printf("minishell: warning: shell level (%d) too "
-			"high, resetting to 1\n", *lvl);
+				"high, resetting to 1\n", *lvl);
 			*lvl = 1;
 		}
 		env->value = ft_itoa(*lvl);
@@ -145,8 +145,8 @@ t_env	*env_initialization(char **env)
 	if (!cur_pwd)
 	{
 		printf("minishell-init: error retrieving current directory: "
-				"getcwd: cannot access parent directories: "
-				"No such file or directory\n");
+			"getcwd: cannot access parent directories: "
+			"No such file or directory\n");
 		return (env_list);
 	}
 	free(cur_pwd);

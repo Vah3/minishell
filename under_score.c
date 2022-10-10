@@ -3,20 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   under_score.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 17:40:30 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 17:43:26 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/10 18:37:44 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_valid_dol_us(char *prompt, int i)
+static int	there_is_pipe(char *prompt, t_env *env_list)
 {
-	return (prompt && i >= 0 && prompt[i] && prompt[i] == '$'
-		&& prompt[i + 1] && prompt[i + 1] == '_'
-		&& (!prompt[i + 2] || (prompt[i + 2] && prompt[i + 2] == 32)));
+	int	i;
+
+	i = 0;
+	while (prompt && prompt[i])
+	{
+		skipquotes(&prompt, &i);
+		if (prompt[i] == '|')
+		{
+			free(env_list->value);
+			env_list->value = NULL;
+			return (1);
+		}
+		if (prompt[i])
+			i++;
+	}
+	return (0);
 }
 
 char	**change_under_score(t_env *env_list, char *prompt, char **env)
@@ -26,31 +39,19 @@ char	**change_under_score(t_env *env_list, char *prompt, char **env)
 
 	i = 0;
 	head = env_list;
-	while (env_list)
-	{
-		if (!ft_strcmp(env_list->key, "_"))
-			break ;
+	while (env_list && ft_strcmp(env_list->key, "_"))
 		env_list = env_list->next;
-	}
-	while (prompt && prompt[i])
+	if (there_is_pipe(prompt, env_list))
 	{
-		skipquotes(&prompt, &i);
-		if (prompt[i] == '|')
-		{
-			free(env_list->value);
-			env_list->value = NULL;
-			free_after_split(env);
-			return (list_to_env(head));
-		}
-		if (prompt[i])
-			i++;
+		free_after_split(env);
+		return (list_to_env(head));
 	}
 	i = ft_strlen(prompt) - 1;
 	while (prompt && i > 0 && prompt[i] == 32)
 		i--;
 	while (prompt && i > 0 && prompt[i] != 32)
 		i--;
-	if (prompt && i >= 0 && prompt[i] && prompt[i] == '$' && prompt[i + 1] && prompt[i + 1] == '_' && (!prompt[i + 2] || (prompt[i + 2] && prompt[i + 2] == 32)))
+	if (i >= 0 && !ft_strnstr(prompt + i, "$_", 2))
 	{
 		free(env_list->value);
 		env_list->value = ft_strdup(ft_strrchr(prompt, 32));

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 14:06:18 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:55:22 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int g_status;
+extern int	g_status;
 
 static void	skip_if_single_quote(char *line, int *i, int *len)
 {
@@ -42,15 +42,15 @@ static void	skip_if_single_quote(char *line, int *i, int *len)
 	*i = j;
 }
 
-static void	free_params(char	*delim, char	*promt)//, char	*env_line)
+static void	free_params(char	*delim, char	*promt)
 {
 	free (promt);
 	free(delim);
 }
 
-char *change_delim_key(char *delim)
+char	*change_delim_key(char *delim)
 {
-	char *new_key;
+	char	*new_key;
 
 	new_key = NULL;
 	if (ft_strcmp(delim, "PWD") == 0)
@@ -68,10 +68,20 @@ char *change_delim_key(char *delim)
 	return (delim);
 }
 
+char	*join(char *promt, int i, char *delim, char *env_line)
+{
+	char	*prom;
+
+	prom = ft_strdup(promt);
+	prom = ft_strjoin(prom, env_line);
+	prom = ft_strjoin(prom, promt + i);
+	free_params(delim, promt);
+	return (prom);
+}
+
 static void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 {
 	char	*delim;
-	char	*prom;
 	char	*env_line;
 	int		j;
 
@@ -80,26 +90,21 @@ static void	if_dollar_sign(char	**promt, int *i, int *len, t_env *env_v)
 	if ((*promt)[*i] == '$' && (*promt)[++(*i)])
 	{
 		j = *i;
-		while ((*promt)[*i]
-				&& (ft_isalnum((*promt)[*i]) || (*promt)[*i] == '?' || (*promt)[*i] == '_'))
+		while ((*promt)[*i] && (ft_isalnum((*promt)[*i])
+			|| (*promt)[*i] == '?' || (*promt)[*i] == '_'))
 			(*i)++;
 		delim = ft_substr(*promt, j, (*i) - j);
 		delim = change_delim_key(delim);
 		env_line = _getenv(env_v, delim);
 		*len += ft_strlen(env_line);
 		(*promt)[j - 1] = 0;
-		prom = ft_strdup(*promt);
-		prom = ft_strjoin(prom, env_line);
-		prom = ft_strjoin(prom, (*promt) + (*i));
-		free_params(delim, *promt);//, env_line);
-		*promt = prom;
+		*promt = join(*promt, *i, delim, env_line);
 		(*i) = (*len) - 1;
 		if ((*i) == -1)
 			*i = 0;
 		(*len)--;
 	}
 }
-
 
 void	update_status(t_env *env)
 {
