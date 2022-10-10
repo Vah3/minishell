@@ -6,13 +6,14 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:21:20 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/10 18:44:02 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int g_status;
+extern int	g_status;
+
 void	free_fd_id(int (*fd)[2], pid_t *id, int count)
 {
 	if (count > 1)
@@ -39,12 +40,11 @@ int	make_cmd(t_pars *pars, char **env)
 	if (pars->cmd != NULL && pars->errfile == NULL)
 	{
 		command = ft_split(pars->cmd, 32);
-		if (!command )
+		if (!command)
 			return (FAILURE);
 		while (command[j])
 		{
 			command[j] = get_correct_cmd(command[j]);
-			//clear_spaces_if_all_are_spaces(&(command[j]));
 			j++;
 		}
 		check_make(&command[0], env);
@@ -80,10 +80,10 @@ void	wait_(int (*fd)[2], pid_t *id, int count)
 		waitpid(id[j++], &g_status, 0);
 		if (j == count && WIFEXITED (g_status))
 			g_status = WEXITSTATUS(g_status);
-		else if(j == count && WIFSIGNALED(g_status))
+		else if (j == count && WIFSIGNALED(g_status))
 		{
 			g_status = WTERMSIG(g_status) + 128;
-			 write(1, "\n", 1);
+			write(1, "\n", 1);
 		}
 	}
 }

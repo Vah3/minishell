@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:37:48 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/06 19:40:19 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 18:52:32 by edgghaza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,46 +42,17 @@ int	clearquotes(char	**delimetr)
 		return (1);
 }
 
-// int	write_in_pipe_and_dup(t_pars **pars, char *delim, int z)
-// {
-// 	int		fd[2];
-// 	char	*line;
-// 	int		expand_or_not;
-
-// 	if (pipe(fd) == -1)
-// 		return (FAILURE);
-// 	expand_or_not = clearquotes(&delim);
-// 	while (1)
-// 	{
-// 		line = readline(">");
-// 		if (!line)
-// 		{
-// 			// printf("---%s---\n", line);
-// 		// printf("%c", 4);
-// 			// rl_on_new_line();
-// 			// printf("\b");
-// 			rl_replace_line("Minishell$", 1);
-// 			rl_redisplay();
-// 			break;
-// 		}
-// 		expand_if_does_not_have_quotes(&line, expand_or_not, pars[0]);
-// 		if (ft_strncmp(delim, line, ft_strlen(line)) == 0)
-// 		{
-// 			free(line);
-// 			break ;
-// 		}
-// 		if (write(fd[1], line, ft_strlen(line)) == -1)
-// 			return (FAILURE);
-// 		free(line);	
-// 		if (write(fd[1], "\n", 1) == -1)
-// 			return (FAILURE);
-// 	}
-// 	if (close(fd[1]) == -1)
-// 		return (FAILURE);
-// 	pars[z]->isheredoc = dup(fd[0]);
-// 	free(delim);
-// 	return (SUCCESS);
-// }
+int	perror_and_close(int (*fd)[2], int i)
+{
+	perror("Pipe error");
+	while (i > 0)
+	{
+		i--;
+		close(fd[i][0]);
+		close(fd[i][1]);
+	}
+	return (FAILURE);
+}
 
 int	init_pipe(int ***fd_, int count)
 {
@@ -99,22 +70,13 @@ int	init_pipe(int ***fd_, int count)
 	while (i < count - 1)
 	{
 		if (pipe(fd[i]))
-			{
-				perror("Pipe error");
-				while(i > 0)
-				{
-					i--;
-					close(fd[i][0]);
-					close(fd[i][1]);
-				}
-				return (FAILURE);
-			}
+			return (perror_and_close(fd, i));
 		i++;
 	}
 	*fd_ = (int **)fd;
 	return (SUCCESS);
 }
-//initi return 0-n chpoxel
+
 int	check_out_or_input(t_pars *pars)
 {
 	if (pars->fileordoc == 0)
