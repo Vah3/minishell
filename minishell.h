@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/09 16:50:50 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 15:42:33 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 # include <dirent.h>
 # include <signal.h>
 #include <termios.h>
-#include <unistd.h>
 #include <limits.h>
 /*			HEADER	FILES			*/
 
