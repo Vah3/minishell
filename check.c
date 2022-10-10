@@ -6,13 +6,13 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 17:03:32 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/09 18:48:35 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/10 16:20:11 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int status;
+extern int	status;
 
 static int	check_error(char *promt, int *i)
 {
@@ -20,7 +20,8 @@ static int	check_error(char *promt, int *i)
 		(*i)++;
 	if (!promt[*i])
 	{
-		ft_putendl_fd("minishell: syntax error near unexpected token  `newline'", 2);
+		ft_putendl_fd
+		("minishell: syntax error near unexpected token  `newline'", 2);
 		status = 258;
 		return (FAILURE);
 	}
@@ -58,7 +59,7 @@ int	check_redirections(char *promt)
 			if (check_error(promt, &i))
 				return (FAILURE);
 		}
-		if(promt[i])
+		if (promt[i])
 			i++;
 	}
 	return (SUCCESS);
@@ -116,15 +117,21 @@ int	only_pipe(char *prompt)
 	int	i;
 
 	i = 0;
-//	while (prompt && prompt[++i] && (prompt[i] == ' ' || prompt[i] == '\t'))
-//		;
-	while(prompt && prompt[i])
+	while (prompt && (prompt[i] == 32 || prompt[i] == '\t'))
+		i++;
+	if (prompt[i] && prompt[i] == '|')
+	{
+		ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
+		return (FAILURE);
+	}
+	while (prompt && prompt[i])
 	{
 		while (prompt && prompt[i] && prompt[i] != '|')
 			i++;
 		if (prompt && prompt[i] && prompt[++i] && prompt[i] == '|')
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
+			ft_putendl_fd
+			("minishell: syntax error near unexpected token `|'", 2);
 			status = 258;
 			return (FAILURE);
 		}
