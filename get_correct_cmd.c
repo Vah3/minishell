@@ -3,30 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   get_correct_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 22:10:42 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/09 14:01:52 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/11 18:39:23 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	skip_slesh_quote(char *promt, int *i, int *len)
+static void	assigning1(char	**trash, char **cmd, int *i, int *j)
 {
-	if (promt[*i] == '\\' && promt[*i + 1]
-		&& (promt[*i + 1] == '\'' || promt[*i + 1] == '\"'))
-		*i += 1;
-	(*len)++;
+	if ((*trash)[*i] == '\\' && (*trash)[(*i) + 1]
+		&& ((*trash)[(*i) + 1] == '\'' || (*trash)[(*i) + 1] == '\"'))
+		(*cmd)[(*j)++] = (*trash)[++(*i)];
+	else
+		(*cmd)[(*j)++] = (*trash)[(*i)];
 }
 
 static void	assigning(char	**trash, char **cmd, int *i, int *j)
 {
 	if ((*trash)[*i] == '\\' && (*trash)[(*i) + 1]
-		&& ((*trash)[(*i) + 1] == '\'' || (*trash)[(*i) + 1] == '\"'))
-	{
+		&& (*trash)[(*i) + 1] == '\"')
 		(*cmd)[(*j)++] = (*trash)[++(*i)];
-	}
 	else
 		(*cmd)[(*j)++] = (*trash)[(*i)];
 }
@@ -44,12 +43,12 @@ static int	correct_len(char *trash)
 		if (trash[i] == '"')
 		{
 			while (trash[++i] && trash[i] != '"')
-				skip_slesh_quote(trash, &i, &count_of_symbols);
+				skip_slesh_quote_2(trash, &i, &count_of_symbols);
 		}
 		if (trash[i] == '\'')
 		{
 			while (trash[++i] && trash[i] != '\'')
-				skip_slesh_quote(trash, &i, &count_of_symbols);
+				count_of_symbols++;
 		}
 		if (!trash[i])
 			break ;
@@ -77,11 +76,11 @@ static char	*clear_cmd(char *trash, int count_of_symbols)
 				assigning(&trash, &cmd, &i, &j);
 		if (trash[i] == '\'')
 			while (trash[++i] && trash[i] != '\'')
-				assigning(&trash, &cmd, &i, &j);
+				cmd[j++] = trash[i];
 		if (!trash[i])
 			break ;
 		if (trash[i] != '"' && trash[i] != '\'')
-			assigning(&trash, &cmd, &i, &j);
+			assigning1(&trash, &cmd, &i, &j);
 		i++;
 	}
 	cmd[j] = '\0';

@@ -6,7 +6,7 @@
 /*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 14:06:18 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 21:54:48 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/11 17:01:05 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,20 @@ static void	skip_if_single_quote(char *line, int *i, int *len)
 		if (*i > 0 && line[(*i) - 1] == '\\')
 		{
 			*i += 1;
+			*len += 1;
 			return ;
 		}
 		j++;
-		(*len)++;
 		while (line[j] && line[j] != 39)
 		{
 			if (line[j] == '\\')
 				j++;
 			if (line[j])
 				j++;
-			(*len)++;
 		}
-		j++;
-		(*len)++;
 	}
 	*i = j;
+	*len = j;
 }
 
 static void	free_params(char	*delim, char	*promt)
@@ -91,14 +89,20 @@ void	do_expand(char **promt, t_env *env, int doc)
 	int		len;
 	int		i;
 	t_env	*env_;
+	int		in_double_quote;
 
 	i = 0;
 	len = 0;
+	in_double_quote = 1;
 	env_ = env;
 	while (*promt && (*promt)[i])
 	{
-		if (doc == 0)
+		if (doc == 0 && in_double_quote)
 			skip_if_single_quote(*promt, &i, &len);
+		if ((*promt)[i] == '"' && in_double_quote == 1)
+			in_double_quote = 0;
+		else if ((*promt)[i] == '"' && in_double_quote == 0)
+			in_double_quote = 1;
 		if_dollar_sign(promt, &i, &len, env_);
 		if ((*promt)[i])
 		{

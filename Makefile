@@ -6,7 +6,7 @@
 #    By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/21 16:05:05 by vagevorg          #+#    #+#              #
-#    Updated: 2022/10/10 21:04:37 by vagevorg         ###   ########.fr        #
+#    Updated: 2022/10/11 17:44:26 by vagevorg         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME			= minishell
 
 CC				= cc
 
-CFLAGS			= -Wall -Wextra -g -ggdb3 #-fsanitize=address#-Werror 
+CFLAGS			= -Wall -Wextra -g -ggdb3 -Werror -fsanitize=address
 
 RM				= rm -f
 

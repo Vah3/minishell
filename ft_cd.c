@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 17:50:38 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/10 16:21:17 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/11 16:05:15 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,16 @@ int	call_cd(char *prompt, t_env *env)
 {
 	char	**splited_prompt;
 	char	*cur_pwd;
+	int		i;
 
 	cur_pwd = NULL;
+	i = 0;
 	splited_prompt = ft_split(prompt, ' ');
+	while (splited_prompt[i])
+	{
+		splited_prompt[i] = get_correct_cmd(splited_prompt[i]);
+		i++;
+	}
 	if (!splited_prompt[1])
 		return (cd_home(env, splited_prompt));
 	else

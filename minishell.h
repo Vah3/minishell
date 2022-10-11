@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 22:35:01 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/11 18:39:59 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # include <errno.h>
 # include <dirent.h>
 # include <signal.h>
-#include <termios.h>
-#include <limits.h>
+# include <termios.h>
+# include <limits.h>
 /*			HEADER	FILES			*/
 
 # define SUCCESS 0
@@ -149,6 +149,7 @@ void	skipquotes(char **promt, int *j);
 int		trimspaces(char	**promt, int *k, char c);
 void	iffiles(char **promt, int *k);
 void	skip_slesh_quote_1(char *promt, int *i, int *count);
+void	skip_slesh_quote_2(char *promt, int *i, int *len);
 /*//////////////////////////////////////////////////////////////// */
 
 /*						PIPES.C				   	     */
@@ -187,7 +188,7 @@ int		init_pipe(int ***fd_, int count);
 int		check_out_or_input(t_pars *pars);
 int		clearquotes(char	**delimetr);
 void	expand_if_does_not_have_quotes(
-char	**line, int expand_or_not, t_pars *pars);
+			char	**line, int expand_or_not, t_pars *pars);
 
 /*//////////////////////////////////////////////////////////////// */
 int		ft_error(char *err_message, int err_code);
@@ -198,7 +199,7 @@ void	skip_spaces(char *str, int *i);
 int		there_is_builtin(char *str);
 int		call_builtin(t_pars **pars, char *prompt, int id, t_env *env);
 
-int 	call_export(char *prompt, t_env *env);
+int		call_export(char *prompt, t_env *env);
 int		call_env(t_env *env);
 int		call_unset(char *prompt, t_env *env);
 int		call_echo(char *prompt);
@@ -210,7 +211,6 @@ int		exists_key(char *key, t_env *env);
 void	update_value(t_env **env, char *key, char *value);
 void	update_value_cd(t_env **env, char *key, char *value);
 int		is_valid_key(char *key);
-
 
 int		set_status_back(int input_fd);
 void	handle4(int i);
@@ -224,8 +224,8 @@ int		checking_line(char *line, char *delim);
 char	*change_delim_key(char *delim);
 
 //exit_utils.c
-int	ft_string_isdigit(char *str);
-int	non_numeric(char *str);
+int		ft_string_isdigit(char *str);
+int		non_numeric(char *str);
 void	exiting(int count_of_args, int code);
 char	*_getenv(t_env *list, char *key );
 
@@ -239,8 +239,8 @@ void	print_export_err_and_ch_s(char *str, int *i);
 //ft_export_utils2.c
 void	update_value_cd(t_env **env, char *key, char *value);
 void	join_value(t_env **env, char *key, char *value);
-int	is_valid(char *str, int *mode);
-int	print_export(t_env *env, char **splited_prompt);
+int		is_valid(char *str, int *mode);
+int		print_export(t_env *env, char **splited_prompt);
 void	update_and_add(t_env *env, char *key, char *value);
 
 //get_env_list_utils.c
@@ -251,19 +251,29 @@ void	set_pwd_oldpwd(t_env *env, char *cur_pwd);
 void	set_additional_pwd_oldpwd(t_env *env, char *cur_pwd);
 char	*set_back_slesh(char *line);
 
-
 //opendocs_utils.c
-int	ft_error(char *err_message, int err_code);
-int	correct_delim(char *promt, int i);
+int		ft_error(char *err_message, int err_code);
+int		correct_delim(char *promt, int i);
 void	skips_and_detect_pipe(char **promt, int *i, int *z);
 void	process_redirections(char *promt, int *i, int *j);
-int	close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim);
+int		close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim);
 
 //processes_utils.c
 void	print_in_errno_and_free_exit(
-	char **command, char *print, int code, char **cmd);
+			char **command, char *print, int code, char **cmd);
 void	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_);
 int		free_and_close(int (*fd)[2], int count, t_pars **pars, pid_t *id);
 void	clear_spaces_if_all_are_spaces(char **line);
 int		do_parsing(char **line, t_pars **pars);
+
+//utils_main.c
+void	set_setting(int gr);
+int		fret(t_pars **pars, char *promt, char **env);
+void	set_signal(void);
+void	save_std(void);
+void	set_term_attr(int on_off);
+
+//utils_main1.c
+void	free_and_exit(t_env *env_, char **env);
+
 #endif

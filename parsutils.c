@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsutils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 13:28:35 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/09/18 15:33:27 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/11 18:40:12 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,14 @@ void	skip_slesh_quote_1(char *promt, int *i, int *count)
 		*i += 2;
 		*count += 1;
 	}
+}
+
+void	skip_slesh_quote_2(char *promt, int *i, int *len)
+{
+	if (promt[*i] == '\\' && promt[*i + 1]
+		&& promt[*i + 1] == '\"')
+	{
+		*i += 1;
+	}
+	*len += 1;
 }

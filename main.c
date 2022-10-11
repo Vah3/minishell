@@ -6,63 +6,13 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 21:18:12 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/11 15:43:37 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_status = 0;
-
-void	set_term_attr(int on_off)
-{
-	struct termios	termios_p;
-
-	tcgetattr(0, &termios_p);
-	if (on_off == 0)
-	{
-		termios_p.c_lflag &= ~ECHOCTL;
-		tcsetattr(0, 0, &termios_p);
-	}
-	else if (on_off == 1)
-	{
-		termios_p.c_lflag |= ECHOCTL;
-		tcsetattr(0, 0, &termios_p);
-	}	
-}
-
-void	save_std(void)
-{
-	static int	stdin_;
-	static int	stdout_;
-	static int	count;
-
-	if (count == 0)
-	{
-		stdin_ = dup(STDIN_FILENO);
-		stdout_ = dup(STDOUT_FILENO);
-	}
-	else
-	{
-		dup2(stdin_, STDIN_FILENO);
-		dup2(stdout_, STDOUT_FILENO);
-	}
-	count++;
-}
-
-void	set_signal(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-int	fret(t_pars **pars, char *promt, char **env)
-{
-	free_pars(pars);
-	free(promt);
-	free_after_split (env);
-	return (1);
-}
 
 int	simple_built_in(t_pars **pars, t_env *env_, char ***env)
 {
@@ -79,20 +29,12 @@ int	simple_built_in(t_pars **pars, t_env *env_, char ***env)
 		if (pars[0]->outfilefd == -1)
 			return (1);
 		check_out_or_input(pars[0]);
-		call_builtin(pars, pars[0]->cmd, there_is_builtin(pars[0]->cmd), env_);
+		g_status = call_builtin(pars, pars[0]->cmd,
+				there_is_builtin(pars[0]->cmd), env_);
 		save_std();
 		return (1);
 	}
 	return (0);
-}
-
-void	free_and_exit(t_env *env_, char **env)
-{
-	printf("exit\n");
-	free_after_split(env);
-	free_env_(&env_);
-	set_term_attr(1);
-	exit (g_status);
 }
 
 int	some_checks(char **promt_, t_env *env_, char ***env, int *count)
@@ -139,14 +81,6 @@ t_env	*signal_env_std(int argc, char **argv, char **env, int *gr)
 	env_ = env_initialization(env);
 	save_std();
 	return (env_);
-}
-
-void	set_setting(int gr)
-{
-	save_std();
-	set_term_attr(0);
-	if (gr == 0)
-		signal(SIGINT, handle0);
 }
 
 int	main(int argc, char **argv, char **env)

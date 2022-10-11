@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 17:03:32 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 21:17:14 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/11 18:27:59 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,7 @@ void	find_quote(char *line, int *i, int *flag, int which)
 	if (which == 1)
 	{
 		while (line[++(*i)] && line[(*i)] != '\'')
-			if (line[(*i)] == '\\')
-				*i += 1;
+			;
 		*flag = (line[(*i)] == '\0');
 	}
 	else if (which == 2)
@@ -93,11 +92,7 @@ int	not_found_second_quote(char *line)
 	while (line && line[i] != '\0')
 	{
 		if (line[i] == '\'')
-		{
-			if (i > 0 && line[i - 1] == '\\' && i++)
-				continue ;
 			find_quote(line, &i, &flag, 1);
-		}
 		if (line[i] == '"')
 		{
 			if (i > 0 && line[i - 1] == '\\' && i++)
