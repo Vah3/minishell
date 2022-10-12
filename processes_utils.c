@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 22:23:40 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/12 15:32:59 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/12 20:03:34 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	print_in_errno_and_free_exit(
 	exit(code);
 }
 
-void	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_)
+int	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_)
 {
 	pid_t	*id;
 
@@ -61,14 +61,13 @@ void	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_)
 	if (init_pipe(fd_, count))
 	{
 		free_pars(pars);
-		free(*fd_);
-		exit(EXIT_FAILURE);
+		return (FAILURE);
 	}
 	if (count > 1 && !(*fd_))
 	{
 		perror("fd");
 		free_pars(pars);
-		exit (EXIT_FAILURE);
+		return (FAILURE);
 	}
 	id = (pid_t *)malloc(sizeof(pid_t) * count);
 	if (!id)
@@ -76,9 +75,10 @@ void	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_)
 		perror("malloc failed");
 		free_pars(pars);
 		free(*fd_);
-		exit (EXIT_FAILURE);
+		return (FAILURE);
 	}
 	*id_ = id;
+	return (SUCCESS);
 }
 
 void	clear_spaces_if_all_are_spaces(char **line)

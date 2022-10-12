@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/12 15:33:45 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/12 20:42:53 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ int		correct_delim(char *promt, int i);
 /*						BUILTIN_EXPORT.C				   	     */
 void	skip_spaces(char *str, int *i);
 int		there_is_builtin(char *str);
-int		call_builtin(t_pars **pars, char *prompt, int id, t_env *env);
+int		call_builtin(t_pars *pars, char *prompt, int id, t_env *env);
 
 int		call_export(char *prompt, t_env *env);
 int		call_env(t_env *env);
@@ -205,7 +205,7 @@ int		call_unset(char *prompt, t_env *env);
 int		call_echo(char *prompt);
 int		call_cd(char *prompt, t_env *env);
 int		call_pwd(t_env *list);
-int		call_exit(t_pars **pars, char *line);
+int		call_exit(t_pars *pars, char *line);
 
 int		exists_key(char *key, t_env *env);
 void	update_value(t_env **env, char *key, char *value);
@@ -261,7 +261,7 @@ int		close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim);
 //processes_utils.c
 void	print_in_errno_and_free_exit(
 			char **command, int code, char **cmd, t_env *env);
-void	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_);
+int		malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_);
 int		free_and_close(int (*fd)[2], int count, t_pars **pars, pid_t *id);
 void	clear_spaces_if_all_are_spaces(char **line);
 int		do_parsing(char **line, t_pars **pars);

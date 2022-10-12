@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_export.c                                   :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 12:27:18 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/10 17:27:16 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/12 20:45:57 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,18 @@ int	there_is_builtin(char *str)
 	return (id);
 }
 
-int	call_builtin(t_pars **pars, char *prompt, int id, t_env *env)
+int	call_builtin(t_pars *pars, char *prompt, int id, t_env *env)
 {
 	if (id == IS_ECHO)
 		return (call_echo(prompt));
 	else if (id == IS_CD)
-		return (call_cd(prompt, *(pars[0]->env_var)));
+		return (call_cd(prompt, *(pars->env_var)));
 	else if (id == IS_PWD)
 		return (call_pwd(env));
 	else if (id == IS_EXPORT)
-		return (call_export(prompt, *(pars[0]->env_var)));
+		return (call_export(prompt, *(pars->env_var)));
 	else if (id == IS_UNSET)
-		return (call_unset(prompt, *(pars[0]->env_var)));
+		return (call_unset(prompt, *(pars->env_var)));
 	else if (id == IS_ENV)
 		return (call_env(env));
 	else if (id == IS_EXIT)

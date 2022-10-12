@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/12 15:21:37 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/12 20:43:00 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,16 @@ int	close_pipes(int (*fd)[2], int count)
 
 int	do_fork(pid_t **id, int i)
 {
-	int	i_;
-
-	i_ = 0;
 	(*id)[i] = fork();
 	if ((*id)[i] == -1)
 	{
-		while (i_ < i)
+		perror("forks failed");
+		while (i > 0)
 		{
-			if (kill((*id)[i_], SIGKILL))
+			i--;
+			if (kill((*id)[i], SIGTERM))
 				perror("kill");
-			if (wait(NULL) < 0)
-				perror("");
-			i_++;
+			waitpid((*id)[i], NULL, 0);
 		}
 		g_status = 1;
 		return (FAILURE);
@@ -66,10 +63,10 @@ void	do_execve(t_pars *pars, char **env, t_env *env_)
 
 	cmd = pars->exec_cmd;
 	line = pars->cmd;
-	line = get_correct_cmd(line);
 	command = ft_split(line, 32);
 	if (there_is_builtin(line))
-		exit(call_builtin(&pars, line, there_is_builtin(line), env_));
+		exit(call_builtin(pars, line, there_is_builtin(line), env_));
+	line = get_correct_cmd(line);
 	if (cmd && cmd[0])
 		execve(cmd[0], cmd, env);
 	if (cmd && cmd[0] && opendir(cmd[0]))
@@ -107,7 +104,8 @@ void	open_processes(int count, t_pars **pars, char **env, t_env *env_)
 	pid_t	*id;
 
 	i = -1;
-	malloc_and_check(count, (int ***)&fd, pars, &id);
+	if (malloc_and_check(count, (int ***)&fd, pars, &id))
+		return ;
 	while (++i < count)
 	{
 		if (do_fork(&id, i) && free_and_close(fd, count, pars, id))

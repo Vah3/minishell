@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:59:08 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 21:56:18 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/12 20:50:07 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,16 @@ int	checks(char **args, int count_of_args, int write)
 	return (0);
 }
 
-void	free_pars_and_env_list(t_pars **pars)
+void	free_pars_and_env_list(t_pars *pars)
 {
-	free_env_(pars[0]->env_var);
-	free_pars(pars);
+	free_env_(pars->env_var);
+	free(pars->cmd);
+	if (pars->errfile)
+		free(pars->errfile);
+	free(pars);
 }
 
-int	call_exit(t_pars **pars, char *line)
+int	call_exit(t_pars *pars, char *line)
 {
 	char	**splited_prompt;
 	int		count_of_args;
@@ -72,14 +75,13 @@ int	call_exit(t_pars **pars, char *line)
 
 	count_of_args = -1;
 	splited_prompt = ft_split(line, ' ');
-	printf("exit\n");
 	if (!splited_prompt)
 		return (FAILURE);
-	if (splited_prompt[1])
-		code = ft_atoi_(splited_prompt[1]);
 	while (splited_prompt[++count_of_args])
 		splited_prompt[count_of_args]
 			= get_correct_cmd(splited_prompt[count_of_args]);
+	if (splited_prompt[1])
+		code = ft_atoi_(splited_prompt[1]);
 	if (count_of_args == 1 || count_of_args == 2
 		|| checks(splited_prompt, count_of_args, 0))
 		free_pars_and_env_list(pars);

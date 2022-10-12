@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:37:48 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 18:52:32 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/12 20:03:11 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	perror_and_close(int (*fd)[2], int i)
 		close(fd[i][0]);
 		close(fd[i][1]);
 	}
+	free(fd);
 	return (FAILURE);
 }
 
@@ -61,11 +62,12 @@ int	init_pipe(int ***fd_, int count)
 
 	i = 0;
 	fd = NULL;
+	*fd_ = NULL;
 	if (count > 1)
 	{
 		fd = malloc (sizeof(*fd) * (count - 1));
 		if (!fd)
-			return (0);
+			return (FAILURE);
 	}
 	while (i < count - 1)
 	{

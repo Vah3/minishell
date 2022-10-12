@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 21:18:33 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/09 13:58:17 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/12 19:59:40 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,31 +29,43 @@ int	is_valid_key(char *key)
 	return (1);
 }
 
+void	update_and_remove(t_env **env, char *key, int *ret)
+{
+	if (is_valid_key(key))
+	{
+		if (ft_strcmp(key, "PWD") == 0)
+			update_value(env, "+PWD", NULL);
+		else if (ft_strcmp(key, "OLDPWD") == 0)
+			update_value(env, "+OLDPWD", NULL);
+		remove_from_list(*env, key);
+	}
+	else
+	{
+		*ret = 1;
+		ft_putstr_fd("minishell: unset: `", 2);
+		ft_putstr_fd(key, 2);
+		ft_putendl_fd("': not a valid identifier", 2);
+	}
+}
+
 int	call_unset(char *prompt, t_env *env)
 {
 	char	**splited_prompt;
 	int		i;
+	int		ret;
 	char	*key;
 
 	i = 1;
+	ret = 0;
 	splited_prompt = ft_split(prompt, ' ');
 	while (splited_prompt[i])
 	{
 		key = ft_strdup(splited_prompt[i]);
 		key = get_correct_cmd(key);
-		if (is_valid_key(key))
-		{
-			if (ft_strcmp(key, "PWD") == 0)
-				update_value(&env, "+PWD", NULL);
-			else if (ft_strcmp(key, "OLDPWD") == 0)
-				update_value(&env, "+OLDPWD", NULL);
-			remove_from_list(env, key);
-		}
-		else
-			printf("minishell: unset: `%s': not a valid identifier\n", key);
+		update_and_remove(&env, key, &ret);
 		i++;
 		free(key);
 	}
 	free_after_split(splited_prompt);
-	return (0);
+	return (ret);
 }

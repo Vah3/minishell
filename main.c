@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:43:13 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/11 15:43:37 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/12 20:51:01 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,28 @@
 
 int	g_status = 0;
 
-int	simple_built_in(t_pars **pars, t_env *env_, char ***env)
+int	simple_built_in(t_pars *pars, t_env *env_, char ***env)
 {
-	if (there_is_builtin(pars[0]->cmd))
+	int	_exit;
+
+	if (there_is_builtin(pars->cmd))
 	{
-		*env = change_under_score(env_, pars[0]->cmd, *env);
-		if (pars[0]->errfile)
+		*env = change_under_score(env_, pars->cmd, *env);
+		if (pars->errfile)
 		{
 			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(pars[0]->errfile, 2);
-			ft_putendl_fd(strerror(pars[0]->errnum), 2);
+			ft_putstr_fd(pars->errfile, 2);
+			ft_putendl_fd(strerror(pars->errnum), 2);
 			return (1);
 		}
-		if (pars[0]->outfilefd == -1)
+		if (pars->outfilefd == -1)
 			return (1);
-		check_out_or_input(pars[0]);
-		g_status = call_builtin(pars, pars[0]->cmd,
-				there_is_builtin(pars[0]->cmd), env_);
+		check_out_or_input(pars);
+		_exit = there_is_builtin(pars->cmd);
+		if (_exit == IS_EXIT)
+			printf("exit\n");
+		g_status = call_builtin(pars, pars->cmd,
+				there_is_builtin(pars->cmd), env_);
 		save_std();
 		return (1);
 	}
@@ -101,7 +106,7 @@ int	main(int argc, char **argv, char **env)
 		pars = init_struct(count, &env_);
 		if (some_stuff(&promt, env_, pars, &gr) && fret(pars, promt, env))
 			continue ;
-		if (count == 1 && simple_built_in(pars, env_, &env)
+		if (count == 1 && simple_built_in(pars[0], env_, &env)
 			&& fret(pars, promt, env))
 			continue ;
 		env = change_under_score(env_, promt, env);

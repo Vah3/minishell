@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opendocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 22:21:46 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/12 19:44:41 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,15 @@ int	set_status_back(int input_fd)
 	{
 		g_status = 1;
 		dup2(input_fd, 0);
+		close (input_fd);
 		signal(SIGINT, handle4);
 		return (1);
 	}
 	else
+	{
 		g_status = 0;
+		close (input_fd);
+	}
 	return (0);
 }
 
