@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 14:44:28 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/10 22:29:46 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/12 15:21:37 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,16 @@ void	do_execve(t_pars *pars, char **env, t_env *env_)
 	if (cmd && cmd[0])
 		execve(cmd[0], cmd, env);
 	if (cmd && cmd[0] && opendir(cmd[0]))
-		print_in_errno_and_free_exit(command, " is a directory", 126, cmd);
+		print_in_errno_and_free_exit(command, 128, cmd, env_);
 	if (cmd && !cmd[0] && ft_strchr(command[0], '/'))
 		print_in_errno_and_free_exit
-		(command, " No such file or directory", 127, cmd);
+		(command, 129, cmd, env_);
 	else if (cmd && (!cmd[0] || !ft_strchr(command[0], '/')))
 		print_in_errno_and_free_exit
-			(command, " Command not found", 127, cmd);
+			(command, 130, cmd, env_);
 	if (cmd && cmd[0] && access(cmd[0], F_OK) == 0
 		&& access(cmd[0], X_OK) == -1)
-		print_in_errno_and_free_exit(command, " Permission denied", 126, cmd);
+		print_in_errno_and_free_exit(command, 131, cmd, env_);
 	exit(g_status);
 }
 

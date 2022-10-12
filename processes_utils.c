@@ -3,28 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   processes_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edgghaza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 22:23:40 by edgghaza          #+#    #+#             */
-/*   Updated: 2022/10/10 22:31:31 by edgghaza         ###   ########.fr       */
+/*   Updated: 2022/10/12 15:32:59 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_in_errno_and_free_exit(
-	char **command, char *print, int code, char **cmd)
+void	code_and_print(int *code, char **print)
 {
-	int	i;
+	if (*code == 128)
+		*print = " is a directory";
+	else if (*code == 129)
+		*print = " No such file or directory";
+	else if (*code == 130)
+		*print = " Command not found";
+	else if (*code == 131)
+		*print = " Permission denied";
+	if (*code == 128 || *code == 131)
+		*code = 126;
+	if (*code == 129 || *code == 130)
+		*code = 127;
+}
 
+void	print_in_errno_and_free_exit(
+	char **command, int code, char **cmd, t_env *env)
+{
+	int		i;
+	char	*print;
+
+	print = NULL;
 	i = 0;
+	code_and_print(&code, &print);
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(command[0], 2);
 	ft_putendl_fd(print, 2);
 	while (command && command[i])
 	{
 		free(command[i]);
-		free(cmd[i]);
+		if (_getenv(env, "PATH"))
+			free(cmd[i]);
 		i++;
 	}
 	free(command);
@@ -59,13 +79,6 @@ void	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_)
 		exit (EXIT_FAILURE);
 	}
 	*id_ = id;
-}
-
-int	free_and_close(int (*fd)[2], int count, t_pars **pars, pid_t *id)
-{
-	close_pipes(fd, count);
-	fr(pars, fd, id, count);
-	return (1);
 }
 
 void	clear_spaces_if_all_are_spaces(char **line)

@@ -6,7 +6,7 @@
 /*   By: vagevorg <vagevorg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 19:12:16 by vagevorg          #+#    #+#             */
-/*   Updated: 2022/10/11 18:39:59 by vagevorg         ###   ########.fr       */
+/*   Updated: 2022/10/12 15:33:45 by vagevorg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,7 +260,7 @@ int		close_pipe_and_free_delim(int fd[2], int z, t_pars **pars, char *delim);
 
 //processes_utils.c
 void	print_in_errno_and_free_exit(
-			char **command, char *print, int code, char **cmd);
+			char **command, int code, char **cmd, t_env *env);
 void	malloc_and_check(int count, int ***fd_, t_pars **pars, pid_t **id_);
 int		free_and_close(int (*fd)[2], int count, t_pars **pars, pid_t *id);
 void	clear_spaces_if_all_are_spaces(char **line);
@@ -275,5 +275,6 @@ void	set_term_attr(int on_off);
 
 //utils_main1.c
 void	free_and_exit(t_env *env_, char **env);
+int		free_and_close(int (*fd)[2], int count, t_pars **pars, pid_t *id);
 
 #endif
